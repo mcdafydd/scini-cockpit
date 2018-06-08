@@ -112,6 +112,5 @@ EXPOSE 8300
 EXPOSE 9229
 
 ## Start the mock server platform (no external camera)
-WORKDIR /root
-ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["./start-dev.sh"]
+WORKDIR /root/scini-code/openrov-cockpit
+ENTRYPOINT ["./start-dev.sh"]
