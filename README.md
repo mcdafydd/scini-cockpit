@@ -2,6 +2,13 @@
 
 This project contains the container build files to create a version of OpenROV cockpit suitable to operate the SCINI underwater ROV.
 
-# Create Container
-1. Install docker
-2. docker build -t openrov .
+# Build Container
+* Install docker
+* docker build -t openrov .
+
+# Run an Instance of OpenROV
+* docker run -it -p 80:80 -p 1883:1883 -p 3000:3000 -p 8080:8080 -p 8200:8200 -p 8300:8300 -p 9229:9229 openrov ./start-dev.sh <IP_of_forward_Elphel_camera>
+* Access the cockpit via Chrome at http://localhost, or from another system on the same LAN using the host's IP address
+
+# Issues
+Visit the repository of problematic components mentioned in the Dockerfile to file issues.  Only file issues with the Dockerfile here.

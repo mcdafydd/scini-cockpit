@@ -101,21 +101,8 @@ RUN cd ~/scini-code/openrov-cockpit \
     && (cd src/plugins/peer-view && npm install msgpack-lite) \
     && (cd src/plugins/mqtt-broker && npm install bonjour)
 
-## Install our modified mjpeg-video-server node module
-RUN cd ~/scini-code/ \
-    && git clone https://github.com/mcdafydd/mjpeg-video-server.git \
-    && cd mjpeg-video-server \
-    && git checkout feature/external-cam \
-    && npm install \
-    && cd .. \
-    && cp -a mjpeg-video-server openrov-cockpit/src/plugins/mjpeg-video/node_modules/
-
-# user/repo#feature\/branch
-# mcdafydd/mjpeg-video-server#feature\/external-cam
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
 ## Ports 80, 8080 = HTTP; 1883 = MQTT; 3000 = MQTT-ws; 8200 = ws://; 8300, 9229 = Node
-## Run with:
-## docker run -it -p 80:80 -p 1883:1883 -p 3000:3000 -p 8080:8080 -p 8200:8200 -p 8300:8300 -p 9229:9229 openrov /bin/bash
 EXPOSE 80
 EXPOSE 1883
 EXPOSE 3000
@@ -125,4 +112,6 @@ EXPOSE 8300
 EXPOSE 9229
 
 ## Start the mock server platform (no external camera)
+WORKDIR /root
+ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["./start-dev.sh"]
