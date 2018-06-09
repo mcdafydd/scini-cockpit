@@ -23,6 +23,7 @@ RUN apt-get update \
         python \
         dpkg-dev \
         nmap \
+        lsof \
         tcpdump \
         libuv1 \
         libuv1-dev \
@@ -86,7 +87,6 @@ RUN mkdir -p /etc/openrov \
     && ln -s -f /etc/nginx/sites-available/openrov /etc/nginx/sites-enabled/default \
     && cp src/system-plugins/platform-manager/install/files/custom_50x.html /usr/share/nginx/html \
     && chmod 400 /etc/openrov/openrov.key \
-    && /etc/init.d/nginx restart \
     && npm run deploy:prod \
     && npm run deploy:dev
 
