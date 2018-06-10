@@ -102,7 +102,7 @@ RUN cd ~/scini-code/openrov-cockpit \
     && (cd src/plugins/mqtt-broker && npm install bonjour)
 
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
-## Ports 80, 8080 = HTTP; 1883 = MQTT; 3000 = MQTT-ws; 8200 = ws://; 8300, 9229 = Node
+## Ports 80, 8080 = HTTP; 1883 = MQTT; 3000 = MQTT-ws; 8200 = ws://; 8300 = Node; 9229 = Node debug
 EXPOSE 80
 EXPOSE 1883
 EXPOSE 3000
