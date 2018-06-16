@@ -77,11 +77,10 @@ RUN source ~/.nvm/nvm.sh \
 ## As of 15 August 2017, the mjpeg-video-server node module looks for a certificate in a specific location when it is loaded.
 ## Grab our fork of openrov-cockpit repo
 RUN mkdir -p /etc/openrov \
-    && mkdir -p /opt/openrov \
+    && mkdir -p /opt/openrov/cockpit \
     && mkdir -p /usr/share/cockpit \
-    && cd ~/scini-code \
-    && git clone -b platform/scini --recurse-submodules https://github.com/mcdafydd/openrov-cockpit.git \
-    && cd openrov-cockpit \
+    && cd /opt/openrov/cockpit \
+    && git clone -b platform/scini --recurse-submodules https://github.com/mcdafydd/openrov-cockpit.git . \
     && cp deploy/openrov.crt deploy/openrov.key /etc/openrov/ \
     && cp deploy/nginx.openrov /etc/nginx/sites-available/openrov \
     && ln -s -f /etc/nginx/sites-available/openrov /etc/nginx/sites-enabled/default \
@@ -91,7 +90,7 @@ RUN mkdir -p /etc/openrov \
     && npm run deploy:dev
 
 ## Install remaining dependency modules to run the mock platform
-RUN cd ~/scini-code/openrov-cockpit \
+RUN cd /opt/openrov/cockpit \
     && npm -g install forever \
     && npm install queue \
     && (cd src/plugins/mjpeg-video && npm install) \
@@ -102,7 +101,6 @@ RUN cd ~/scini-code/openrov-cockpit \
     && (cd src/plugins/mqtt-broker && npm install bonjour)
 
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
-## Ports 80, 8080 = HTTP; 1883 = MQTT; 3000 = MQTT-ws; 8200 = ws://; 8300 = Node; 9229 = Node debug
 EXPOSE 80
 EXPOSE 1883
 EXPOSE 3000
@@ -112,5 +110,5 @@ EXPOSE 8300
 EXPOSE 9229
 
 ## Start the mock server platform (no external camera)
-WORKDIR /root/scini-code/openrov-cockpit
+WORKDIR /opt/openrov/cockpit
 ENTRYPOINT ["./start-dev.sh"]
