@@ -26,7 +26,7 @@ services:
     build: elphel-mock/
     restart: always
     ports:
-      - "8081"
+      - "8081:8081"
     networks:
       scini:
         ipv4_address: 192.168.2.215
