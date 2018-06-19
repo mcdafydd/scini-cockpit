@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 ## Install dependencies
 RUN apt-get update \
-    && apt-get installx -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
         build-essential \
         gcc \
         make \
@@ -27,5 +27,5 @@ EXPOSE 3000
 
 ## Start the mock server platform (no external camera)
 WORKDIR /srv/
-ENTRYPOINT ["mqttclient"]
+ENTRYPOINT ["/usr/local/bin/mqttclient"]
 

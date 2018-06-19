@@ -24,7 +24,7 @@ services:
       - clumpcam-mock
 
   fwdcam-mock:
-    build: elphel-mock/
+    build: imgsrv-mock/
     restart: on-failure
     ports:
       - "8081:8081"
@@ -33,7 +33,7 @@ services:
         ipv4_address: 192.168.2.215
 
   downcam-mock:
-    build: elphel-mock/
+    build: imgsrv-mock/
     restart: on-failure
     ports:
       - "8081"
@@ -42,7 +42,7 @@ services:
         ipv4_address: 192.168.2.218
 
   upcam-mock:
-    build: elphel-mock/
+    build: imgsrv-mock/
     restart: on-failure
     ports:
       - "8081"
@@ -51,7 +51,7 @@ services:
         ipv4_address: 192.168.2.213
 
   clumpcam-mock:
-    build: elphel-mock/
+    build: imgsrv-mock/
     restart: on-failure
     ports:
       - "8081"
