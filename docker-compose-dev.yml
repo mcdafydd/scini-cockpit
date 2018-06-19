@@ -1,0 +1,88 @@
+version: "3"
+services:
+
+  openrov:
+    build: openrov/
+    command: 192.168.2.215
+    volumes:
+      - "video:/video"
+    ports:
+      - "80:80"
+      - "1883:1883"
+      - "3000:3000"
+      - "8080:8080"
+      - "8200:8200"
+      - "8300:8300"
+      - "9229:9229"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.197
+    depends_on:
+      - fwdcam-mock
+      - downcam-mock
+      - upcam-mock
+      - clumpcam-mock
+
+  fwdcam-mock:
+    build: elphel-mock/
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.215
+
+  downcam-mock:
+    build: elphel-mock/
+    restart: on-failure
+    ports:
+      - "8081"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.218
+
+  upcam-mock:
+    build: elphel-mock/
+    restart: on-failure
+    ports:
+      - "8081"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.213
+
+  clumpcam-mock:
+    build: elphel-mock/
+    restart: on-failure
+    ports:
+      - "8081"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.211
+
+  mqtt-fwd:
+    build: mqttclient-mock/
+    ports:
+      - "1883:1883"
+      - "3000:3000"
+    networks:
+      scini:
+    depends_on:
+      - openrov
+
+  mqtt-clump:
+    build: mqttclient-mock/
+    ports:
+      - "1883:1883"
+      - "3000:3000"
+    networks:
+      scini:
+    depends_on:
+      - openrov
+
+
+networks:
+  scini:
+    external: true
+
+volumes:
+  video:

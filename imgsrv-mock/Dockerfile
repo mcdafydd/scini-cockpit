@@ -6,11 +6,11 @@ STOPSIGNAL SIGINT
 COPY mjpeg-server.py /usr/bin
 COPY images /srv/images
 
-## Install dependencies and recent NodeJS
+## Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         python \
-    && rm -rf /var/lib/apt/lists/* 
+    && rm -rf /var/lib/apt/lists/*
 
 RUN chmod 755 /usr/bin/mjpeg-server.py
 
