@@ -7,33 +7,35 @@ SHELL ["/bin/bash", "-c"]
 ## Install dependencies and recent NodeJS
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        ffmpeg \
-        libimage-exiftool-perl \
         build-essential \
+        ca-certificates \
         cmake \
-        libssl-dev \
+        curl \
+        dpkg-dev \
+        ffmpeg \
+        git \
         g++ \
+        iputils-ping \
+        libghc-zlib-dev \
+        libgss-dev \
+        libimage-exiftool-perl \
+        libjpeg-dev \
         libpcre3 \
         libpcre3-dev \
-        wget \
-        pkg-config \
-        net-tools \
-        iputils-ping \
-        vim \
-        python \
-        dpkg-dev \
-        nmap \
-        lsof \
-        tcpdump \
+        libssl-dev \
         libuv1 \
         libuv1-dev \
-        libjpeg-dev \
-        libghc-zlib-dev \
-        git \
-        curl \
+        libzmq3-dev \
+        lsof \
+        net-tools \
+        nginx-full \
+        nmap \
         openssh-client \
-        ca-certificates \
-        nginx \
+        pkg-config \
+        python \
+        tcpdump \
+        vim \
+        wget \
     && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
     && rm -rf /var/lib/apt/lists/*
 
@@ -86,6 +88,8 @@ RUN mkdir -p /etc/openrov \
     && ln -s -f /etc/nginx/sites-available/openrov /etc/nginx/sites-enabled/default \
     && cp src/system-plugins/platform-manager/install/files/custom_50x.html /usr/share/nginx/html \
     && chmod 400 /etc/openrov/openrov.key \
+    && npm install -g yarn \
+    && ln -s `which yarn` /usr/local/bin/yarn \
     && npm run deploy:prod \
     && npm run deploy:dev
 
@@ -102,6 +106,7 @@ RUN cd /opt/openrov/cockpit \
 
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
 EXPOSE 80
+EXPOSE 443
 EXPOSE 1883
 EXPOSE 3000
 EXPOSE 8080
