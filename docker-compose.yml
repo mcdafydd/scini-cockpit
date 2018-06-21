@@ -3,6 +3,7 @@ services:
 
   openrov:
     build: openrov/
+    restart: on-failure
     command: 192.168.2.215
     volumes:
       - "video:/video"

@@ -1,7 +1,7 @@
 # Overview
 
 This repository contains that allow for developing the Dockerfiles necessary to build a test SCINI ROV
-for development.
+for development.  It is the parent repository for all of the SCINI surface-to-serial components.  Code that runs on devices at the end of an RS-485 or other non-IP connection does not currently live on github and does not get built by this repository.  This includes everything a user sees when they open the OpenROV cockpit in a browser, control devices using a joystick or keyboard/mouse action,
 
 # Prerequisites
 
@@ -36,7 +36,7 @@ The default docker-compose-dev.yml file assumes you want to match the network IP
 `docker exec -it $(docker ps |grep openrov | awk '{print $1}') /bin/bash`
 
 5. The container uses a docker named volume created by the compose file.  You can see it with `docker volume ls`.  The named volume allows changes made in the container to persist beyond its lifetime.
-6. To test your changes, hit <CTRL-C> in the docker-compose session, or in the second terminal execute `docker-compose -f docker-compose-dev.yml down` and then return to Step 1.
+6. To test your changes, either restart the entire stack by hitting <CTRL-C> in the docker-compose session, or in the second terminal execute `docker-compose -f docker-compose-dev.yml down` and then return to Step 1.  If you just want to restart one service, you can also run `docker-compose -f docker-compose-dev.yml restart openrov`.
 
 ** NOTE: the named volume is only loaded into the openrov container to work in this environment. If you want to make changes to repositories other than openrov-cockpit, be careful not to lose changes made inside the writeable, non-persistent layer of a container without a named volume. **
 
@@ -46,9 +46,31 @@ The default docker-compose-dev.yml file assumes you want to match the network IP
 
 The openrov entrypoint `start-dev.sh` starts node with the `--inspect` flag to enable remote debugging.  Port 9229 is exposed from the OpenROV container so that Chrome DevTools can find the instance.
 
+This quick method doesn't seem to work so well when running node in a container:
+
 * Open chrome and visit chrome://inspect
 * Look for src/cockpit.js and click **Inspect**
 
+This method seems to work OK for now:
+
+* Open a new Chrome tab and visit http://172.17.0.1:9229/json
+* Grab the URL in the devtoolsFrontendUrl value
+* Paste the URL into a new tab
+
+For more info about this external URL and devtools see https://github.com/nodejs/node/issues/14639.
+
+## Clean Up Docker
+
+Don't forget to clean up unneeded images and containers as you're working or your disk will quickly fill up due to the large size of the openrov container.
+
+A couple simple commands to remove containers and images older than 3 days is:
+
+```
+docker container prune --filter "until=72h"
+docker image prune --filter "until=72h"
+```
+
+For more info see https://docs.docker.com/config/pruning/#prune-everything
 
 ## Imgsrv-mock Container
 
@@ -62,9 +84,11 @@ These containers can also receive and generate fake PRO4 telemetry data, such as
 
 If you've built the stack at least once, the cloned git repositories will be cached in that RUN layer of its container.  If you need to force Docker to pull down changes from the remote repository, rebuild that one service like this:
 
-`docker-compose -f docker-compose-dev.yml build SERVICE_NAME --no-cache`
+```
+docker-compose -f docker-compose-dev.yml down -v
+docker-compose -f docker-compose-dev.yml build --no-cache SERVICE_NAME
+```
 
 After it's been built you can `up` the stack as normal.
 
 In this context, SERVICE_NAME is the name given to the service in the docker-compose YAML file you're using.  For dev, those names are 'openrov', 'fwdcam-mock', etc.
-

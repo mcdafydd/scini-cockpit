@@ -3,6 +3,7 @@ services:
 
   openrov:
     build: openrov/
+    restart: on-failure
     command: 192.168.2.215
     volumes:
       - "cockpit:/opt/openrov/cockpit"
@@ -63,6 +64,9 @@ services:
 
   mqtt-fwd:
     build: mqttclient-mock/
+    restart: on-failure
+    devices:
+      - "/dev/null:/dev/ttyUSB0"
     expose:
       - "1883"
       - "3000"
@@ -74,6 +78,9 @@ services:
 
   mqtt-clump:
     build: mqttclient-mock/
+    restart: on-failure
+    devices:
+      - "/dev/null:/dev/ttyUSB0"
     expose:
       - "1883"
       - "3000"
