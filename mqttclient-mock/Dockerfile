@@ -5,12 +5,20 @@ SHELL ["/bin/bash", "-c"]
 ## Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        bash-completion \
         build-essential \
+        ca-certificates \
         gcc \
-        make \
+        curl \
         git \
         libssl-dev \
-        ca-certificates \
+        lsof \
+        make \
+        net-tools \
+        nmap \
+        tcpdump \
+        vim \
+        wget \
     && rm -rf /var/lib/apt/lists/* \
     && git clone https://github.com/eclipse/paho.mqtt.c \
     && git clone https://github.com/mcdafydd/elphel-mqtt-client

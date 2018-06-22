@@ -33,7 +33,7 @@ The default docker-compose-dev.yml file assumes you want to match the network IP
 3. Visit URL paths /rov/up-camera, /rov/down-camera, and /rov/forward-camera to see the other video streams (multi-camera feature still under development)
 4. Open a new terminal and get a shell in the container you want to change, for example:
 
-`docker exec -it $(docker ps |grep openrov | awk '{print $1}') /bin/bash`
+`docker exec -v ~/.gitconfig:/root/.gitconfig -it $(docker ps |grep openrov | awk '{print $1}') /bin/bash`
 
 5. The container uses a docker named volume created by the compose file.  You can see it with `docker volume ls`.  The named volume allows changes made in the container to persist beyond its lifetime.
 6. To test your changes, either restart the entire stack by hitting <CTRL-C> in the docker-compose session, or in the second terminal execute `docker-compose -f docker-compose-dev.yml down` and then return to Step 1.  If you just want to restart one service, you can also run `docker-compose -f docker-compose-dev.yml restart openrov`.

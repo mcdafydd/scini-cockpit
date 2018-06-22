@@ -1,0 +1,43 @@
+mjpg-streamer:
+
+/root/scini-code/mjpg-streamer/plugins/output_http/httpd.c: In function 'send_input_JSON':
+/root/scini-code/mjpg-streamer/plugins/output_http/httpd.c:1733:38: warning: '%d' directive writing between 1 and 10 bytes into a region of size 6 [-Wformat-overflow=]
+                 sprintf(buffer_num, "%d", j);
+                                      ^~
+/root/scini-code/mjpg-streamer/plugins/output_http/httpd.c:1733:37: note: directive argument in the range [0, 2147483647]
+                 sprintf(buffer_num, "%d", j);
+                                     ^~~~
+In file included from /usr/include/stdio.h:862:0,
+                 from /root/scini-code/mjpg-streamer/plugins/output_http/httpd.c:28:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:33:10: note: '__builtin___sprintf_chk' output between 2 and 11 bytes into a destination of size 6
+   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       __bos (__s), __fmt, __va_arg_pack ());
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+openrov-cockpit:
+
+npm WARN deprecated coffee-script@1.9.1: CoffeeScript on NPM has moved to "coffeescript" (no hyphen)
+npm WARN deprecated mongodb@2.1.21: Please upgrade to 2.2.19 or higher
+npm WARN prefer global coffee-script@1.9.1 should be installed with -g
+npm WARN prefer global node-gyp@3.4.0 should be installed with -g
+npm WARN prefer global node-ninja@1.0.2 should be installed with -g
+
+
+npm WARN deprecated github@1.4.0: 'github' has been renamed to '@octokit/rest' (https://git.io/vNB11)
+npm WARN deprecated sw-precache@3.2.0: Please update to v5 or higher to resolve an issue with redirected navigation responses. See https://github.com/GoogleChrome/sw-precache/releases/tag/5.0.0
+npm WARN deprecated gulp-util@3.0.8: gulp-util is deprecated - replace it, following the guidelines at https://medium.com/gulpjs/gulp-util-ca3b1f9f9ac5
+npm WARN deprecated graceful-fs@3.0.11: please upgrade to graceful-fs 4 for compatibility with current and future versions of Node.js
+npm WARN deprecated minimatch@0.2.14: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
+npm WARN deprecated graceful-fs@1.2.3: please upgrade to graceful-fs 4 for compatibility with current and future versions of Node.js
+npm WARN deprecated nomnom@1.8.1: Package no longer supported. Contact support@npmjs.com for more info.
+npm WARN deprecated to-iso-string@0.0.2: to-iso-string has been deprecated, use @segment/to-iso-string instead.
+npm WARN deprecated jade@0.26.3: Jade has been renamed to pug, please install the latest version of pug instead of jade
+npm WARN deprecated minimatch@0.3.0: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
+npm WARN deprecated formatio@1.1.1: This package is unmaintained. Use @sinonjs/formatio instead
+npm WARN prefer global npm@3.10.10 should be installed with -g
+npm WARN prefer global jshint@2.9.5 should be installed with -g
+
+npm WARN lifecycle OpenROV-Cockpit@31.0.0~install: cannot run in wd %s %s (wd=%s) OpenROV-Cockpit@31.0.0 node install_lib/bower_install_all.js && node install_lib/npm_install_all.js /opt/openrov/cockpit
+

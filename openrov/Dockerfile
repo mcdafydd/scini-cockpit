@@ -7,6 +7,7 @@ SHELL ["/bin/bash", "-c"]
 ## Install dependencies and recent NodeJS
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        bash-completion \
         build-essential \
         ca-certificates \
         cmake \
