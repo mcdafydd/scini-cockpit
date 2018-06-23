@@ -3,15 +3,14 @@ LABEL maintainer="david@linkconsultinginc.com"
 SHELL ["/bin/bash", "-c"]
 STOPSIGNAL SIGINT
 
-COPY mjpeg-server.py /usr/bin
-COPY images /srv/images
-
 ## Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         python \
     && rm -rf /var/lib/apt/lists/*
 
+COPY mjpeg-server.py /usr/bin
+COPY images /srv/images
 RUN chmod 755 /usr/bin/mjpeg-server.py
 
 EXPOSE 8081

@@ -95,9 +95,10 @@ services:
     build: mqttclient-mock/
     restart: on-failure
     volumes:
+      - "serfwd:/srv"
       - "~/.gitconfig:/root/.gitconfig"
-    devices:
-      - "/dev/null:/dev/ttyUSB0"
+    environment:
+      - USBDEVICE=/srv/backpipe
     expose:
       - "1883"
       - "3000"
@@ -111,16 +112,12 @@ services:
     depends_on:
       - openrov
 
-  mqtt-clump:
-    build: mqttclient-mock/
+  serial-fwd:
+    build: serial-tester/
     restart: on-failure
     volumes:
+      - "serfwd:/srv"
       - "~/.gitconfig:/root/.gitconfig"
-    devices:
-      - "/dev/null:/dev/ttyUSB0"
-    expose:
-      - "1883"
-      - "3000"
     networks:
       scini:
         ipv4_address: 192.168.2.232
@@ -129,7 +126,44 @@ services:
         max-size: "500k"
         max-file: "10"
     depends_on:
+      - mqtt-clump
+
+  mqtt-clump:
+    build: mqttclient-mock/
+    restart: on-failure
+    volumes:
+      - "serclump:/srv"
+      - "~/.gitconfig:/root/.gitconfig"
+    environment:
+      - USBDEVICE=/srv/backpipe
+    expose:
+      - "1883"
+      - "3000"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.233
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
+    depends_on:
       - openrov
+
+  serial-clump:
+    build: serial-tester/
+    restart: on-failure
+    volumes:
+      - "serclump:/srv"
+      - "~/.gitconfig:/root/.gitconfig"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.234
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
+    depends_on:
+      - mqtt-clump
 
 
 networks:
@@ -139,3 +173,5 @@ networks:
 volumes:
   cockpit:
   video:
+  serfwd:
+  serclump:
