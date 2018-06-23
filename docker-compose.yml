@@ -8,7 +8,6 @@ services:
     volumes:
       - "cockpit:/opt/openrov/cockpit"
       - "video:/video"
-      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
       - "443:443"
