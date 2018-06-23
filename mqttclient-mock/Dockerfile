@@ -8,14 +8,15 @@ RUN apt-get update \
         bash-completion \
         build-essential \
         ca-certificates \
-        gcc \
         curl \
+        gcc \
         git \
         libssl-dev \
         lsof \
         make \
         net-tools \
         nmap \
+        socat \
         tcpdump \
         vim \
         wget \
