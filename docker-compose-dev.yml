@@ -8,6 +8,7 @@ services:
     volumes:
       - "cockpit:/opt/openrov/cockpit"
       - "video:/video"
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
       - "443:443"
@@ -20,6 +21,10 @@ services:
     networks:
       scini:
         ipv4_address: 192.168.2.197
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
     depends_on:
       - fwdcam-mock
       - downcam-mock
@@ -29,42 +34,68 @@ services:
   fwdcam-mock:
     build: imgsrv-mock/
     restart: on-failure
+    volumes:
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "8081"
     networks:
       scini:
         ipv4_address: 192.168.2.215
+    logging:
+      options:
+        max-size: "50k"
+        max-file: "10"
 
   downcam-mock:
     build: imgsrv-mock/
     restart: on-failure
+    volumes:
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "8081"
     networks:
       scini:
         ipv4_address: 192.168.2.218
+    logging:
+      options:
+        max-size: "50k"
+        max-file: "10"
 
   upcam-mock:
     build: imgsrv-mock/
     restart: on-failure
+    volumes:
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "8081"
     networks:
       scini:
         ipv4_address: 192.168.2.213
+    logging:
+      options:
+        max-size: "50k"
+        max-file: "10"
 
   clumpcam-mock:
     build: imgsrv-mock/
     restart: on-failure
+    volumes:
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "8081"
     networks:
       scini:
         ipv4_address: 192.168.2.211
+    logging:
+      options:
+        max-size: "50k"
+        max-file: "10"
 
   mqtt-fwd:
     build: mqttclient-mock/
     restart: on-failure
+    volumes:
+      - "~/.gitconfig:/root/.gitconfig"
     devices:
       - "/dev/null:/dev/ttyUSB0"
     expose:
@@ -73,12 +104,18 @@ services:
     networks:
       scini:
         ipv4_address: 192.168.2.231
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
     depends_on:
       - openrov
 
   mqtt-clump:
     build: mqttclient-mock/
     restart: on-failure
+    volumes:
+      - "~/.gitconfig:/root/.gitconfig"
     devices:
       - "/dev/null:/dev/ttyUSB0"
     expose:
@@ -87,6 +124,10 @@ services:
     networks:
       scini:
         ipv4_address: 192.168.2.232
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
     depends_on:
       - openrov
 

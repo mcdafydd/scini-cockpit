@@ -6,7 +6,9 @@ services:
     restart: on-failure
     command: 192.168.2.215
     volumes:
+      - "cockpit:/opt/openrov/cockpit"
       - "video:/video"
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
       - "443:443"
@@ -16,6 +18,11 @@ services:
       - "8200:8200"
       - "8300:8300"
       - "9229:9229"
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
 
 volumes:
+  cockpit:
   video:
