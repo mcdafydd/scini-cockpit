@@ -89,6 +89,13 @@ RUN mkdir -p /etc/openrov \
     && ln -s -f /etc/nginx/sites-available/openrov /etc/nginx/sites-enabled/default \
     && cp src/system-plugins/platform-manager/install/files/custom_50x.html /usr/share/nginx/html \
     && chmod 400 /etc/openrov/openrov.key \
+    && npm install bower \
+    && cd node_modules/bower/lib/node_modules/bower-config/lib/util \
+    && sed 's/bower.herokuapp.com/registry.bower.io/' defaults.js > tmp \
+    && mv tmp defaults.js \
+    && sed 's/bower.herokuapp.com/registry.bower.io/' expand.js > tmp \
+    && mv tmp expand.js \
+    && cd /opt/openrov/cockpit \
     && npm install -g yarn \
     && ln -s `which yarn` /usr/local/bin/yarn \
     && npm run deploy:prod \
