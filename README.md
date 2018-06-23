@@ -28,15 +28,15 @@ The default docker-compose-dev.yml file assumes you want to match the network IP
 
 0. Create a "user-defined" scini network to match the compose file with
   `docker network create --gateway 192.168.2.1 --subnet 192.168.2.0/24 scini`
-1. Run `docker-compose -f docker-compose-dev.yml up`
+1. Run `./start-dev.sh`
 2. Open a browser and visit http://localhost to reach the forward camera and cockpit
 3. Visit URL paths /rov/up-camera, /rov/down-camera, and /rov/forward-camera to see the other video streams (multi-camera feature still under development)
 4. Open a new terminal and get a shell in the container you want to change, for example:
 
-`docker exec -v ~/.gitconfig:/root/.gitconfig -it $(docker ps |grep openrov | awk '{print $1}') /bin/bash`
+`docker exec -it $(docker ps |grep openrov | awk '{print $1}') /bin/bash`
 
 5. The container uses a docker named volume created by the compose file.  You can see it with `docker volume ls`.  The named volume allows changes made in the container to persist beyond its lifetime.
-6. To test your changes, either restart the entire stack by hitting <CTRL-C> in the docker-compose session, or in the second terminal execute `docker-compose -f docker-compose-dev.yml down` and then return to Step 1.  If you just want to restart one service, you can also run `docker-compose -f docker-compose-dev.yml restart openrov`.
+6. To test your changes, either restart the entire stack by hitting <CTRL-C> in the docker-compose session, or in the second terminal execute `./stop-dev.sh` and then return to Step 1.  If you just want to restart one service, you can also run `docker-compose -f docker-compose-dev.yml restart openrov`.
 
 ** NOTE: the named volume is only loaded into the openrov container to work in this environment. If you want to make changes to repositories other than openrov-cockpit, be careful not to lose changes made inside the writeable, non-persistent layer of a container without a named volume. **
 
@@ -44,7 +44,7 @@ The default docker-compose-dev.yml file assumes you want to match the network IP
 
 ** Still under development **
 
-The openrov entrypoint `start-dev.sh` starts node with the `--inspect` flag to enable remote debugging.  Port 9229 is exposed from the OpenROV container so that Chrome DevTools can find the instance.
+The openrov entrypoint (not the scini-cockpit start-dev.sh script!) `start-dev.sh` starts node with the `--inspect` flag to enable remote debugging.  Port 9229 is exposed from the OpenROV container so that Chrome DevTools can find the instance.
 
 This quick method doesn't seem to work so well when running node in a container:
 
@@ -82,13 +82,17 @@ These containers can also receive and generate fake PRO4 telemetry data, such as
 
 ## Rebuilding Cached Services
 
-If you've built the stack at least once, the cloned git repositories will be cached in that RUN layer of its container.  If you need to force Docker to pull down changes from the remote repository, rebuild that one service like this:
+If you've built the stack at least once, the cloned git repositories will be cached in that RUN layer of its container.  If you need to force Docker to pull down changes from the remote repository, remove any named volumes and then rebuild that one service like this:
 
 ```
-docker-compose -f docker-compose-dev.yml down -v
+docker-compose -f docker-compose-dev.yml down -v SERVICE_NAME
 docker-compose -f docker-compose-dev.yml build --no-cache SERVICE_NAME
 ```
 
-After it's been built you can `up` the stack as normal.
+After it's been rebuilt you can `up` the stack as normal.
 
 In this context, SERVICE_NAME is the name given to the service in the docker-compose YAML file you're using.  For dev, those names are 'openrov', 'fwdcam-mock', etc.
+
+If you want to simply rebuild the entire stack just run:
+
+`./rebuild-dev.sh`
