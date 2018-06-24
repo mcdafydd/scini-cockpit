@@ -7,6 +7,7 @@ for development.  It is the parent repository for all of the SCINI surface-to-se
 
 Ensure the following software is installed on the host:
 
+* Linux OS (due to usage of 'host' network mode for UDP broadcast discovery)
 * Docker or docker-ce
 * docker-compose - https://docs.docker.com/compose/install/
 
