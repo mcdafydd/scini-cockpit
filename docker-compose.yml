@@ -4,6 +4,7 @@ services:
   openrov:
     build: openrov/
     restart: on-failure
+    network_mode: "host"
     command: 192.168.2.215
     volumes:
       - "cockpit:/opt/openrov/cockpit"
