@@ -4,6 +4,9 @@ FROM ubuntu:17.10
 LABEL maintainer="david@linkconsultinginc.com"
 SHELL ["/bin/bash", "-c"]
 
+## Set default environment variables
+ENV DEBUGFLAGS "bridge, mcu, cpu, *:Notifications, app:mjpeg*"
+
 ## Install dependencies and recent NodeJS
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -76,10 +79,13 @@ RUN source ~/.nvm/nvm.sh \
     && nvm use default \
     && echo It should end saying something like "Now using node $LATEST (npm v3.10.10)"
 
+## Create server directories
 ## Install self-signed certificate *.local certificate
 ## As of 15 August 2017, the mjpeg-video-server node module looks for a certificate in a specific location when it is loaded.
 ## Grab our fork of openrov-cockpit repo
 RUN mkdir -p /etc/openrov \
+    && mkdir -p /opt/openrov/logs \
+    && mkdir -p /opt/openrov/images \
     && mkdir -p /opt/openrov/cockpit \
     && mkdir -p /usr/share/cockpit \
     && cd /opt/openrov/cockpit \
@@ -124,4 +130,4 @@ EXPOSE 9229
 
 ## Start the mock server platform (no external camera)
 WORKDIR /opt/openrov/cockpit
-ENTRYPOINT ["./start-dev.sh"]
+ENTRYPOINT ["./start.sh"]

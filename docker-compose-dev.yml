@@ -4,11 +4,11 @@ services:
   openrov:
     build: openrov/
     restart: on-failure
-    command: 192.168.2.215
+    command: 192.168.2.215 dev
     volumes:
       - "cockpit:/opt/openrov/cockpit"
       - "video:/video"
-      - "assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
+      - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
