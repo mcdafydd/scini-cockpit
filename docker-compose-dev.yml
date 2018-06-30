@@ -8,6 +8,7 @@ services:
     volumes:
       - "cockpit:/opt/openrov/cockpit"
       - "video:/video"
+      - "assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
