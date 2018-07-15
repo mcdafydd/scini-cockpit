@@ -19,6 +19,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY serial-tester.py /usr/local/bin/
+COPY test.pro4 /
 COPY start.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/serial-tester.py /usr/local/bin/start.sh
 

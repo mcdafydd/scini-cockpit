@@ -8,13 +8,11 @@ import struct
 import sys
 import time
 
-serfd = os.open(os.environ['PTY'], os.O_RDWR | os.O_NONBLOCK)
-
 def signal_handler(sig, frame):
-    os.close(serfd)
     sys.exit(0)
 
 def worker(content):
+    serfd = os.open(os.environ['PTY'], os.O_RDWR | os.O_NONBLOCK)
     r = []
     timeout = 1
 
@@ -29,7 +27,7 @@ def worker(content):
             print('PRO4 request received = ', data.hex())
             num = random.randint(0, len(content)-1)
             msg = content[num]
-            os.write(serfd, bytes.fromhex(msg)
+            os.write(serfd, bytes.fromhex(msg))
             print('PRO4 response sent = ', msg)
         # Test CT sensor
         #test = struct.pack('13s2B', '01:#059;57600', 0x0d, 0x0a)
@@ -37,7 +35,7 @@ def worker(content):
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
-    with open('./test.pro4') as f:
+    with open('/test.pro4') as f:
         content = f.readlines()
     content = [x.strip() for x in content] 
     worker(content)
