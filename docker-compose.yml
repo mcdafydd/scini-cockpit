@@ -28,4 +28,6 @@ services:
 
 volumes:
   cockpit:
+  images:
+  logs:
   video:
