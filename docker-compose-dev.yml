@@ -7,6 +7,8 @@ services:
     command: 192.168.2.215 dev
     volumes:
       - "cockpit:/opt/openrov/cockpit"
+      - "images:/opt/openrov/images"
+      - "logs:/opt/openrov/logs"
       - "video:/video"
       - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
@@ -95,6 +97,8 @@ services:
   mqtt-fwd:
     build: mqttclient-mock/
     restart: on-failure
+    environment:
+      - MQTT_INTERFACE=eth0
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     expose:
@@ -116,8 +120,12 @@ services:
     restart: on-failure
     environment:
       - PARTNER=192.168.2.231
+      - DEBUG="*"
+      - NODEIDS="14 15 21 42 51 52"
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
+    ports:
+      - "9222:9229"
     networks:
       scini:
         ipv4_address: 192.168.2.232
@@ -131,6 +139,8 @@ services:
   mqtt-clump:
     build: mqttclient-mock/
     restart: on-failure
+    environment:
+      - MQTT_INTERFACE=eth0
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     expose:
@@ -152,5 +162,7 @@ networks:
     external: true
 
 volumes:
+  images:
+  logs:
   cockpit:
   video:

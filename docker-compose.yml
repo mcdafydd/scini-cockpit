@@ -8,7 +8,10 @@ services:
     command: 192.168.2.215
     volumes:
       - "cockpit:/opt/openrov/cockpit"
+      - "images:/opt/openrov/images"
+      - "logs:/opt/openrov/logs"
       - "video:/video"
+      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
       - "443:443"

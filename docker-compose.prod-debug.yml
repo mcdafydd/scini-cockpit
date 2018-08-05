@@ -8,6 +8,8 @@ services:
     command: 192.168.1.222 dev
     volumes:
       - "cockpit:/opt/openrov/cockpit"
+      - "images:/opt/openrov/images"
+      - "logs:/opt/openrov/logs"
       - "video:/video"
       - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
     ports:
