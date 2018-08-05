@@ -1,0 +1,20 @@
+{
+  "name": "serial-tester",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serial-tester.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "binary-parser-encoder": "^1.3.2",
+    "crc": "^3.7.0",
+    "events": "^3.0.0",
+    "javascript-state-machine": "^2.4.0",
+    "pino": "^4.17.5",
+    "serialport": "^6.2.2",
+    "smart-buffer": "^4.0.1"
+  }
+}
