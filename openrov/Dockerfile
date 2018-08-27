@@ -86,6 +86,7 @@ RUN source ~/.nvm/nvm.sh \
 RUN mkdir -p /etc/openrov \
     && mkdir -p /opt/openrov/logs \
     && mkdir -p /opt/openrov/images \
+    && mkdir -p /opt/openrov/www \
     && mkdir -p /opt/openrov/cockpit \
     && mkdir -p /usr/share/cockpit \
     && cd /opt/openrov/cockpit \

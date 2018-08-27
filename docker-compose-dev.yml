@@ -5,11 +5,13 @@ services:
     build: openrov/
     restart: on-failure
     command: 192.168.2.215 dev
+    cap_add:
+      - SYS_NICE
     volumes:
       - "cockpit:/opt/openrov/cockpit"
+      - "www:/opt/openrov/www"
       - "images:/opt/openrov/images"
       - "logs:/opt/openrov/logs"
-      - "video:/video"
       - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -19,6 +21,10 @@ services:
       - "3000:3000"
       - "8080:8080"
       - "8200:8200"
+      - "8201:8201"
+      - "8202:8202"
+      - "8203:8203"
+      - "8204:8204"
       - "8300:8300"
       - "9229:9229"
     networks:
@@ -55,7 +61,7 @@ services:
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
-      - "8081"
+      - "8081:8081"
     networks:
       scini:
         ipv4_address: 192.168.2.218
@@ -120,7 +126,6 @@ services:
     restart: on-failure
     environment:
       - PARTNER=192.168.2.231
-      - DEBUG="*"
       - NODEIDS="14 15 21 42 51 52"
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
@@ -136,26 +141,25 @@ services:
     depends_on:
       - mqtt-fwd
 
-  mqtt-clump:
-    build: mqttclient-mock/
-    restart: on-failure
-    environment:
-      - MQTT_INTERFACE=eth0
+  smb-shares:
+    build: smb-shares/
+    hostname: server
+    restart: always
     volumes:
-      - "~/.gitconfig:/root/.gitconfig"
-    expose:
-      - "1883"
-      - "3000"
-      - "50000"
+      - "images:/opt/openrov/images:ro"
+      - "logs:/opt/openrov/logs:ro"
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139"
+      - "445:445"
     networks:
       scini:
-        ipv4_address: 192.168.2.233
+        ipv4_address: 192.168.2.150
     logging:
       options:
         max-size: "500k"
         max-file: "10"
-    depends_on:
-      - openrov
 
 networks:
   scini:
@@ -165,4 +169,4 @@ volumes:
   images:
   logs:
   cockpit:
-  video:
+  www:
