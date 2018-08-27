@@ -40,8 +40,8 @@ RUN source /root/.nvm/nvm.sh \
     && nvm use default \
     && echo It should end saying something like "Now using node $LATEST (npm v3.10.10)"
 
-COPY start.sh serial-tester.py /usr/local/bin/
 COPY test.pro4 testbam.pro4 serial-tester.js pro4.js package.json /srv/
+COPY start.sh /usr/local/bin
 
 # Install dependencies from package.json
 # See https://www.npmjs.com/package/serialport
@@ -49,7 +49,7 @@ RUN cd /srv \
     && npm install serialport --build-from-source --unsafe-perm \
     && npm install
 
-RUN chmod 755 /srv/serial-tester.js /usr/local/bin/serial-tester.py /usr/local/bin/start.sh
+RUN chmod 755 /srv/serial-tester.js /usr/local/bin/start.sh
 
 # For node debugging
 EXPOSE 9229

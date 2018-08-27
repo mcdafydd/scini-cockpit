@@ -442,7 +442,7 @@ class Pro4 extends EventEmitter
       }
       case 42:
       {
-        this.parsedObj.type = 'pilot';
+        this.parsedObj.type = 'sensors';
         if (this.request == 0)
         {
           return await this.ParserBam.parse(this.parsedObj.payload);
@@ -466,7 +466,7 @@ class Pro4 extends EventEmitter
       }
       case 52:
       {
-        this.parsedObj.type = 'sensors';
+        this.parsedObj.type = 'pilot';
         if (this.request == 0)
         {
           return await this.ParserBam.parse(this.parsedObj.payload);

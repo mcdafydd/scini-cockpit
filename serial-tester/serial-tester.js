@@ -37,7 +37,6 @@ class serialTester extends EventEmitter
       logger.debug('Error: ', e.message);
     });
     this.on('parsedPacket', function(parsedObj) {
-      logger.debug('SUP parsed packet: ', parsedObj);
       this.sendUpstream(parsedObj);
     });
 
@@ -241,6 +240,10 @@ class serialTester extends EventEmitter
 
     // pass length of motors array for dynamic parser length field
     this.parser = new pro4.Pro4(this.motorControl.motors.length, this);
+
+    this.tiltIdx = 0;
+    this.pressure = 1000000;
+    this.pressureInc = 10000;
   }
 
   updateGrippers(parsedObj)
@@ -307,6 +310,29 @@ class serialTester extends EventEmitter
     header.flags = parsedObj.flags;
     header.csrAddress = parsedObj.csrAddress;
 
+    // update pressure mock value
+    // change to match sensor quantities - currently pascals
+    let pressureMin = 1000000;
+    let pressureMax = 15000000;
+    if (scini.pressure === pressureMin)
+      scini.pressureInc = 10000;
+    else if (scini.pressure === pressureMax)
+      scini.pressureInc = -10000;
+    else if (scini.pressure < pressureMin || scini.pressure > pressureMax) { // error
+      scini.pressureInc = 10000;
+      scini.pressure = 1000000;
+    }
+    scini.pressure += scini.pressureInc;
+
+    let wave = [1.4,1.3,1.2,1.1,1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0,-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1.0,-1.1,-1.2,-1.3,-1.4];
+    let tilt = Math.sin(wave[scini.tiltIdx])*180/Math.PI;
+    if (scini.tiltIdx == wave.length-1)
+    {
+      scini.tiltIdx = 0;
+    }
+    else
+      scini.tiltIdx++;
+
     let ret = {
       scni: 'SCNI',
       len: 0,
@@ -323,14 +349,14 @@ class serialTester extends EventEmitter
       adc24v: 0,
       adc12v: 0,
       kellerTemperature: 0,
-      kellerPressure: 0,
+      kellerPressure: pressure,
       kellerStatus: 0,
       pad: 0,
       accel_x: 0,
       accel_y: 0,
       accel_z: 0,
-      angle_x: 0,
-      angle_y: 39,
+      angle_x: tilt,
+      angle_y: tilt,
       angle_z: 0,
       rot_x: 0,
       rot_y: 0,
@@ -370,7 +396,7 @@ class serialTester extends EventEmitter
       accel_y: 0,
       accel_z: 0,
       angle_x: 0,
-      angle_y: 39,
+      angle_y: 0,
       angle_z: 0,
       rot_x: 0,
       rot_y: 0,
@@ -448,34 +474,3 @@ port.on('error', (e) => {
 port.on('data', (data) => {
   scini.parser.emit('receivedSerialData', data);
 });
-
-/*
-with open('/testbam.pro4') as f:
-content = f.readlines()
-content = [x.strip() for x in content]
-worker(content)
-
-let scini = new serialTester();
-let file = fs.readFile(process.env.PTY);
-
-    serfd = os.open(os.environ['PTY'], os.O_RDWR | os.O_NONBLOCK)
-    r = []
-    timeout = 1
-
-    while True:
-        try:
-            r, w, e = select.select([serfd],[],[], timeout)
-        except:
-            pass
-        if r:
-            data = os.read(serfd,255)
-            print('PRO4 request received = ', data.hex())
-            num = random.randint(0, len(content)-1)
-            msg = content[num]
-            os.write(serfd, bytes.fromhex(msg))
-            print('PRO4 response sent = ', msg)
-
-            # Test CT sensor
-#test = struct.pack('13s2B', '01:#059;57600', 0x0d, 0x0a)
-#test = struct.pack('7s2B', '01:#030', 0x0d, 0x0a)
-*/
