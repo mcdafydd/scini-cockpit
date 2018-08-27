@@ -45,6 +45,10 @@ For more info on Docker networking, see https://github.com/docker/libnetwork/blo
 
 ** NOTE: the named volume is only loaded into the openrov container to work in this environment. If you want to make changes to containers other than openrov-cockpit, be careful not to lose changes made inside the writeable, non-persistent layer of a container without a named volume. **
 
+## Using a Real Elphel Camera
+
+If you have an Elphel 353 camera on your local network, you may use it by changing the IP address in the `command:` line of the openrov service in `docker-compose-dev.yml`.
+
 ## Workflow for Other Mock Services
 
 If you find yourself wanting to edit one of the other services, for example serial-tester, here's one method to get you started:
