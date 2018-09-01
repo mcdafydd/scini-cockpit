@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>MJPG-Streamer - Elphel</title>
+    <script src="/browserMqtt.js"></script>
+    <script src="/mousetrap.min.js"></script>
+    <script>
+      // bind controls
+      Mousetrap.bind('shift+1', sendCommand('resolution', 1));
+      Mousetrap.bind('shift+2', sendCommand('resolution', 2));
+      Mousetrap.bind('shift+4', sendCommand('resolution', 4));
+      Mousetrap.bind('shift+7', sendCommand('quality', 70));
+      Mousetrap.bind('shift+8', sendCommand('quality', 80));
+      Mousetrap.bind('shift+9', sendCommand('quality', 90));
+      Mousetrap.bind('shift+0', sendCommand('quality', 100));
+      Mousetrap.bind(['=', '+'], sendCommand('exposure', 1));
+      Mousetrap.bind(['-', '_'], sendCommand('exposure', -1));
+      Mousetrap.bind('space', sendCommand('snapFull', 1));
+
+      const client = mqtt.connect('ws://192.168.1.65:3000');
+      client.subscribe("telemetry/+", function(err) {
+        if (!err) {
+          console.log('Subscribed to mqtt telemetry/+');
+        }
+      })
+      client.on("message", function (topic, payload) {
+        console.log([topic, payload].join(": "));
+        client.end();
+      })
+    function sendCommand (func, value) {
+      let topic = 'toCamera/' + window.location.port + '/' + func;
+      client.publish(topic, value);
+    }
+</script>
+</head>
+<body>
+    <center>
+      <img src="/?action=stream" />
+    </center>
+</body>
+</html>
