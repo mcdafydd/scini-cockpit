@@ -119,6 +119,8 @@ RUN cd /opt/openrov/cockpit \
     && (cd src/plugins/peer-view && npm install msgpack-lite) \
     && (cd src/plugins/mqtt-broker && npm install bonjour)
 
+COPY www /opt/openrov/www/
+
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
 EXPOSE 80
 EXPOSE 443

@@ -40,7 +40,7 @@ RUN source /root/.nvm/nvm.sh \
     && nvm use default \
     && echo It should end saying something like "Now using node $LATEST (npm v3.10.10)"
 
-COPY test.pro4 testbam.pro4 serial-tester.js pro4.js package.json /srv/
+COPY serial-tester.js pro4.js package.json /srv/
 COPY start.sh /usr/local/bin
 
 # Install dependencies from package.json
