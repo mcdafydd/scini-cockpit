@@ -1,0 +1,10 @@
+To fix:
+
+serial-fwd_1     | (node:10) UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'toString' of undefined
+serial-fwd_1     |     at serialTester.sendUpstream (/srv/serial-tester.js:449:84)
+serial-fwd_1     |     at serialTester.<anonymous> (/srv/serial-tester.js:40:12)
+serial-fwd_1     |     at emitOne (events.js:116:13)
+serial-fwd_1     |     at serialTester.emit (events.js:211:7)
+serial-fwd_1     |     at Pro4.parse (/srv/pro4.js:861:24)
+serial-fwd_1     |     at <anonymous>
+serial-fwd_1     | (node:10) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 3567)
