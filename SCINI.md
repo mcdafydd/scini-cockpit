@@ -6,7 +6,7 @@ This document describes the key features added to our fork of the OpenROV and ot
 
 https://github.com/mcdafydd/openrov-cockpit
 
-This is a fork of the OpenROV-cockpit repository.  All SCINI development is done on the `platform/scini` branch.  Feel free to open issues on Github.
+This is a fork of the OpenROV-cockpit repository.  All SCINI development is done on the `platform/scini` branch.  Feel free to open issues on Github.  More documentation is available in this repository.
 
 * The mjpeg-video plugin package.json file points to our private fork of the `mjpeg-video-server` module
 * `src/plugins/rovpilot/index.js` contains server-side changes to upstream's default pilot controls

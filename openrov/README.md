@@ -33,3 +33,6 @@ Presuming you're running a single instance of the openrov container, get a shell
 ## Issues
 Visit the repository of problematic components mentioned in the Dockerfile to file issues.  Only file issues with the Dockerfile here.
 
+## Developing
+See the SCINI fork of openrov-cockpit for documentation.
+https://github.com/mcdafydd/openrov-cockpit
