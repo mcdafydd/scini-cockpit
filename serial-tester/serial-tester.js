@@ -349,7 +349,7 @@ class serialTester extends EventEmitter
       adc24v: 0,
       adc12v: 0,
       kellerTemperature: 0,
-      kellerPressure: pressure,
+      kellerPressure: scini.pressure,
       kellerStatus: 0,
       pad: 0,
       accel_x: 0,
@@ -408,7 +408,7 @@ class serialTester extends EventEmitter
   async sendUpstream(parsedObj)
   {
     let resp = {};
-    if (parsedObj.status == pro4.constants.STATUS_SUCCESS)
+    if (parsedObj.status === pro4.constants.STATUS_SUCCESS)
     {
       let funcMap = {
         pilot: scini.updateNav,
@@ -438,13 +438,13 @@ class serialTester extends EventEmitter
         }
       }
     }
-    else if (parsedObj.status == pro4.constants.STATUS_MOREDATA)
+    else if (parsedObj.status === pro4.constants.STATUS_MOREDATA)
     {
       logger.debug('BRIDGE: Waiting for more data');
     }
 
     // don't use else if to support fall through changing status conditions during processing
-    if (parsedObj.status == pro4.constants.STATUS_ERROR)
+    if (parsedObj.status === pro4.constants.STATUS_ERROR)
     {
       logger.debug('BRIDGE: Error in PRO4 message parser; data = ', parsedObj.data.toString('hex'));
     }
