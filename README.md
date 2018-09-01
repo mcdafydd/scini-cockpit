@@ -8,7 +8,7 @@ for development.  It is the parent repository for all of the SCINI surface-to-se
 Ensure the following software is installed on the host:
 
 * Linux OS (due to usage of 'host' network mode for UDP broadcast discovery)
-* Docker or docker-ce
+* docker-ce - https://docs.docker.com/install/linux/docker-ce/ubuntu/
 * docker-compose - https://docs.docker.com/compose/install/
 
 Clients wishing to access the system need Chrome or Chromium installed at a minimum.  A USB game joystick is optional as all of the cockpit controls can be accessed by keyboard.
