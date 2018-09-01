@@ -8,14 +8,15 @@ RUN apt-get update \
         bash-completion \
         build-essential \
         ca-certificates \
-        gcc \
         curl \
+        gcc \
         git \
         libssl-dev \
         lsof \
         make \
         net-tools \
         nmap \
+        socat \
         tcpdump \
         vim \
         wget \
@@ -30,10 +31,12 @@ RUN cd paho.mqtt.c \
 RUN cd ../elphel-mqtt-client \
     && make install
 
+COPY start.sh /usr/local/bin
+RUN chmod 755 /usr/local/bin/start.sh
+
 EXPOSE 1883
 EXPOSE 3000
 
 ## Start the mock server platform (no external camera)
 WORKDIR /srv/
-ENTRYPOINT ["/usr/local/bin/mqttclient"]
-
+ENTRYPOINT ["/usr/local/bin/start.sh"]

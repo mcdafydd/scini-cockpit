@@ -3,11 +3,15 @@ services:
 
   openrov:
     build: openrov/
-    restart: on-failure
+    restart: always
+    network_mode: "host"
     command: 192.168.2.215
+    cap_add:
+      - SYS_NICE
     volumes:
       - "cockpit:/opt/openrov/cockpit"
-      - "video:/video"
+      - "/opt/openrov/images:/opt/openrov/images"
+      - "/opt/openrov/logs:/opt/openrov/logs"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
@@ -16,6 +20,10 @@ services:
       - "3000:3000"
       - "8080:8080"
       - "8200:8200"
+      - "8201:8201"
+      - "8202:8202"
+      - "8203:8203"
+      - "8204:8204"
       - "8300:8300"
       - "9229:9229"
     logging:
@@ -23,6 +31,23 @@ services:
         max-size: "1000k"
         max-file: "10"
 
+  smb-shares:
+    build: smb-shares/
+    hostname: server
+    restart: always
+    network_mode: "host"
+    volumes:
+      - "/opt/openrov/images:/opt/openrov/images:ro"
+      - "/opt/openrov/logs:/opt/openrov/logs:ro"
+    expose:
+      - "137/udp"
+      - "138/udp"
+      - "139"
+      - "445"
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
+
 volumes:
   cockpit:
-  video:

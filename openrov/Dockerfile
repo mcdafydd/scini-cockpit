@@ -4,6 +4,9 @@ FROM ubuntu:17.10
 LABEL maintainer="david@linkconsultinginc.com"
 SHELL ["/bin/bash", "-c"]
 
+## Set default environment variables
+ENV DEBUGFLAGS "bridge, mcu, cpu, *:Notifications, app:mjpeg*"
+
 ## Install dependencies and recent NodeJS
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -76,10 +79,14 @@ RUN source ~/.nvm/nvm.sh \
     && nvm use default \
     && echo It should end saying something like "Now using node $LATEST (npm v3.10.10)"
 
+## Create server directories
 ## Install self-signed certificate *.local certificate
 ## As of 15 August 2017, the mjpeg-video-server node module looks for a certificate in a specific location when it is loaded.
 ## Grab our fork of openrov-cockpit repo
 RUN mkdir -p /etc/openrov \
+    && mkdir -p /opt/openrov/logs \
+    && mkdir -p /opt/openrov/images \
+    && mkdir -p /opt/openrov/www \
     && mkdir -p /opt/openrov/cockpit \
     && mkdir -p /usr/share/cockpit \
     && cd /opt/openrov/cockpit \
@@ -89,6 +96,13 @@ RUN mkdir -p /etc/openrov \
     && ln -s -f /etc/nginx/sites-available/openrov /etc/nginx/sites-enabled/default \
     && cp src/system-plugins/platform-manager/install/files/custom_50x.html /usr/share/nginx/html \
     && chmod 400 /etc/openrov/openrov.key \
+    && npm install bower \
+    && cd node_modules/bower/lib/node_modules/bower-config/lib/util \
+    && sed 's/bower.herokuapp.com/registry.bower.io/' defaults.js > tmp \
+    && mv tmp defaults.js \
+    && sed 's/bower.herokuapp.com/registry.bower.io/' expand.js > tmp \
+    && mv tmp expand.js \
+    && cd /opt/openrov/cockpit \
     && npm install -g yarn \
     && ln -s `which yarn` /usr/local/bin/yarn \
     && npm run deploy:prod \
@@ -112,9 +126,13 @@ EXPOSE 1883
 EXPOSE 3000
 EXPOSE 8080
 EXPOSE 8200
+EXPOSE 8201
+EXPOSE 8202
+EXPOSE 8203
+EXPOSE 8204
 EXPOSE 8300
 EXPOSE 9229
 
 ## Start the mock server platform (no external camera)
 WORKDIR /opt/openrov/cockpit
-ENTRYPOINT ["./start-dev.sh"]
+ENTRYPOINT ["./start.sh"]

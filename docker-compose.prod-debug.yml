@@ -1,0 +1,31 @@
+version: "3"
+services:
+
+  openrov:
+    build: openrov/
+    restart: on-failure
+    network_mode: "host"
+    command: 192.168.1.222 dev
+    volumes:
+      - "cockpit:/opt/openrov/cockpit"
+      - "images:/opt/openrov/images"
+      - "logs:/opt/openrov/logs"
+      - "video:/video"
+      - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "1883:1883"
+      - "3000:3000"
+      - "8080:8080"
+      - "8200:8200"
+      - "8300:8300"
+      - "9229:9229"
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
+
+volumes:
+  cockpit:
+  video:

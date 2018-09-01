@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# WARNING - removes named volumes with any local changes!
-docker-compose -f docker-compose-dev.yml down -v
+# Rebuild all services if $1 is empty, otherwise rebuild the specific service and pass it to 'up'
 
-docker-compose -f docker-compose-dev.yml build
+if [ -z "$1" ]; then
+  # WARNING - this removes named volumes with any local changes!
+  docker-compose -f docker-compose-dev.yml down -v
+  docker-compose -f docker-compose-dev.yml build
+else
+  docker-compose -f docker-compose-dev.yml build $1
+  docker-compose -f docker-compose-dev.yml up -d
+fi
