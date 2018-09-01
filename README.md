@@ -29,7 +29,7 @@ The default docker-compose-dev.yml file can be used to match the network IP spac
 
 For more info on Docker networking, see https://github.com/docker/libnetwork/blob/master/docs/bridge.md.
 
-0. Ensure your existing local interface IP addresses are not using the same subnet/IPs specidied in `docker-compose-dev.yml`
+0. Ensure your existing local interface IP addresses are not using the same subnet/IPs specified in `docker-compose-dev.yml`
 1. Edit `docker-compose-dev.yml` and ensure everything looks correct
 2. Create a "user-defined" scini network to match the compose file with
   `docker network create --gateway 192.168.2.1 --subnet 192.168.2.0/24 scini`
