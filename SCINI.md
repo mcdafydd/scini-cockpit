@@ -6,7 +6,7 @@ This document describes the key features added to our fork of the OpenROV and ot
 
 https://github.com/mcdafydd/openrov-cockpit
 
-This is a fork of the OpenROV-cockpit repository.  All SCINI development is done on the `platform/scini` branch.  Feel free to open issues on Github.
+This is a fork of the OpenROV-cockpit repository.  All SCINI development is done on the `platform/scini` branch.  Feel free to open issues on Github.  More documentation is available in this repository.
 
 * The mjpeg-video plugin package.json file points to our private fork of the `mjpeg-video-server` module
 * `src/plugins/rovpilot/index.js` contains server-side changes to upstream's default pilot controls
@@ -35,7 +35,7 @@ This node module is responsible for executing mjpg_streamer with arguments to su
 
 https://github.com/mcdafydd/mjpg-streamer
 
-The `mjpg_streamer` binary is executed by the mjpeg-video-server module, which is a depedency of the OpenROV mjpeg-video plugin.  SCINI leverages the input_http.so plugin to retrieve MJPEG image frames from the Elphel 353 imgsrv process by accessing `http://<ip_of_camera>:8081/bmimg`.  These images are then served to the cockpit browser user on the surface via the output_ws.so plugin on port 8200/tcp.  The output_file.so plugin can be toggled on and off to handle recording individual images on a shared folder on the server.
+The `mjpg_streamer` binary is executed by the mjpeg-video-server module, which is a depedency of the OpenROV mjpeg-video plugin.  SCINI leverages the input_http.so plugin to retrieve MJPEG image frames from the Elphel 353 imgsrv process by accessing `http://<ip_of_camera>:8081/bmimg`.  These images are then served to the cockpit browser user on the surface via the output_ws.so plugin from one of the ports 8200-8204/tcp, defined in the mjpeg-video-server module.  The output_file.so plugin can be toggled on and off to handle recording individual images on a shared folder on the server.
 
 For more information on imgsrv, see: https://www.elphel.com/wiki/Imgsrv
 
