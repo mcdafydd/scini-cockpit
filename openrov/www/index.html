@@ -5,31 +5,51 @@
     <script src="/mousetrap.min.js"></script>
     <script>
       // bind controls
-      Mousetrap.bind('shift+1', sendCommand('resolution', 1));
-      Mousetrap.bind('shift+2', sendCommand('resolution', 2));
-      Mousetrap.bind('shift+4', sendCommand('resolution', 4));
-      Mousetrap.bind('shift+7', sendCommand('quality', 70));
-      Mousetrap.bind('shift+8', sendCommand('quality', 80));
-      Mousetrap.bind('shift+9', sendCommand('quality', 90));
-      Mousetrap.bind('shift+0', sendCommand('quality', 100));
-      Mousetrap.bind(['=', '+'], sendCommand('exposure', 1));
-      Mousetrap.bind(['-', '_'], sendCommand('exposure', -1));
-      Mousetrap.bind('space', sendCommand('snapFull', 1));
+      Mousetrap.bind('shift+1', function(e) {
+        sendCommand('resolution', '1');
+      });
+      Mousetrap.bind('shift+2', function(e) {
+        sendCommand('resolution', '2');
+      });
+      Mousetrap.bind('shift+4', function(e) {
+        sendCommand('resolution', '4');
+      });
+      Mousetrap.bind('shift+7', function(e) {
+        sendCommand('quality', '70');
+      });
+      Mousetrap.bind('shift+8', function(e) {
+        sendCommand('quality', '80');
+      });
+      Mousetrap.bind('shift+9', function(e) {
+        sendCommand('quality', '90');
+      });
+      Mousetrap.bind('shift+0', function(e) {
+        sendCommand('quality', '100');
+      });
+      Mousetrap.bind(['=', '+'], function(e) {
+        sendCommand('exposure', '1');
+      })
+      Mousetrap.bind(['-', '_'], function(e) {
+        sendCommand('exposure', '-1');
+      })
+      Mousetrap.bind('space', function(e) {
+        sendCommand('snapFull', '1');
+      });
 
-      const client = mqtt.connect('ws://192.168.1.65:3000');
-      client.subscribe("telemetry/+", function(err) {
-        if (!err) {
+      const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
+      client.subscribe("telemetry/+", function(e) {
+        if (!e) {
           console.log('Subscribed to mqtt telemetry/+');
         }
-      })
+      });
       client.on("message", function (topic, payload) {
         console.log([topic, payload].join(": "));
-        client.end();
-      })
-    function sendCommand (func, value) {
-      let topic = 'toCamera/' + window.location.port + '/' + func;
-      client.publish(topic, value);
-    }
+        //client.end();
+      });
+      function sendCommand (func, value) {
+        let topic = 'toCamera/' + window.location.port + '/' + func;
+        client.publish(topic, value);
+      };
 </script>
 </head>
 <body>
