@@ -117,7 +117,8 @@ RUN cd /opt/openrov/cockpit \
     && cp -a src/plugins/notifications/node_modules/nedb/ node_modules/ \
     && (cd src/plugins/peer-view && npm install simple-peer) \
     && (cd src/plugins/peer-view && npm install msgpack-lite) \
-    && (cd src/plugins/mqtt-broker && npm install bonjour)
+    && (cd src/plugins/mqtt-broker && npm install bonjour) \
+    && (cd src/plugins/mqtt-broker && npm install mqtt)
 
 COPY www /opt/openrov/www/
 
