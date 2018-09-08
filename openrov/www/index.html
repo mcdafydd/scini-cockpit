@@ -1,5 +1,8 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>MJPG-Streamer - Elphel</title>
     <script src="/browserMqtt.js"></script>
     <script src="/mousetrap.min.js"></script>
@@ -37,14 +40,20 @@
       });
 
       const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
-      client.subscribe("telemetry/+", function(e) {
+      client.on('connect', function (connack) {
+        client.subscribe('telemetry/update',function(e) {
         if (!e) {
-          console.log('Subscribed to mqtt telemetry/+');
+          console.log('Subscribed to mqtt telemetry/update');
         }
       });
-      client.on("message", function (topic, payload) {
-        console.log([topic, payload].join(": "));
-        //client.end();
+      client.on('offline', function () {
+        console.log('MQTT client offline');
+      });
+      client.on('reconnect', function (topic, payload) {
+        console.log('MQTT client reconnected');
+      });
+      client.on('error', function (error) {
+        console.error('MQTT client error: ', error);
       });
       function sendCommand (func, value) {
         let topic = 'toCamera/' + window.location.port + '/' + func;
@@ -53,8 +62,6 @@
 </script>
 </head>
 <body>
-    <center>
-      <img src="/?action=stream" />
-    </center>
+  <img src="/?action=stream" style="text-align:left"/>
 </body>
 </html>
