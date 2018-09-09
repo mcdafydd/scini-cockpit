@@ -9,6 +9,8 @@ services:
       - SYS_NICE
     volumes:
       - "cockpit:/opt/openrov/cockpit"
+      #- "/home/mcpikeda/projects/scini/scini-v2-personal/openrov-cockpit:/opt/openrov/cockpit"
+      #- "/opt/openrov/www:/opt/openrov/www"
       - "www:/opt/openrov/www"
       - "images:/opt/openrov/images"
       - "logs:/opt/openrov/logs"
