@@ -1,40 +1,68 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>MJPG-Streamer - Elphel</title>
     <script src="/browserMqtt.js"></script>
     <script src="/mousetrap.min.js"></script>
     <script>
       // bind controls
-      Mousetrap.bind('shift+1', sendCommand('resolution', 1));
-      Mousetrap.bind('shift+2', sendCommand('resolution', 2));
-      Mousetrap.bind('shift+4', sendCommand('resolution', 4));
-      Mousetrap.bind('shift+7', sendCommand('quality', 70));
-      Mousetrap.bind('shift+8', sendCommand('quality', 80));
-      Mousetrap.bind('shift+9', sendCommand('quality', 90));
-      Mousetrap.bind('shift+0', sendCommand('quality', 100));
-      Mousetrap.bind(['=', '+'], sendCommand('exposure', 1));
-      Mousetrap.bind(['-', '_'], sendCommand('exposure', -1));
-      Mousetrap.bind('space', sendCommand('snapFull', 1));
+      Mousetrap.bind('shift+1', function(e) {
+        sendCommand('resolution', '1');
+      });
+      Mousetrap.bind('shift+2', function(e) {
+        sendCommand('resolution', '2');
+      });
+      Mousetrap.bind('shift+4', function(e) {
+        sendCommand('resolution', '4');
+      });
+      Mousetrap.bind('shift+7', function(e) {
+        sendCommand('quality', '70');
+      });
+      Mousetrap.bind('shift+8', function(e) {
+        sendCommand('quality', '80');
+      });
+      Mousetrap.bind('shift+9', function(e) {
+        sendCommand('quality', '90');
+      });
+      Mousetrap.bind('shift+0', function(e) {
+        sendCommand('quality', '100');
+      });
+      Mousetrap.bind(['=', '+'], function(e) {
+        sendCommand('exposure', '1');
+      })
+      Mousetrap.bind(['-', '_'], function(e) {
+        sendCommand('exposure', '-1');
+      })
+      Mousetrap.bind('space', function(e) {
+        sendCommand('snapFull', '1');
+      });
 
-      const client = mqtt.connect('ws://192.168.1.65:3000');
-      client.subscribe("telemetry/+", function(err) {
-        if (!err) {
-          console.log('Subscribed to mqtt telemetry/+');
+      const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
+      client.on('connect', function (connack) {
+        client.subscribe('telemetry/update',function(e) {
+        if (!e) {
+          console.log('Subscribed to mqtt telemetry/update');
         }
-      })
-      client.on("message", function (topic, payload) {
-        console.log([topic, payload].join(": "));
-        client.end();
-      })
-    function sendCommand (func, value) {
-      let topic = 'toCamera/' + window.location.port + '/' + func;
-      client.publish(topic, value);
-    }
+      });
+      client.on('offline', function () {
+        console.log('MQTT client offline');
+      });
+      client.on('reconnect', function (topic, payload) {
+        console.log('MQTT client reconnected');
+      });
+      client.on('error', function (error) {
+        console.error('MQTT client error: ', error);
+      });
+      function sendCommand (func, value) {
+        let topic = 'toCamera/' + window.location.port + '/' + func;
+        client.publish(topic, value);
+      };
 </script>
 </head>
 <body>
-    <center>
-      <img src="/?action=stream" />
-    </center>
+  <img src="/?action=stream" style="text-align:left"/>
+  <p><a href="telemetry.html">Telmetry</a></p>
 </body>
 </html>

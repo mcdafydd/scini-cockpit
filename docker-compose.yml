@@ -9,9 +9,11 @@ services:
     cap_add:
       - SYS_NICE
     volumes:
-      - "cockpit:/opt/openrov/cockpit"
+      - "/opt/openrov/cockpit:/opt/openrov/cockpit"
       - "/opt/openrov/images:/opt/openrov/images"
       - "/opt/openrov/logs:/opt/openrov/logs"
+      - "/opt/openrov/www:/opt/openrov/www"
+      - "/opt/openrov/data:/opt/openrov/data"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
@@ -39,6 +41,7 @@ services:
     volumes:
       - "/opt/openrov/images:/opt/openrov/images:ro"
       - "/opt/openrov/logs:/opt/openrov/logs:ro"
+      - "/opt/openrov/data:/opt/openrov/data:ro"
     expose:
       - "137/udp"
       - "138/udp"
@@ -51,3 +54,7 @@ services:
 
 volumes:
   cockpit:
+  images:
+  logs:
+  www:
+  data:

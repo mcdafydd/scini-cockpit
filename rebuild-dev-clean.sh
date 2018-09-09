@@ -7,6 +7,6 @@ if [ -z "$1" ]; then
   docker-compose -f docker-compose-dev.yml down -v
   docker-compose -f docker-compose-dev.yml build --no-cache
 else
-  docker-compose -f docker-compose-dev.yml build $1 --no-cache
+  docker-compose -f docker-compose-dev.yml build --no-cache $1
   docker-compose -f docker-compose-dev.yml up -d 
 fi

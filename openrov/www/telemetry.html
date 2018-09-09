@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Smoothie Chart Example</title>
+  <script src="/browserMqtt.js"></script>
+  <script src="/smoothie.js"></script>
+</head>
+
+<body>
+  <h1>Telemetry Chart Example - Smoothie charts</h1>
+
+  <canvas id="chart1" width="400" height="100"></canvas>
+  <p></p>
+  <canvas id="chart2" width="400" height="100"></canvas>
+  <script type="text/javascript">
+    const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
+    client.on('connect', function (connack) {
+      client.subscribe('telemetry/update', function (e) {
+        if (!e) {
+          console.log('Subscribed to MQTT telemetry/update');
+        }
+      });
+    });
+    client.on('offline', function () {
+      console.log('MQTT client offline');
+    });
+    client.on('reconnect', function (topic, payload) {
+      console.log('MQTT client reconnected');
+    });
+    client.on('error', function (error) {
+      console.error('MQTT client error: ', error);
+    });
+    client.on('message', (topic, payload) => {
+      if (topic === 'telemetry/update') {
+        let obj = JSON.parse(payload);
+        c1line1.append(new Date().getTime(), obj.cpu);
+        c1line2.append(new Date().getTime(), obj.cpu);
+        c2line1.append(new Date().getTime(), obj['motors.lift']);
+        c2line2.append(new Date().getTime(), obj['motors.pitch']);
+        c2line3.append(new Date().getTime(), obj['motors.strafe']);
+        c2line4.append(new Date().getTime(), obj['motors.yaw']);
+      }
+    })
+
+    var c1line1 = new TimeSeries();
+    var c1line2 = new TimeSeries();
+
+    var chart1 = new SmoothieChart({
+      grid: {
+        strokeStyle: 'rgb(125, 0, 0)',
+        fillStyle: 'rgb(60, 0, 0)',
+        lineWidth: 1,
+        millisPerLine: 250,
+        verticalSections: 6
+      }
+    });
+    chart1.addTimeSeries(c1line1, {
+      strokeStyle: 'rgb(0, 255, 0)',
+      fillStyle: 'rgba(0, 255, 0, 0.4)',
+      lineWidth: 3
+    });
+    chart1.addTimeSeries(c1line2, {
+      strokeStyle: 'rgb(255, 0, 255)',
+      fillStyle: 'rgba(255, 0, 255, 0.3)',
+      lineWidth: 3
+    });
+
+    chart1.streamTo(document.getElementById("chart1"), 1000);
+
+    var c2line1 = new TimeSeries();
+    var c2line2 = new TimeSeries();
+    var c2line3 = new TimeSeries();
+    var c2line4 = new TimeSeries();
+
+    var chart2 = new SmoothieChart({
+      grid: {
+        strokeStyle: 'rgb(125, 0, 0)',
+        fillStyle: 'rgb(60, 0, 0)',
+        lineWidth: 1,
+        millisPerLine: 250,
+        verticalSections: 6
+      }
+    });
+    chart2.addTimeSeries(c2line1, {
+      strokeStyle: 'rgb(0, 255, 0)',
+      fillStyle: 'rgba(0, 255, 0, 0.5)',
+      lineWidth: 3
+    });
+    chart2.addTimeSeries(c2line2, {
+      strokeStyle: 'rgb(255, 0, 255)',
+      fillStyle: 'rgba(255, 0, 255, 0.6)',
+      lineWidth: 3
+    });
+    chart2.addTimeSeries(c2line3, {
+      strokeStyle: 'rgb(0, 0, 255)',
+      fillStyle: 'rgba(0, 0, 255, 0.7)',
+      lineWidth: 3
+    });
+    chart2.addTimeSeries(c2line4, {
+      strokeStyle: 'rgb(255, 0, 0)',
+      fillStyle: 'rgba(255, 0, 0, 0.8)',
+      lineWidth: 3
+    });
+
+    chart2.streamTo(document.getElementById("chart2"), 1000);
+
+  </script>
+
+  <p><a href="index.html">Return to camera</a></p>
+</body>
+
+</html>

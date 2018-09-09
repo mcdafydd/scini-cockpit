@@ -9,9 +9,12 @@ services:
       - SYS_NICE
     volumes:
       - "cockpit:/opt/openrov/cockpit"
+      #- "/home/mcpikeda/projects/scini/scini-v2-personal/openrov-cockpit:/opt/openrov/cockpit"
+      #- "/opt/openrov/www:/opt/openrov/www"
       - "www:/opt/openrov/www"
       - "images:/opt/openrov/images"
       - "logs:/opt/openrov/logs"
+      - "data:/opt/openrov/data"
       - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -148,6 +151,7 @@ services:
     volumes:
       - "images:/opt/openrov/images:ro"
       - "logs:/opt/openrov/logs:ro"
+      - "data:/opt/openrov/data:ro"
     ports:
       - "137:137/udp"
       - "138:138/udp"
@@ -170,3 +174,4 @@ volumes:
   logs:
   cockpit:
   www:
+  data:
