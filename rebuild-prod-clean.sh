@@ -6,8 +6,8 @@ echo "This script only executes docker-compose down leaving named volumes in pla
 echo "*************************"
 docker-compose down 
 
-echo "Rebuilding containers without pulling down git repo updates"
-docker-compose build
+echo "Rebuilding containers from scratch, including git repo updates."
+docker-compose build --no-cache
 
 echo
 echo "When ready to restart, run ./start-prod.sh"
