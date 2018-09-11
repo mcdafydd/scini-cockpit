@@ -14,7 +14,6 @@ services:
       - "logs:/opt/openrov/logs"
       - "www:/opt/openrov/www"
       - "data:/opt/openrov/data"
-      - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
       - "443:443"
