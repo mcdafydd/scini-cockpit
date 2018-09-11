@@ -9,17 +9,18 @@ services:
     cap_add:
       - SYS_NICE
     volumes:
-      - "/opt/openrov/cockpit:/opt/openrov/cockpit"
-      - "/opt/openrov/images:/opt/openrov/images"
-      - "/opt/openrov/logs:/opt/openrov/logs"
-      - "/opt/openrov/www:/opt/openrov/www"
-      - "/opt/openrov/data:/opt/openrov/data"
+      - "cockpit:/opt/openrov/cockpit"
+      - "images:/opt/openrov/images"
+      - "logs:/opt/openrov/logs"
+      - "www:/opt/openrov/www"
+      - "data:/opt/openrov/data"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
       - "443:443"
       - "1883:1883"
       - "3000:3000"
+      - "7011:7011"
       - "8080:8080"
       - "8200:8200"
       - "8201:8201"
@@ -31,25 +32,6 @@ services:
     logging:
       options:
         max-size: "1000k"
-        max-file: "10"
-
-  smb-shares:
-    build: smb-shares/
-    hostname: server
-    restart: always
-    network_mode: "host"
-    volumes:
-      - "/opt/openrov/images:/opt/openrov/images:ro"
-      - "/opt/openrov/logs:/opt/openrov/logs:ro"
-      - "/opt/openrov/data:/opt/openrov/data:ro"
-    expose:
-      - "137/udp"
-      - "138/udp"
-      - "139"
-      - "445"
-    logging:
-      options:
-        max-size: "500k"
         max-file: "10"
 
 volumes:
