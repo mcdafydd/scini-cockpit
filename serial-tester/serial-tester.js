@@ -78,7 +78,7 @@ class serialTester extends EventEmitter
       },
       pro4:             {
         pro4Sync:       pro4.constants.SYNC_REQUEST8LE,
-        pro4Addresses:  [0x31,0x32,0x33,0x41,0x42,0x43],
+        pro4Addresses:  [42, 51, 52],
         flags:          0x00,       // or 0x80
         csrAddress:     0xf0,       // custom command address
         lenNoop:        6,          // no write, just read all values
@@ -109,7 +109,7 @@ class serialTester extends EventEmitter
       power:            0,          // 0 to 1
       pro4:             {
         pro4Sync:       pro4.constants.SYNC_REQUEST32LE,
-        pro4Addresses:  [64], // all updated at same time
+        pro4Addresses:  [65, 66], // all updated at same time
         flags:          2,          // defined by VideoRay
         csrAddress:     0,          // custom command address
         len:            4 * 3       // 3 led banks
@@ -141,23 +141,23 @@ class serialTester extends EventEmitter
       grippers:         [
         {
           name:         "Gripper 1",
-          nodeId:       0x27,  // PRO4 packet ID
+          nodeId:       24,  // PRO4 packet ID
           state:        0      // 0 (stop), 2 (close), 3 (open)
         },
         {
           name:         "Gripper 2 - water sampler",
-          nodeId:       0x62,   // PRO4 packet ID
+          nodeId:       23,   // PRO4 packet ID
           state:        0       // 0 (stop), 2 (close), 3 (open)
         },
         {
           name:         "Gripper 3 - trim",
-          nodeId:       0x63,  // PRO4 packet ID
+          nodeId:       21,  // PRO4 packet ID
           state:        0      // 0 (stop), 2 (close), 3 (open)
         }
       ],
       pro4:             {
         pro4Sync:       pro4.constants.SYNC_REQUEST8LE,
-        pro4Addresses:  [0x61, 0x62, 0x63], // all updated at same time
+        pro4Addresses:  [24, 23, 21], // all updated at same time
         flags:          0x80,  // defined by VideoRay
         csrAddress:     0,     // custom command address
         len:            1      // command payload is just a single byte
@@ -276,8 +276,8 @@ class serialTester extends EventEmitter
 
     let ret = {
       deviceType: 0,
-      bus_v: 0,
-      bus_i: 0,
+      bus_v: (Math.random() * (48.3 - 48.0) + 48.0).toFixed(2),
+      bus_i: (Math.random() * (1.58 - 0.1) + 0.1).toFixed(2),
       fault: 0
     }
     return {h: header, payload: scini.parser.ParserLights.encode(ret)};
@@ -291,11 +291,13 @@ class serialTester extends EventEmitter
     header.flags = parsedObj.flags;
     header.csrAddress = parsedObj.csrAddress;
 
+    let rand = Math.random();
+
     let ret = {
       deviceType: 0,
-      rpm: 0,
-      bus_v: 0,
-      bus_i: 0,
+      rpm: (rand * (2000.0 - 50.0) + 50.0).toFixed(2),
+      bus_v: (rand * (48.3 - 48.0) + 48.0).toFixed(2),
+      bus_i: (rand * (1.58 - 0.1) + 0.1).toFixed(2),
       fault: 0
     }
     return {h: header, payload: scini.parser.ParserMotors.encode(ret)};
