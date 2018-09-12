@@ -9,11 +9,10 @@ services:
     cap_add:
       - SYS_NICE
     volumes:
-      - "cockpit:/opt/openrov/cockpit"
       - "images:/opt/openrov/images"
       - "logs:/opt/openrov/logs"
-      - "www:/opt/openrov/www"
       - "data:/opt/openrov/data"
+      - "config:/opt/openrov/config"
     ports:
       - "80:80"
       - "443:443"
@@ -33,9 +32,26 @@ services:
         max-size: "1000k"
         max-file: "10"
 
+  file-browser:
+    restart: always
+    environment:
+      - PORT=8000
+      - CLOUDCMD_ROOT=/opt/openrov/
+    ports:
+      - "8000:8000"
+    volumes:
+      - "images:/opt/openrov/images:ro"
+      - "logs:/opt/openrov/logs:ro"
+      - "data:/opt/openrov/data:ro"
+      - "config:/opt/openrov/config:rw"
+    image: coderaiser/cloudcmd
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
+
 volumes:
-  cockpit:
   images:
   logs:
-  www:
   data:
+  config:
