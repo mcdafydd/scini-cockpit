@@ -36,6 +36,7 @@ RUN apt-get update \
         nmap \
         openssh-client \
         pkg-config \
+        psmisc \
         python \
         tcpdump \
         vim \
@@ -87,6 +88,8 @@ RUN mkdir -p /etc/openrov \
     && mkdir -p /opt/openrov/logs \
     && mkdir -p /opt/openrov/images \
     && mkdir -p /opt/openrov/www \
+    && mkdir -p /opt/openrov/data \
+    && mkdir -p /opt/openrov/config \
     && mkdir -p /opt/openrov/cockpit \
     && mkdir -p /usr/share/cockpit \
     && cd /opt/openrov/cockpit \
@@ -128,6 +131,7 @@ EXPOSE 80
 EXPOSE 443
 EXPOSE 1883
 EXPOSE 3000
+EXPOSE 7011
 EXPOSE 8080
 EXPOSE 8200
 EXPOSE 8201
