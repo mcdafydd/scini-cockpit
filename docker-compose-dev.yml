@@ -8,11 +8,10 @@ services:
     cap_add:
       - SYS_NICE
     volumes:
-      - "cockpit:/opt/openrov/cockpit"
-      - "www:/opt/openrov/www"
-      - "images:/opt/openrov/images"
-      - "logs:/opt/openrov/logs"
-      - "data:/opt/openrov/data"
+      - "images-dev:/opt/openrov/images"
+      - "logs-dev:/opt/openrov/logs"
+      - "data-dev:/opt/openrov/data"
+      - "config-dev:/opt/openrov/config"
       - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -146,14 +145,15 @@ services:
   file-browser:
     restart: always
     environment:
-      - PORT=7000
-    expose:
-      - "7000"
+      - PORT=8000
+      - CLOUDCMD_ROOT=/opt/openrov/
+    ports:
+      - "8000:8000"
     volumes:
-      - "images:/opt/openrov/images:ro"
-      - "logs:/opt/openrov/logs:ro"
-      - "data:/opt/openrov/data:ro"
-      - "www:/opt/openrov/www:ro"
+      - "images-dev:/opt/openrov/images:ro"
+      - "logs-dev:/opt/openrov/logs:ro"
+      - "data-dev:/opt/openrov/data:ro"
+      - "config-dev:/opt/openrov/config:rw"
     image: coderaiser/cloudcmd
     networks:
       scini:
@@ -168,8 +168,7 @@ networks:
     external: true
 
 volumes:
-  images:
-  logs:
-  cockpit:
-  www:
-  data:
+  images-dev:
+  logs-dev:
+  data-dev:
+  config-dev:
