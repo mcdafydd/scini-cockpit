@@ -41,10 +41,7 @@
 
       const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
       client.on('connect', function (connack) {
-        client.subscribe('telemetry/update',function(e) {
-        if (!e) {
-          console.log('Subscribed to mqtt telemetry/update');
-        }
+        console.log('Connected to MQTT broker');
       });
       client.on('offline', function () {
         console.log('MQTT client offline');
@@ -62,7 +59,8 @@
 </script>
 </head>
 <body>
+  <p><a href="telemetry.html">Telemetry</a></p>
+  <p><a href="pro4.html">Return to PRO4 ID tool</a></p>
   <img src="/?action=stream" style="text-align:left"/>
-  <p><a href="telemetry.html">Telmetry</a></p>
 </body>
 </html>
