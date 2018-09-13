@@ -1,0 +1,22 @@
+{
+    "192.168.2.211": {
+        "id": "",
+        "receiveMqtt": false
+    },
+    "192.168.2.213": {
+        "id": "",
+        "receiveMqtt": false
+    },
+    "192.168.2.215": {
+        "id": "",
+        "receiveMqtt": true
+    },
+    "192.168.2.217": {
+        "id": "",
+        "receiveMqtt": false
+    },
+    "192.168.2.218": {
+        "id": "",
+        "receiveMqtt": false
+    }
+}

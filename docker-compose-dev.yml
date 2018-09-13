@@ -12,7 +12,7 @@ services:
       - "logs-dev:/opt/openrov/logs"
       - "data-dev:/opt/openrov/data"
       - "config-dev:/opt/openrov/config"
-      - "./assets/adjustments.json:/opt/openrov/cockpit/src/lib/adjustments.json"
+      - "./assets/adjustments.dev.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
