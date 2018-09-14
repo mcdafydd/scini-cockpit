@@ -12,7 +12,6 @@ services:
       - "images:/opt/openrov/images"
       - "logs:/opt/openrov/logs"
       - "data:/opt/openrov/data"
-      - "config:/opt/openrov/config"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
       - "./assets/adjustments.prod.json:/opt/openrov/cockpit/src/lib/adjustments.json"
     ports:
@@ -56,4 +55,3 @@ volumes:
   images:
   logs:
   data:
-  config:

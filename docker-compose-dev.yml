@@ -11,7 +11,6 @@ services:
       - "images-dev:/opt/openrov/images"
       - "logs-dev:/opt/openrov/logs"
       - "data-dev:/opt/openrov/data"
-      - "config-dev:/opt/openrov/config"
       - "./assets/adjustments.dev.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
       - "~/.gitconfig:/root/.gitconfig"
@@ -172,4 +171,3 @@ volumes:
   images-dev:
   logs-dev:
   data-dev:
-  config-dev:
