@@ -154,7 +154,7 @@ services:
       - "images-dev:/opt/openrov/images:ro"
       - "logs-dev:/opt/openrov/logs:ro"
       - "data-dev:/opt/openrov/data:ro"
-      - "config-dev:/opt/openrov/config:rw"
+      - "./assets:/opt/openrov/assets:rw"
     image: coderaiser/cloudcmd
     networks:
       scini:
