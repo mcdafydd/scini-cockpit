@@ -11,6 +11,7 @@ services:
       - "images-dev:/opt/openrov/images"
       - "logs-dev:/opt/openrov/logs"
       - "data-dev:/opt/openrov/data"
+      - "./assets/www:/opt/openrov/www"
       - "./assets/adjustments.dev.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
       - "~/.gitconfig:/root/.gitconfig"

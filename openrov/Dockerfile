@@ -124,7 +124,9 @@ RUN cd /opt/openrov/cockpit \
     && (cd src/plugins/mqtt-broker && npm install mqtt) \
     && (cd src/plugins/elphel-config && npm install)
 
-COPY www /opt/openrov/www/
+## Even though we bind mount over these, we want to be able to run the full
+## container standalone
+COPY ../assets/www /opt/openrov/www/
 
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
 EXPOSE 80
