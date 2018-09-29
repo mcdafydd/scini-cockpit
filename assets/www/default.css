@@ -1,0 +1,53 @@
+body {
+	background-color: #111111;
+	color: #eeeeee;
+	font-family: tahoma, arial, sans-serif;
+	padding-left: 100px;
+}
+
+h4 {
+	margin-bottom: 1px;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+}
+
+li {
+	float: left;
+}
+
+li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	background-color: #111;
+}
+
+.active {
+	background-color: #4CAF50;
+}
+
+div.smoothie-chart-tooltip {
+	background: #444;
+	padding: 1em;
+	margin-top: 20px;
+	font-family: Consolas, monospace;
+	color: white;
+	font-size: 10px;
+	pointer-events: none;
+}
+
+canvas {
+	width: 25%;
+	height: 100px;
+}
