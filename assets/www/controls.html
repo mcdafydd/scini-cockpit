@@ -1,69 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>ROV Controls</title>
-    <link href="default.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/browserMqtt.js"></script>
-    <script>
-      // bind controls
-      Mousetrap.bind('shift+1', function(e) {
-        sendCamera('resolution', '1');
-      });
-      Mousetrap.bind('shift+2', function(e) {
-        sendCamera('resolution', '2');
-      });
-      Mousetrap.bind('shift+4', function(e) {
-        sendCamera('resolution', '4');
-      });
-      Mousetrap.bind('shift+7', function(e) {
-        sendCamera('quality', '70');
-      });
-      Mousetrap.bind('shift+8', function(e) {
-        sendCamera('quality', '80');
-      });
-      Mousetrap.bind('shift+9', function(e) {
-        sendCamera('quality', '90');
-      });
-      Mousetrap.bind('shift+0', function(e) {
-        sendCamera('quality', '100');
-      });
-      Mousetrap.bind(['=', '+'], function(e) {
-        sendCamera('exposure', '1');
-      });
-      Mousetrap.bind(['-', '_'], function(e) {
-        sendCamera('exposure', '-1');
-      });
-      Mousetrap.bind('space', function(e) {
-        sendCamera('snapFull', '1');
-      });
 
-      const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
-      client.on('connect', function (connack) {
-        console.log('Connected to MQTT broker');
-      });
-      client.on('offline', function () {
-        console.log('MQTT client offline');
-      });
-      client.on('reconnect', function (topic, payload) {
-        console.log('MQTT client reconnected');
-      });
-      client.on('error', function (error) {
-        console.error('MQTT client error: ', error);
-      });
-      function sendCamera (func, port, value) {
-        let topic = 'toCamera/' + window.location.port + '/' + func;
-        client.publish(topic, value);
-      };
-      function sendServo (nodeId, value) {
-        let topic = 'toServo/' + nodeId;
-        client.publish(topic, value);
-      };
-
-</script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>ROV Controls</title>
+  <link href="default.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/browserMqtt.js"></script>
+  <script type="text/javascript" src="/mousetrap.min.js"></script>
+  <script type="text/javascript" src="/hammer.min.js"></script>
+  <script type="text/javascript" src="/muuri.min.js"></script>
+  <script type="text/javascript" src="/controls.js"></script>
 </head>
-<body>
+
+<body onload="init()">
   <ul>
     <li><a href="index.html">Camera</a></li>
     <li><a class="active" href="controls.html">Controls</a></li>
@@ -95,6 +45,5 @@
   <button onclick="sendCamera('color', '8200', '5')">Camera 8200 - Raw Mode</button>
   <button onclick="sendCamera('color', '8200', '1')">Camera 8200 - Normal Color Mode</button>
   <h1>Lights</h1>
-
 </body>
 </html>
