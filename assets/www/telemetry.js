@@ -1,15 +1,3 @@
-function init() {
-  initChart('cpu', 1, ['cpu']);
-  initChart('camTemp', 5, ['camTemp.8200', 'camTemp.8201', 'camTemp.8202', 'camTemp.8203', 'camTemp.8204']);
-  initChart('depth_p', 4, []);
-  initChart('lights.bus_i', 5, []);
-  initChart('lights.bus_v', 5, []);
-  initChart('lights.temp', 5, []);
-  initChart('motors.bus_i', 5, []);
-  initChart('motors.bus_v', 5, []);
-  initMqtt();
-}
-
 // Maps chart timeSeries() objects to telemetry properties
 var dataMap = {};
 
@@ -41,6 +29,23 @@ var seriesOptions = [{
   }
 ];
 
+function init() {
+  initChart('cpu', 1, ['cpu']);
+  initChart('camTemp', 5, ['camTemp.8200', 'camTemp.8201', 'camTemp.8202', 'camTemp.8203', 'camTemp.8204']);
+  initChart('depth_p', 4, ['depth_p']);
+  initChart('lights.bus_i', 5, ['lights.bus_i.61', 'lights.bus_i.62', 'lights.bus_i.63', 'lights.bus_i.65', 'lights.bus_i.66']);
+  initChart('lights.bus_v', 5, ['lights.bus_v.61', 'lights.bus_v.62', 'lights.bus_v.63', 'lights.bus_v.65', 'lights.bus_v.66']);
+  initChart('lights.temp', 5, ['lights.temp.61', 'lights.temp.62', 'lights.temp.63', 'lights.temp.65', 'lights.temp.66']);
+  initChart('motors.bus_i', 5, ['motors.bus_i.12', 'motors.bus_i.13', 'motors.bus_i.14', 'motors.bus_i.15', 'motors.bus_i.16']);
+  initChart('motors.bus_v', 5, ['motors.bus_v.12', 'motors.bus_v.13', 'motors.bus_v.14', 'motors.bus_v.15', 'motors.bus_v.16']);
+  initChart('motors.temp', 5, ['motors.temp.12', 'motors.temp.13', 'motors.temp.14', 'motors.temp.15', 'motors.temp.16']);
+  initChart('motors.rpm', 5, ['motors.rpm.12', 'motors.rpm.13', 'motors.rpm.14', 'motors.rpm.15', 'motors.rpm.16']);
+  initMqtt();
+
+  // Create draggable chart grid
+  var grid = new Muuri('.grid', { dragEnabled: true });
+}
+
 function initMqtt() {
   var client = mqtt.connect('ws://' + window.location.hostname + ':3000');
   client.on('connect', function (connack) {
@@ -64,15 +69,15 @@ function initMqtt() {
     if (topic === 'telemetry/update') {
       let ts = new Date().getTime();
       for (let prop in obj) {
-        dataMap[prop].append(ts, obj[prop]);
+        if (dataMap.hasOwnProperty(prop)) {
+          dataMap[prop].append(ts, obj[prop]);
+        }
       }
-    //console.log(obj);
     }
   });
 }
 
 function initChart(chartName, numLines, properties) {
-  dataMap[chartName] = {};
 
   // Build the chart object
   var timeline = new SmoothieChart({
@@ -83,7 +88,7 @@ function initChart(chartName, numLines, properties) {
       strokeStyle: '#555555',
       lineWidth: 1,
       millisPerLine: 1000,
-      verticalSections: 4
+      verticalSections: 4,
     }
   });
 
@@ -91,8 +96,13 @@ function initChart(chartName, numLines, properties) {
   // Bind MQTT telemetry update values to timeSeries
   for (var i = 0; i < numLines; i++) {
     let series = new TimeSeries();
+    let options = seriesOptions[i];
+    if (properties[i].match('\.[0-9]+$') !== null) {
+      let labels = properties[i].split(/\./);
+      options.tooltipLabel = labels[labels.length-1];
+    }
     dataMap[properties[i]] = series;
-    timeline.addTimeSeries(series, seriesOptions[i]);
+    timeline.addTimeSeries(series, options);
   }
   timeline.streamTo(document.getElementById(chartName), 1000);
 }

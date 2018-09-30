@@ -7,6 +7,8 @@
   <link href="default.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="/browserMqtt.js"></script>
   <script type="text/javascript" src="/smoothie.js"></script>
+  <script type="text/javascript" src="/hammer.min.js"></script>
+  <script type="text/javascript" src="/muuri.min.js"></script>
   <script type="text/javascript" src="/telemetry.js"></script>
 </head>
 <body onload="init()">
@@ -18,30 +20,67 @@
     <li><a href="pro4.html">PRO4</a></li>
     <li><a href="files.html">Files</a></li>
   </ul>
-
-  <div id="chart1">
-    <h4>OpenROV Server CPU</h4>
-    <canvas id="cpu"></canvas>
-  </div>
-  <div id="chart2">
-    <h4>Depth v Pressure</h4>
-    <canvas id="depth-pressure"></canvas>
-  </div>
-  <div id="chart3">
-    <h4>Motors</h4>
-    <canvas id="motors"></canvas>
-  </div>
-  <div id="chart4">
-    <h4>Light current</h4>
-    <canvas id="lights_current"></canvas>
-  </div>
-  <div id="chart5">
-    <h4>Light voltage</h4>
-    <canvas id="lights_voltage"></canvas>
-  </div>
-  <div id="chart6">
-    <h4>Light temperature</h4>
-    <canvas id="lights_temp"></canvas>
+  <div class="grid">
+    <div class="item">
+      <div class="item-content">
+        <h5>OpenROV Server CPU</h5>
+        <canvas id="cpu"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Camera Temperature</h5>
+        <canvas id="camTemp"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Pressure</h5>
+        <canvas id="depth_p"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Light Bus Current</h5>
+        <canvas id="lights.bus_i"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Light Bus Voltage</h5>
+        <canvas id="lights.bus_v"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Light Temperature</h5>
+        <canvas id="lights.temp"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Motor Bus Current</h5>
+        <canvas id="motors.bus_i"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Motor Bus Voltage</h5>
+        <canvas id="motors.bus_v"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Motor Temperature</h5>
+        <canvas id="motors.temp"></canvas>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-content">
+        <h5>Motor RPMs</h5>
+        <canvas id="motors.rpm"></canvas>
+      </div>
+    </div>
   </div>
 </body>
 </html>
