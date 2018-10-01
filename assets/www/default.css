@@ -33,10 +33,6 @@ li a:hover:not(.active) {
 	background-color: #111;
 }
 
-.active {
-	background-color: #4CAF50;
-}
-
 div.smoothie-chart-tooltip {
 	background: #444;
 	padding: 1em;
@@ -48,10 +44,28 @@ div.smoothie-chart-tooltip {
 	z-index: 4;
 }
 
-
 canvas {
 	width: 100%;
 	height: 100px;
+}
+
+.active {
+	background-color: #4CAF50;
+}
+
+.button {
+	background-color: #4CAF50; /* Green */
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+
+.button:active {
+	background-color: #ACFF00;
 }
 
 .grid {
@@ -68,10 +82,12 @@ canvas {
   color: #fff;
 }
 .item.muuri-item-dragging {
-  z-index: 3;
+	z-index: 3;
+	background: blue;
 }
 .item.muuri-item-releasing {
-  z-index: 2;
+	z-index: 2;
+	background: blueViolet;
 }
 .item.muuri-item-hidden {
   z-index: 0;
