@@ -1,4 +1,4 @@
-#!/root/.nvm/versions/node/v8.11.2/bin/node --inspect
+#!/root/.nvm/versions/node/v8.11.2/bin/node --inspect=9222
 
 const pro4 = require('./pro4');
 const SerialPort = require('serialport');

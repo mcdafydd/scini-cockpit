@@ -3,7 +3,7 @@ services:
 
   openrov:
     build: openrov/
-    restart: on-failure
+    restart: unless-stopped
     command: 192.168.2.215 dev
     cap_add:
       - SYS_NICE
@@ -13,7 +13,7 @@ services:
       - "data-dev:/opt/openrov/data"
       - "./assets/www:/opt/openrov/www"
       - "./assets/adjustments.dev.json:/opt/openrov/cockpit/src/lib/adjustments.json"
-      - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
+      - "./assets/mqttConfig.dev.json:/opt/openrov/config/mqttConfig.json"
       - "~/.gitconfig:/root/.gitconfig"
     ports:
       - "80:80"
@@ -44,7 +44,7 @@ services:
 
   fwdcam-mock:
     build: imgsrv-mock/
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -59,7 +59,7 @@ services:
 
   downcam-mock:
     build: imgsrv-mock/
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -74,7 +74,7 @@ services:
 
   upcam-mock:
     build: imgsrv-mock/
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -89,7 +89,7 @@ services:
 
   clumpcam-mock:
     build: imgsrv-mock/
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
@@ -104,7 +104,7 @@ services:
 
   mqtt-fwd:
     build: mqttclient-mock/
-    restart: on-failure
+    restart: unless-stopped
     environment:
       - MQTT_INTERFACE=eth0
     volumes:
@@ -123,16 +123,17 @@ services:
     depends_on:
       - openrov
 
+
   serial-fwd:
     build: serial-tester/
-    restart: on-failure
+    restart: unless-stopped
     environment:
       - PARTNER=192.168.2.231
       - NODEIDS="14 15 21 42 51 52"
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
-      - "9222:9229"
+      - "9222:9222"
     networks:
       scini:
         ipv4_address: 192.168.2.232
@@ -144,7 +145,7 @@ services:
       - mqtt-fwd
 
   file-browser:
-    restart: always
+    restart: unless-stopped
     environment:
       - PORT=8000
       - CLOUDCMD_ROOT=/opt/openrov/
