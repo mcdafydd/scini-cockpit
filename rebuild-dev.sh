@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Copy latest web assets
+mkdir -p openrov/www
+rm openrov/www/*
+cp assets/www/* openrov/www
+
 # Rebuild all services if $1 is empty, otherwise rebuild the specific service and pass it to 'up'
 
 if [ -z "$1" ]; then
