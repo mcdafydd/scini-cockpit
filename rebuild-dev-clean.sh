@@ -1,5 +1,7 @@
 #!/bin/bash
 
+F = `which killall`
+
 # Copy latest web assets
 mkdir -p openrov/www
 rm openrov/www/*
@@ -13,5 +15,6 @@ if [ -z "$1" ]; then
   docker-compose -f docker-compose-dev.yml build --no-cache
 else
   docker-compose -f docker-compose-dev.yml build --no-cache $1
+  if [ -x "$F" ]; then killall -q mjpg_streamer; fi
   docker-compose -f docker-compose-dev.yml up -d 
 fi
