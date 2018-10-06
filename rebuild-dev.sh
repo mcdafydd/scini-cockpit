@@ -1,6 +1,6 @@
 #!/bin/bash
 
-F = `which killall`
+F=`which killall`
 
 # Copy latest web assets
 mkdir -p openrov/www
