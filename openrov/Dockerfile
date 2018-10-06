@@ -122,6 +122,7 @@ RUN cd /opt/openrov/cockpit \
     && (cd src/plugins/peer-view && npm install msgpack-lite) \
     && (cd src/plugins/mqtt-broker && npm install bonjour) \
     && (cd src/plugins/mqtt-broker && npm install mqtt) \
+    && (cd src/plugins/telemetry && npm install mqtt) \
     && (cd src/plugins/elphel-config && npm install)
 
 ## Even though we bind mount over these, we want to be able to run the full
