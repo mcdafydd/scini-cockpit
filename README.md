@@ -5,6 +5,8 @@ for development.  It is the parent repository for all of the SCINI surface-to-se
 
 # Prerequisites
 
+- Chrome 69+ is required to view the MJPEG streams due to use of the new OffscreenCanvas() with 2d rendering context 
+
 Ensure the following software is installed on the host:
 
 * Linux OS (due to usage of 'host' network mode for UDP broadcast discovery)
@@ -15,15 +17,26 @@ Clients wishing to access the system need Chrome or Chromium installed at a mini
 
 # Running In Production
 
-If you want to run a production system for field work or a tank test, use the `docker-compose.yml` file.  This file only starts an OpenROV container with the default Docker network, so the container network address space will not conflict with the actual SCINI LAN.
+If you want to run a production system for field work or a tank test, use the `docker-compose.yml` file.  This file starts the minimal environment to maximize performance. It expects the physical network to match what is specified in the openrov container `start.sh` entrypoint. 
 
 0. Edit `docker-compose.yml` and set the IP address on `command:` to match the IP address of the forward camera
 1. Run `docker-compose up`
 2. Use Chrome to access the cockpit software at `http://<ip_of_host>`
 
+## Be Careful with Named Volumes
+
+Don't delete your critical data!  The production environment specified in `docker-compose.yml` uses separate named volumes from those in the `docker-compose-dev.yml` dev environment.
+
+Brief description of key volumes:
+* images - Stores individual JPEG images from all camera MJPEG streams
+* logs - Stores openrov system logs, see `assets/adjustments.prod.json` 
+* data - Stores all system and device telemetry
+
 # Developing SCINI Software
 
 ## Get Started Developing
+
+** NOTE: Be cautious if creating a docker network if it conflicts with the existing LAN IP space. It probably won't work at all. **
 
 The default docker-compose-dev.yml file can be used to match the network IP space used in production.  We use a docker named network to specify the appropriate subnet/gateway interfaces.  By default, on Linux, this will use the Docker libnetwork bridge driver.  All containers will be on the same layer 2 network space, identically to how things run in production.  This also ensures that certain features (like mqttclient broadcast UDP discovery) continue to work as expected.
 
