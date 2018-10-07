@@ -31,12 +31,13 @@ var seriesOptions = [{
 
 function init() {
   initChart('cpu', ['cpu']);
-  initChart('camTemp', ['camTemp.8200', 'camTemp.8201', 'camTemp.8202', 'camTemp.8203', 'camTemp.8204']);
   initChart('depth_p', ['depth_p']);
   initChart('depth_d', ['depth_d']);
   initChart('depth_t', ['depth_t']);
   initChart('imu_p', ['imu_p']);
   initChart('imu_r', ['imu_r']);
+  initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.53', 'sensors.imuPressure.54', 'sensors.imuPressure.55']);
+  initChart('sensors.imuTemp', ['sensors.imuTemp.51', 'pilot.imuTemp.52', 'sensors.imuTemp.53', 'sensors.imuTemp.54', 'sensors.imuTemp.55']);
   initChart('lights.bus_i', ['lights.bus_i.61', 'lights.bus_i.62', 'lights.bus_i.63', 'lights.bus_i.65', 'lights.bus_i.66']);
   initChart('lights.bus_v', ['lights.bus_v.61', 'lights.bus_v.62', 'lights.bus_v.63', 'lights.bus_v.65', 'lights.bus_v.66']);
   initChart('lights.temp', ['lights.temp.61', 'lights.temp.62', 'lights.temp.63', 'lights.temp.65', 'lights.temp.66']);
