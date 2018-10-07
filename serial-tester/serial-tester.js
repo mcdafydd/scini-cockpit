@@ -362,7 +362,10 @@ class serialTester extends EventEmitter
       angle_z: 0,
       rot_x: 0,
       rot_y: 0,
-      rot_z: 0
+      rot_z: 0,
+      uptimeMillis: 0,
+      imuPressure: 0,
+      imuTemp: 0
     }
     return {h: header, payload: scini.parser.ParserBam.encode(ret)};
   }
