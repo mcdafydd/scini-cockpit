@@ -10,6 +10,7 @@
   <script type="text/javascript" src="/mousetrap.min.js"></script>
   <script type="text/javascript" src="/hammer.min.js"></script>
   <script type="text/javascript" src="/muuri.min.js"></script>
+  <script type="text/javascript" src="/grid-shared.js"></script>
   <script type="text/javascript" src="/controls.js"></script>
 </head>
 
@@ -19,31 +20,119 @@
     <li><a class="active" href="controls.html">Controls</a></li>
     <li><a href="telemetry.html">Telemetry</a></li>
     <li><a href="telemetry-brief.html">Telemetry Brief</a></li>
-    <li><a href="pro4.html">PRO4</a></li>
     <li><a href="files.html">Files</a></li>
   </ul>
-  <h1>Cameras</h1>
-  <button onclick="sendServo(51, '1')">Camera Servo 51 - Step Positive</button>
-  <button onclick="sendServo(51, '-1')">Camera Servo 51 - Step Negative</button>
-  <button onclick="sendServo(52, '1')">Camera Servo 52 - Step Positive</button>
-  <button onclick="sendServo(52, '-1')">Camera Servo 52 - Step Negative</button>
-  <button onclick="sendServo(53, '1')">Camera Servo 53 - Step Positive</button>
-  <button onclick="sendServo(53, '-1')">Camera Servo 53 - Step Negative</button>
-  <button onclick="sendServo(54, '1')">Camera Servo 54 - Step Positive</button>
-  <button onclick="sendServo(54, '-1')">Camera Servo 54 - Step Negative</button>
-  <button onclick="sendServo(55, '1')">Camera Servo 55 - Step Positive</button>
-  <button onclick="sendServo(55, '-1')">Camera Servo 55 - Step Negative</button>
-  <button onclick="sendCamera('resolution', '8200')">Camera 8200 - Resolution</button>
-  <button onclick="sendCamera('resolution', '8200')">Camera 8200 - Resolution</button>
-  <button onclick="sendCamera('resolution', '8200')">Camera 8200 - Resolution</button>
-  <button onclick="sendCamera('quality', '8200')">Camera 8200 - Quality</button>
-  <button onclick="sendCamera('quality', '8200')">Camera 8200 - Quality</button>
-  <button onclick="sendCamera('quality', '8200')">Camera 8200 - Quality</button>
-  <button onclick="sendCamera('exposure', '8200')">Camera 8200 - Exposure</button>
-  <button onclick="sendCamera('exposure', '8200')">Camera 8200 - Exposure</button>
-  <button onclick="sendCamera('snapFull', '8200', '1')">Camera 8200 - Snapfull</button>
-  <button onclick="sendCamera('color', '8200', '5')">Camera 8200 - Raw Mode</button>
-  <button onclick="sendCamera('color', '8200', '1')">Camera 8200 - Normal Color Mode</button>
-  <h1>Lights</h1>
+  <div class="grid">
+    <div class="item" data-id="1" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Image Resolution</h5>
+        <button id="resolution-8200-4">8200 - 1/4 resolution</button>
+        <button id="resolution-8200-2">8200 - 1/2 resolution</button>
+        <button id="resolution-8200-1")">8200 - full resolution</button>
+        <button id="resolution-8201-4">8201 - 1/4 resolution</button>
+        <button id="resolution-8201-2">8201 - 1/2 resolution</button>
+        <button id="resolution-8201-1")">8201 - full resolution</button>
+        <button id="resolution-8202-4">8202 - 1/4 resolution</button>
+        <button id="resolution-8202-2">8202 - 1/2 resolution</button>
+        <button id="resolution-8202-1")">8202 - full resolution</button>
+        <button id="resolution-8203-4">8203 - 1/4 resolution</button>
+        <button id="resolution-8203-2">8203 - 1/2 resolution</button>
+        <button id="resolution-8203-1")">8203 - full resolution</button>
+        <button id="resolution-8204-4">8204 - 1/4 resolution</button>
+        <button id="resolution-8204-2">8204 - 1/2 resolution</button>
+        <button id="resolution-8204-1")">8204 - full resolution</button>
+      </div>
+    </div>
+    <div class="item" data-id="2" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Image Quality</h5>
+        <button id="quality-8200-80">8200 - Quality 80%</button>
+        <button id="quality-8200-85">8200 - Quality 85%</button>
+        <button id="quality-8200-92">8200 - Quality 92%</button>
+        <button id="quality-8201-80">8201 - Quality 80%</button>
+        <button id="quality-8201-85">8201 - Quality 85%</button>
+        <button id="quality-8201-92">8201 - Quality 92%</button>
+        <button id="quality-8202-80">8202 - Quality 80%</button>
+        <button id="quality-8202-85">8202 - Quality 85%</button>
+        <button id="quality-8202-92">8202 - Quality 92%</button>
+        <button id="quality-8203-80">8203 - Quality 80%</button>
+        <button id="quality-8203-85">8203 - Quality 85%</button>
+        <button id="quality-8203-92">8203 - Quality 92%</button>
+        <button id="quality-8204-80">8204 - Quality 80%</button>
+        <button id="quality-8204-85">8204 - Quality 85%</button>
+        <button id="quality-8204-92">8204 - Quality 92%</button>
+      </div>
+    </div>
+    <div class="item" data-id="3" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Image Exposure</h5>
+        <button id="exposure-8200-pos">8200 - Increase</button>
+        <button id="exposure-8200-neg">8200 - Decrease</button>
+        <button id="exposure-8201-pos">8201 - Increase</button>
+        <button id="exposure-8201-neg">8201 - Decrease</button>
+        <button id="exposure-8202-pos">8202 - Increase</button>
+        <button id="exposure-8202-neg">8202 - Decrease</button>
+        <button id="exposure-8203-pos">8203 - Increase</button>
+        <button id="exposure-8203-neg">8203 - Decrease</button>
+        <button id="exposure-8204-pos">8204 - Increase</button>
+        <button id="exposure-8204-neg">8204 - Decrease</button>
+      </div>
+    </div>
+    <div class="item" data-id="4" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Image Snapfull</h5>
+        <button id="snapfull-8200-1">8200 - Snapfull</button>
+        <button id="snapfull-8201-1">8201 - Snapfull</button>
+        <button id="snapfull-8202-1">8202 - Snapfull</button>
+        <button id="snapfull-8203-1">8203 - Snapfull</button>
+        <button id="snapfull-8204-1">8204 - Snapfull</button>
+      </div>
+    </div>
+    <div class="item" data-id="5" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Image Raw/Normal Mode</h5>
+        <button id="color-8200-5">8200 - Raw Mode</button>
+        <button id="color-8200-1">8200 - Raw Mode</button>
+        <button id="color-8201-5">8201 - Raw Mode</button>
+        <button id="color-8201-1">8201 - Raw Mode</button>
+        <button id="color-8202-5">8202 - Raw Mode</button>
+        <button id="color-8202-1">8202 - Raw Mode</button>
+        <button id="color-8203-5">8203 - Raw Mode</button>
+        <button id="color-8203-1">8203 - Raw Mode</button>
+        <button id="color-8204-5">8204 - Raw Mode</button>
+        <button id="color-8204-1">8204 - Raw Mode</button>
+      </div>
+    </div>
+    <div class="item" data-id="6" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Camera Focus</h5>
+        <button id="servo-51-pos">Servo 51 - Step Positive</button>
+        <button id="servo-51-neg">Servo 51 - Step Negative</button>
+        <button id="servo-52-pos">Servo 52 - Step Positive</button>
+        <button id="servo-52-neg">Servo 52 - Step Negative</button>
+        <button id="servo-53-pos">Servo 53 - Step Positive</button>
+        <button id="servo-53-neg">Servo 53 - Step Negative</button>
+        <button id="servo-54-pos">Servo 54 - Step Positive</button>
+        <button id="servo-54-neg">Servo 54 - Step Negative</button>
+        <button id="servo-55-pos">Servo 55 - Step Positive</button>
+        <button id="servo-55-neg">Servo 55 - Step Negative</button>
+      </div>
+    </div>
+    <div class="item" data-id="7" width="30%" height="400px" margin="5px">
+      <div class="item-content">
+        <h5>Lights</h5>
+        <input id="light-61" type="range" min="0" max="1.0" step="0.05" value="0.85">
+        <span id="light61Val" style="font-weight:bold;color:red">0.85</span>
+        <input id="light-62" type="range" min="0" max="1.0" step="0.05" value="0.85">
+        <span id="light62Val" style="font-weight:bold;color:red">0.85</span>
+        <input id="light-63" type="range" min="0" max="1.0" step="0.05" value="0.85">
+        <span id="light63Val" style="font-weight:bold;color:red">0.85</span>
+        <input id="light-65" type="range" min="0" max="1.0" step="0.05" value="0.85">
+        <span id="light65Val" style="font-weight:bold;color:red">0.85</span>
+        <input id="light-66" type="range" min="0" max="1.0" step="0.05" value="0.85">
+        <span id="light66Val" style="font-weight:bold;color:red">0.85</span>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
