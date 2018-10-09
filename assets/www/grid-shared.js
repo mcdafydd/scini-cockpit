@@ -12,12 +12,32 @@ function initGrid(layoutName) {
     saveLayout(grid, layoutName);
   });
 
-  // need error handler to automatically remove localStorage(layoutName)
-  // if it has been changed to avoid Muuri sort error
-  //window.localStorage.removeItem(layoutName);
   var layout = window.localStorage.getItem(layoutName);
   if (layout) {
-    loadLayout(grid, layout);
+    try {
+      loadLayout(grid, layout);
+    }
+    catch(e) {
+      console.log('Muuri loadLayout error - removing old layout and reloading page');
+      let reloaded = window.localStorage.getItem(`${layoutName}-reloaded`);
+      if (reloaded) {
+        if (reloaded === 1) {
+          window.localStorage.setItem(`${layoutName}-reloaded`, ++reloaded);
+          window.location.reload(true);
+        }
+        else {
+          throw 'FATAL: Cannot fix Muuri saved layout';
+        }
+      }
+      else {
+        window.localStorage.setItem(`${layoutName}-reloaded`, 1);
+        window.location.reload(true);
+      }
+    }
+    finally {
+      // should only get here if loadLayout() was successful
+      window.localStorage.removeItem(`${layoutName}-reloaded`);
+    }
   } else {
     grid.layout(true);
   }

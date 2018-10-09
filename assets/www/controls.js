@@ -19,12 +19,22 @@ function initListeners() {
       let display = document.getElementById(func+'-'+node+'-val');
       display.innerHTML = `Id: ${node} Power: 0.0`;
     }
+    else if (func === 'exposure') {
+      let display = document.getElementById(func+'-'+node+'-val');
+      display.innerHTML = `Id: ${node} Time: 100ms`;
+    }
     input.addEventListener('change', function() {
-      console.log('slid ', this.id, 'val ', this.value);
+      [func, node] = input.id.split('-');
+      console.log('event ', func, 'node ', node, 'val ', this.value);
       if (func === 'light') {
         let display = document.getElementById(func+'-'+node+'-val');
         display.innerHTML = `Id: ${node} Power: ${this.value}`;
         sendLight(node, this.value);
+      }
+      else if (func === 'exposure') {
+        let display = document.getElementById(func+'-'+node+'-val');
+        display.innerHTML = `Id: ${node} Time: ${this.value}ms`;
+        sendCamera(func, node, this.value);
       }
     }, false);
   });
@@ -40,14 +50,6 @@ function initListeners() {
         }
         else if (val === 'neg') {
           sendServo(node, '-1');
-        }
-      }
-      else if (func === 'exposure') {
-        if (val === 'pos') {
-          sendCamera(func, node, '1');
-        }
-        else if (val === 'neg') {
-          sendCamera(func, node, '-1');
         }
       }
       else {

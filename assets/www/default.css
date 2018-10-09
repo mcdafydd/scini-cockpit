@@ -100,11 +100,6 @@ canvas {
   width: 100%;
   height: 15%;
 }
-.item-content-body {
-  position: relative;
-  width: 100%;
-  height: 85%;
-}
 
 .slider {
   -webkit-appearance: none;
