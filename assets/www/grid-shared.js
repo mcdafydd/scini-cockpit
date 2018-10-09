@@ -1,7 +1,13 @@
 function initGrid(layoutName) {
   var grid = new Muuri('.grid', {
     dragEnabled: true,
-    layoutOnInit: false
+    layoutOnInit: false,
+    dragStartPredicate: function (item, event) {
+      if (event.target.localName === 'input' || event.target.localName === 'button') {
+        return false;
+      }
+      return Muuri.ItemDrag.defaultStartPredicate(item, event);
+    }
   }).on('move', function () {
     saveLayout(grid, layoutName);
   });

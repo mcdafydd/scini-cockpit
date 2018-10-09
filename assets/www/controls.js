@@ -13,12 +13,17 @@ function initListeners() {
 
   inputsList = Array.prototype.slice.call(inputs);
   inputsList.forEach(function(input, idx) {
+    // set initial innerHTML
+    [func, node] = input.id.split('-');
+    if (func === 'light') {
+      let display = document.getElementById(func+'-'+node+'-val');
+      display.innerHTML = `Id: ${node} Power: 0.0`;
+    }
     input.addEventListener('change', function() {
       console.log('slid ', this.id, 'val ', this.value);
-      [func, node] = this.id.split('-');
       if (func === 'light') {
-        let display = document.getElementById(func+node+'Val');
-        display.innerHTML = this.value;
+        let display = document.getElementById(func+'-'+node+'-val');
+        display.innerHTML = `Id: ${node} Power: ${this.value}`;
         sendLight(node, this.value);
       }
     }, false);
