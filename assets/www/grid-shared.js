@@ -23,6 +23,7 @@ function initGrid(layoutName) {
       if (reloaded) {
         if (reloaded === 1) {
           window.localStorage.setItem(`${layoutName}-reloaded`, ++reloaded);
+          window.localStorage.removeItem(layoutName);
           window.location.reload(true);
         }
         else {
@@ -31,6 +32,7 @@ function initGrid(layoutName) {
       }
       else {
         window.localStorage.setItem(`${layoutName}-reloaded`, 1);
+        window.localStorage.removeItem(layoutName);
         window.location.reload(true);
       }
     }
