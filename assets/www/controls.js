@@ -52,6 +52,14 @@ function initListeners() {
           sendServo(node, '-1');
         }
       }
+      else if (func === 'gripper' || func === 'sampler' || func === 'trim') {
+        if (val === 'open') {
+          sendGripper(node, '2');
+        }
+        else if (val === 'close') {
+          sendGripper(node, '3');
+        }
+      }
       else {
         sendCamera(func, node, val);
       }
@@ -86,6 +94,10 @@ function sendCamera (func, port, value) {
 };
 function sendServo (nodeId, value) {
   let topic = 'servo/' + nodeId;
+  mqttClient.publish(topic, value);
+};
+function sendGripper (nodeId, value) {
+  let topic = 'grippers/' + nodeId;
   mqttClient.publish(topic, value);
 };
 function sendLight (nodeId, value) {

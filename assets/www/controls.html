@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>ROV Controls</title>
   <link href="default.css" rel="stylesheet" type="text/css">
+  <link href="controls.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="/browserMqtt.js"></script>
   <script type="text/javascript" src="/mousetrap.min.js"></script>
   <script type="text/javascript" src="/hammer.min.js"></script>
@@ -23,7 +24,7 @@
     <li><a href="files.html">Files</a></li>
   </ul>
   <div class="grid">
-    <div class="item" data-id="1">
+    <div class="ctrl-item" data-id="1">
       <div class="item-content">
         <h5>8200 Resolution</h5>
         <button id="resolution-8200-4">1/4</button>
@@ -31,7 +32,7 @@
         <button id="resolution-8200-1")">full</button>
       </div>
     </div>
-    <div class="item" data-id="2">
+    <div class="ctrl-item" data-id="2">
       <div class="item-content">
           <h5>8201 Resolution</h5>
         <button id="resolution-8201-4">1/4</button>
@@ -39,7 +40,7 @@
         <button id="resolution-8201-1")">full</button>
       </div>
     </div>
-    <div class="item" data-id="3">
+    <div class="ctrl-item" data-id="3">
       <div class="item-content">
           <h5>8202 Resolution</h5>
         <button id="resolution-8202-4">1/4</button>
@@ -47,7 +48,7 @@
         <button id="resolution-8202-1")">full</button>
       </div>
     </div>
-    <div class="item" data-id="4">
+    <div class="ctrl-item" data-id="4">
       <div class="item-content">
           <h5>8203 Resolution</h5>
         <button id="resolution-8203-4">1/4</button>
@@ -55,7 +56,7 @@
         <button id="resolution-8203-1")">full</button>
       </div>
     </div>
-    <div class="item" data-id="5">
+    <div class="ctrl-item" data-id="5">
       <div class="item-content">
           <h5>8204 Resolution</h5>
         <button id="resolution-8204-4">1/4</button>
@@ -63,7 +64,7 @@
         <button id="resolution-8204-1")">full</button>
       </div>
     </div>
-    <div class="item" data-id="6">
+    <div class="ctrl-item" data-id="6">
       <div class="item-content">
         <h5>8200 Quality</h5>
         <button id="quality-8200-80">80%</button>
@@ -71,7 +72,7 @@
         <button id="quality-8200-92">92%</button>
       </div>
     </div>
-    <div class="item" data-id="7">
+    <div class="ctrl-item" data-id="7">
       <div class="item-content">
         <h5>8201 Quality</h5>
         <button id="quality-8200-80">80%</button>
@@ -79,7 +80,7 @@
         <button id="quality-8200-92">92%</button>
       </div>
     </div>
-    <div class="item" data-id="8">
+    <div class="ctrl-item" data-id="8">
       <div class="item-content">
         <h5>8202 Quality</h5>
         <button id="quality-8200-80">80%</button>
@@ -87,7 +88,7 @@
         <button id="quality-8200-92">92%</button>
       </div>
     </div>
-    <div class="item" data-id="9">
+    <div class="ctrl-item" data-id="9">
       <div class="item-content">
         <h5>8203 Quality</h5>
         <button id="quality-8200-80">80%</button>
@@ -95,7 +96,7 @@
         <button id="quality-8200-92">92%</button>
       </div>
     </div>
-    <div class="item" data-id="10">
+    <div class="ctrl-item" data-id="10">
       <div class="item-content">
         <h5>8204 Quality</h5>
         <button id="quality-8200-80">80%</button>
@@ -103,155 +104,176 @@
         <button id="quality-8200-92">92%</button>
       </div>
     </div>
-    <div class="item" data-id="11">
+    <div class="ctrl-item" data-id="11">
       <div class="item-content">
         <h5>8200 Exposure</h5>
         <input class="slider" id="exposure-8200" type="range" min="33.3" max="299.3" step="1.0" value="99.3">
         <span id="exposure-8200-val" style="font-weight:bold;color:red"></span>
       </div>
     </div>
-    <div class="item" data-id="12">
+    <div class="ctrl-item" data-id="12">
       <div class="item-content">
         <h5>8201 Exposure</h5>
         <input class="slider" id="exposure-8201" type="range" min="33.3" max="299.3" step="1.0" value="99.3">
         <span id="exposure-8201-val" style="font-weight:bold;color:red"></span>
       </div>
     </div>
-    <div class="item" data-id="13">
+    <div class="ctrl-item" data-id="13">
       <div class="item-content">
         <h5>8202 Exposure</h5>
         <input class="slider" id="exposure-8202" type="range" min="33.3" max="299.3" step="1.0" value="99.3">
         <span id="exposure-8202-val" style="font-weight:bold;color:red"></span>
       </div>
     </div>
-    <div class="item" data-id="14">
+    <div class="ctrl-item" data-id="14">
       <div class="item-content">
         <h5>8203 Exposure</h5>
         <input class="slider" id="exposure-8203" type="range" min="33.3" max="299.3" step="1.0" value="99.3">
         <span id="exposure-8203-val" style="font-weight:bold;color:red"></span>
       </div>
     </div>
-    <div class="item" data-id="15">
+    <div class="ctrl-item" data-id="15">
       <div class="item-content">
         <h5>8204 Exposure</h5>
         <input class="slider" id="exposure-8204" type="range" min="33.3" max="299.3" step="1.0" value="99.3">
         <span id="exposure-8204-val" style="font-weight:bold;color:red"></span>
       </div>
     </div>
-    <div class="item" data-id="16">
+    <div class="ctrl-item" data-id="16">
       <div class="item-content">
-        <h5>8200 Snapfull</h5>
-        <button id="snapfull-8200-1">Snap</button>
+        <h5>Snapfull</h5>
+        <button id="snapfull-8200-1">8200</button>
+        <button id="snapfull-8201-1">8201</button>
+        <button id="snapfull-8202-1">8202</button>
+        <button id="snapfull-8203-1">8203</button>
+        <button id="snapfull-8204-1">8204</button>
       </div>
     </div>
-    <div class="item" data-id="17">
-      <div class="item-content">
-        <h5>8201 Snapfull</h5>
-        <button id="snapfull-8201-1">Snap</button>
-      </div>
-    </div>
-    <div class="item" data-id="18">
-      <div class="item-content">
-        <h5>8202 Snapfull</h5>
-        <button id="snapfull-8202-1">Snap</button>
-      </div>
-    </div>
-    <div class="item" data-id="19">
-      <div class="item-content">
-        <h5>8203 Snapfull</h5>
-        <button id="snapfull-8203-1">Snap</button>
-      </div>
-    </div>
-    <div class="item" data-id="20">
-      <div class="item-content">
-        <h5>8204 Snapfull</h5>
-        <button id="snapfull-8204-1">Snap</button>
-      </div>
-    </div>
-    <div class="item" data-id="21">
+    <div class="ctrl-item" data-id="17">
       <div class="item-content">
         <h5>8200 Raw/Normal Mode</h5>
         <button id="color-8200-5">Raw</button>
         <button id="color-8200-1">Normal</button>
       </div>
     </div>
-    <div class="item" data-id="22">
+    <div class="ctrl-item" data-id="18">
       <div class="item-content">
         <h5>8201 Raw/Normal Mode</h5>
         <button id="color-8201-5">Raw</button>
         <button id="color-8201-1">Normal</button>
       </div>
     </div>
-    <div class="item" data-id="23">
+    <div class="ctrl-item" data-id="19">
       <div class="item-content">
         <h5>8202 Raw/Normal Mode</h5>
         <button id="color-8202-5">Raw</button>
         <button id="color-8202-1">Normal</button>
       </div>
     </div>
-    <div class="item" data-id="24">
+    <div class="ctrl-item" data-id="20">
       <div class="item-content">
         <h5>8203 Raw/Normal Mode</h5>
         <button id="color-8203-5">Raw</button>
         <button id="color-8203-1">Normal</button>
       </div>
     </div>
-    <div class="item" data-id="25">
+    <div class="ctrl-item" data-id="21">
       <div class="item-content">
         <h5>8204 Raw/Normal Mode</h5>
         <button id="color-8204-5">Raw</button>
         <button id="color-8204-1">Normal</button>
       </div>
     </div>
-    <div class="item" data-id="26">
+    <div class="ctrl-item" data-id="22">
       <div class="item-content">
         <h5>Camera 51 Focus</h5>
-        <button id="servo-51-pos">51 - Step Positive</button>
-        <button id="servo-51-neg">51 - Step Negative</button>
+        <button id="servo-51-pos">Step Positive</button>
+        <button id="servo-51-neg">Step Negative</button>
       </div>
     </div>
-    <div class="item" data-id="27">
+    <div class="ctrl-item" data-id="23">
       <div class="item-content">
         <h5>Camera 52 Focus</h5>
-        <button id="servo-52-pos">52 - Step Positive</button>
-        <button id="servo-52-neg">52 - Step Negative</button>
+        <button id="servo-52-pos">Step Positive</button>
+        <button id="servo-52-neg">Step Negative</button>
       </div>
     </div>
-    <div class="item" data-id="28">
+    <div class="ctrl-item" data-id="24">
       <div class="item-content">
         <h5>Camera 53 Focus</h5>
-        <button id="servo-53-pos">53 - Step Positive</button>
-        <button id="servo-53-neg">53 - Step Negative</button>
+        <button id="servo-53-pos">Step Positive</button>
+        <button id="servo-53-neg">Step Negative</button>
       </div>
     </div>
-    <div class="item" data-id="29">
+    <div class="ctrl-item" data-id="25">
       <div class="item-content">
         <h5>Camera 54 Focus</h5>
-        <button id="servo-54-pos">54 - Step Positive</button>
-        <button id="servo-54-neg">54 - Step Negative</button>
+        <button id="servo-54-pos">Step Positive</button>
+        <button id="servo-54-neg">Step Negative</button>
       </div>
     </div>
-    <div class="item" data-id="30">
+    <div class="ctrl-item" data-id="26">
       <div class="item-content">
         <h5>Camera 55 Focus</h5>
-        <button id="servo-55-pos">55 - Step Positive</button>
-        <button id="servo-55-neg">55 - Step Negative</button>
+        <button id="servo-55-pos">Step Positive</button>
+        <button id="servo-55-neg">Step Negative</button>
       </div>
     </div>
-    <div class="item" data-id="31">
+    <div class="ctrl-item" data-id="27">
       <div class="item-content">
-        <h5>Lights</h5>
+        <h5>61 Lights</h5>
         <input class="slider" id="light-61" type="range" min="0" max="1.0" step="0.05" value="0.0">
         <span id="light-61-val" style="font-weight:bold;color:red"></span>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="28">
+      <div class="item-content">
+        <h5>62 Lights</h5>
         <input class="slider" id="light-62" type="range" min="0" max="1.0" step="0.05" value="0.0">
         <span id="light-62-val" style="font-weight:bold;color:red"></span>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="29">
+      <div class="item-content">
+        <h5>63 Lights</h5>
         <input class="slider" id="light-63" type="range" min="0" max="1.0" step="0.05" value="0.0">
         <span id="light-63-val" style="font-weight:bold;color:red"></span>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="30">
+      <div class="item-content">
+        <h5>64 Lights</h5>
+        <input class="slider" id="light-64" type="range" min="0" max="1.0" step="0.05" value="0.0">
+        <span id="light-64-val" style="font-weight:bold;color:red"></span>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="31">
+      <div class="item-content">
+        <h5>65 Lights</h5>
         <input class="slider" id="light-65" type="range" min="0" max="1.0" step="0.05" value="0.0">
         <span id="light-65-val" style="font-weight:bold;color:red"></span>
-        <input class="slider" id="light-66" type="range" min="0" max="1.0" step="0.05" value="0.0">
-        <span id="light-66-val" style="font-weight:bold;color:red"></span>
       </div>
+    </div>
+    <div class="ctrl-item" data-id="32">
+      <div class="item-content">
+        <h5>Gripper</h5>
+        <button id="gripper-24-open">Open</button>
+        <button id="gripper-24-close">Close</button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="33">
+      <div class="item-content">
+        <h5>Water Sampler</h5>
+        <button id="sampler-23-open">Open</button>
+        <button id="sampler-23-close">Close</button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="34">
+      <div class="item-content">
+        <h5>Trim</h5>
+        <button id="trim-21-open">Open</button>
+        <button id="trim-21-close">Close</button>
+      </div
     </div>
   </div>
 </body>
