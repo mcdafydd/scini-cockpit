@@ -1,6 +1,8 @@
 let self = this;
 let canvas, ctx, ws;
 
+importScripts('reconnecting-websocket-iife.min.js');
+
 self.addEventListener('message', function(e) {
   if (e.data.hasOwnProperty('canvas')) {
     canvas = e.data.canvas;
@@ -8,7 +10,8 @@ self.addEventListener('message', function(e) {
   }
   else if (e.data.hasOwnProperty('hostname')) {
     const wsUri = 'ws://' + e.data.hostname + ':' + e.data.wsPort;
-    ws = new WebSocket(wsUri);
+    // Ref: https://github.com/pladaria/reconnecting-websocket
+    ws = new ReconnectingWebSocket(wsUri);
     ws.onopen = function () {
       console.log("mjpg-streamer websocket connected");
     };
@@ -24,8 +27,6 @@ self.addEventListener('message', function(e) {
       //canvas.height = img.height;
     };
     ws.onerror = function (e) {
-      console.log('websocket error: ' + e.data);
-      ws.close();
     };
   }
 }, false);
