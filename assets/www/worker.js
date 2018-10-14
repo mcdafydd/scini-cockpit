@@ -21,10 +21,10 @@ self.addEventListener('message', function(e) {
     ws.onmessage = function (e) {
       createImageBitmap(e.data)
       .then(img => {
-        if (ctx) ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
       })
-      //canvas.width = img.width;
-      //canvas.height = img.height;
     };
     ws.onerror = function (e) {
     };

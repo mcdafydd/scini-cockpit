@@ -21,6 +21,11 @@ li {
 	float: left;
 }
 
+li:last-child
+{
+    float: right;
+}
+
 li a {
 	display: block;
 	color: white;
@@ -61,6 +66,10 @@ button:active {
 canvas {
 	width: 100%;
        height: 100px;
+}
+
+.clock {
+  font-size: 2em;
 }
 
 .video-canvas {
@@ -131,6 +140,12 @@ canvas {
   border-radius: 50%;
   background: #4CAF50;
   cursor: pointer;
+}
+
+.sliderVal {
+  font-size: 12px;
+  font-weight:bold;
+  color:red
 }
 
 .support {

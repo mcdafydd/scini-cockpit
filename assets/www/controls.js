@@ -4,10 +4,17 @@ function init() {
   initKeyboardControls();
 
   initGrid('controlsLayout');
+
+  let obj = window.localStorage.getItem('cameraMap');
+  if (obj === null)
+    this.cameraMap = {};
+  else
+    this.cameraMap = JSON.parse(obj);
 }
 
 function initListeners() {
   let func, node, val;
+  let self = this;  // outer scope
   const inputs = document.getElementsByTagName('input');
   const buttons = document.getElementsByTagName('button');
 
@@ -17,24 +24,29 @@ function initListeners() {
     [func, node] = input.id.split('-');
     if (func === 'light') {
       let display = document.getElementById(func+'-'+node+'-val');
-      display.innerHTML = `Id: ${node} Power: 0.0`;
+      display.innerHTML = `Power: 0.0`;
     }
     else if (func === 'exposure') {
       let display = document.getElementById(func+'-'+node+'-val');
-      display.innerHTML = `Id: ${node} Time: 100ms`;
+      display.innerHTML = `Time: 100ms`;
     }
     input.addEventListener('change', function() {
       [func, node] = input.id.split('-');
-      console.log('event ', func, 'node ', node, 'val ', this.value);
+      console.debug('event ', func, 'node ', node, 'val ', this.value);
       if (func === 'light') {
         let display = document.getElementById(func+'-'+node+'-val');
-        display.innerHTML = `Id: ${node} Power: ${this.value}`;
-        sendLight(node, this.value);
+        display.innerHTML = `Power: ${this.value}`;
+        sendLight(node, self.value);
       }
       else if (func === 'exposure') {
         let display = document.getElementById(func+'-'+node+'-val');
-        display.innerHTML = `Id: ${node} Time: ${this.value}ms`;
-        sendCamera(func, node, this.value);
+        display.innerHTML = `Time: ${this.value}ms`;
+        if (self.cameraMap.hasOwnProperty(node)) {
+          let port = self.cameraMap[node].port;
+          sendCamera(func, port, this.value);
+        }
+        else
+          console.warn(`missing cameraMap at ${this.id}! Cannot control this device`);
       }
     }, false);
   });
@@ -61,7 +73,12 @@ function initListeners() {
         }
       }
       else {
-        sendCamera(func, node, val);
+        if (self.cameraMap.hasOwnProperty(node)) {
+          let port = self.cameraMap[node].port;
+          sendCamera(func, port, val);
+        }
+        else
+          console.warn(`missing cameraMap at ${this.id}!  Cannot control this device`);
       }
     }, false);
   });
@@ -73,6 +90,7 @@ function initMqtt() {
   mqttClient.on('connect', function (connack) {
     if (connack) {
       console.log('MQTT connected to broker');
+      mqttClient.subscribe('toCamera/cameraRegistration');
     }
   });
   mqttClient.on('offline', function () {
@@ -85,12 +103,31 @@ function initMqtt() {
     console.error('MQTT client error: ', error);
   });
   mqttClient.on('message', (topic, payload) => {
+    if (topic.match('toCamera/cameraRegistration') !== null) {
+      let val = payload.toString().split(':');
+      let id = val[1].split('.')[3];  // last IP address octet
+      if (!this.cameraMap.hasOwnProperty(id)) {
+        this.cameraMap[id] = {};
+        this.cameraMap[id].port = val[0];
+        this.cameraMap[id].ts = val[3];
+        window.localStorage.setItem('cameraMap', JSON.stringify(this.cameraMap));
+      }
+      // make sure it is still valid
+      else {
+        if (this.cameraMap[id].ts !== val[3]) {
+          this.cameraMap[id].port = val[0];
+          this.cameraMap[id].ts = val[3];
+          window.localStorage.setItem('cameraMap', JSON.stringify(this.cameraMap));
+        }
+      }
+    }
   });
 }
 
 function sendCamera (func, port, value) {
-  let topic = 'toCamera/' + window.location.port + '/' + func;
+  let topic = 'toCamera/' + port + '/' + func;
   mqttClient.publish(topic, value);
+  console.debug('sendCamera', topic, value);
 };
 function sendServo (nodeId, value) {
   let topic = 'servo/' + nodeId;
@@ -107,34 +144,13 @@ function sendLight (nodeId, value) {
 
 function initKeyboardControls() {
   // bind keyboard controls
-  Mousetrap.bind('shift+1', function(e) {
-    sendCamera('resolution', '1');
-  });
-  Mousetrap.bind('shift+2', function(e) {
-    sendCamera('resolution', '2');
-  });
-  Mousetrap.bind('shift+4', function(e) {
-    sendCamera('resolution', '4');
-  });
-  Mousetrap.bind('shift+7', function(e) {
-    sendCamera('quality', '70');
-  });
-  Mousetrap.bind('shift+8', function(e) {
-    sendCamera('quality', '80');
-  });
-  Mousetrap.bind('shift+9', function(e) {
-    sendCamera('quality', '90');
-  });
-  Mousetrap.bind('shift+0', function(e) {
-    sendCamera('quality', '100');
-  });
   Mousetrap.bind(['=', '+'], function(e) {
-    sendCamera('exposure', '1');
+    sendCamera('exposure', window.location.port, '1');
   });
   Mousetrap.bind(['-', '_'], function(e) {
-    sendCamera('exposure', '-1');
+    sendCamera('exposure', window.location.port, '-1');
   });
   Mousetrap.bind('space', function(e) {
-    sendCamera('snapFull', '1');
+    sendCamera('snapFull', window.location.port, '1');
   });
 }
