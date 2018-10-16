@@ -13,7 +13,7 @@ function init() {
 }
 
 function initListeners() {
-  let func, node, val;
+  let device, node, val;
   let self = this;  // outer scope
   const inputs = document.getElementsByTagName('input');
   const buttons = document.getElementsByTagName('button');
@@ -21,32 +21,44 @@ function initListeners() {
   inputsList = Array.prototype.slice.call(inputs);
   inputsList.forEach(function(input, idx) {
     // set initial innerHTML
-    [func, node] = input.id.split('-');
-    if (func === 'light') {
-      let display = document.getElementById(func+'-'+node+'-val');
+    [device, node, func] = input.id.split('-');  // func may be undefined
+    if (device === 'light') {
+      let display = document.getElementById(device+'-'+node+'-val');
       display.innerHTML = `Power: 0.0`;
     }
-    else if (func === 'exposure') {
-      let display = document.getElementById(func+'-'+node+'-val');
+    else if (device === 'exposure') {
+      let display = document.getElementById(device+'-'+node+'-val');
       display.innerHTML = `Time: 100ms`;
     }
+    else if (device === 'servo') {
+      let display = document.getElementById(`${device}-${node}-${func}-val`);
+      if (func === 'speed')
+        display.innerHTML = `${func}: 8192`;
+      else if (func === 'center')
+        display.innerHTML = `${func}: 32768`;
+    }
     input.addEventListener('change', function() {
-      [func, node] = input.id.split('-');
-      console.debug('event ', func, 'node ', node, 'val ', this.value);
-      if (func === 'light') {
-        let display = document.getElementById(func+'-'+node+'-val');
+      [device, node, func] = input.id.split('-'); // func may be undefined
+      console.debug('event ', input.id, 'val ', this.value);
+      if (device === 'light') {
+        let display = document.getElementById(device+'-'+node+'-val');
         display.innerHTML = `Power: ${this.value}`;
-        sendLight(node, self.value);
+        sendLight(node, this.value);
       }
-      else if (func === 'exposure') {
-        let display = document.getElementById(func+'-'+node+'-val');
+      else if (device === 'exposure') {
+        let display = document.getElementById(device+'-'+node+'-val');
         display.innerHTML = `Time: ${this.value}ms`;
         if (self.cameraMap.hasOwnProperty(node)) {
           let port = self.cameraMap[node].port;
-          sendCamera(func, port, this.value);
+          sendCamera(device, port, this.value);
         }
         else
           console.warn(`missing cameraMap at ${this.id}! Cannot control this device`);
+      }
+      else if (device === 'servo') {
+        let display = document.getElementById(`${device}-${node}-${func}-val`);
+        display.innerHTML = `${func}: ${this.value}`;
+        sendServo(func, node, this.value);
       }
     }, false);
   });
@@ -55,16 +67,19 @@ function initListeners() {
   buttonsList.forEach(function(button, idx) {
     button.addEventListener('click', function() {
       console.log('clicked ', this.id);
-      [func, node, val] = this.id.split('-');
-      if (func === 'servo') {
+      [device, node, val] = this.id.split('-');
+      if (device === 'servo') {
+        let center = parseInt(document.getElementById(`${device}-${node}-center`).value);
+        let speed = parseInt(document.getElementById(`${device}-${node}-speed`).value);
+        console.log('HI = ', center, speed, device, node, this.id, val);
         if (val === 'pos') {
-          sendServo(node, '1');
+          sendServo('move', node, (center+speed).toString());
         }
         else if (val === 'neg') {
-          sendServo(node, '-1');
+          sendServo('move', node, (center-speed).toString());
         }
       }
-      else if (func === 'gripper' || func === 'sampler' || func === 'trim') {
+      else if (device === 'gripper' || device === 'sampler' || device === 'trim') {
         if (val === 'open') {
           sendGripper(node, '2');
         }
@@ -75,7 +90,7 @@ function initListeners() {
       else {
         if (self.cameraMap.hasOwnProperty(node)) {
           let port = self.cameraMap[node].port;
-          sendCamera(func, port, val);
+          sendCamera(device, port, val);
         }
         else
           console.warn(`missing cameraMap at ${this.id}!  Cannot control this device`);
@@ -91,6 +106,7 @@ function initMqtt() {
     if (connack) {
       console.log('MQTT connected to broker');
       mqttClient.subscribe('toCamera/cameraRegistration');
+      mqttClient.subscribe('telemetry/update');
     }
   });
   mqttClient.on('offline', function () {
@@ -121,6 +137,25 @@ function initMqtt() {
         }
       }
     }
+    else if (topic.match('telemetry/update') !== null) {
+      let obj = JSON.parse(payload);
+      for (let prop in obj) {
+        if (prop.match('light\.[0-9]+\.currentPower') !== null) {
+          [device, node, func] = prop.split('.');
+          let display = document.getElementById(`${device}-${node}-val`);
+          if (display !== null) {
+            display.innerHTML = `Power: ${obj[prop]}`;
+          }
+        }
+        else if (prop.match('servo\.[0-9]+\.') !== null) {
+          [device, node, func] = prop.split('.');
+          let display = document.getElementById(`${device}-${node}-${func}-val`);
+          if (display !== null) {
+            display.innerHTML = `${func}: ${obj[prop]}`;
+          }
+        }
+      }
+    }
   });
 }
 
@@ -129,8 +164,8 @@ function sendCamera (func, port, value) {
   mqttClient.publish(topic, value);
   console.debug('sendCamera', topic, value);
 };
-function sendServo (nodeId, value) {
-  let topic = 'servo/' + nodeId;
+function sendServo (func, nodeId, value) {
+  let topic = 'servo/' + nodeId + '/' + func;
   mqttClient.publish(topic, value);
 };
 function sendGripper (nodeId, value) {

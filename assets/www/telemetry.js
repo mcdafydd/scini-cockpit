@@ -38,9 +38,9 @@ function init() {
   initChart('imu_r', ['imu_r']);
   initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.53', 'sensors.imuPressure.54', 'sensors.imuPressure.55']);
   initChart('sensors.imuTemp', ['sensors.imuTemp.51', 'pilot.imuTemp.52', 'sensors.imuTemp.53', 'sensors.imuTemp.54', 'sensors.imuTemp.55']);
-  initChart('lights.bus_i', ['lights.bus_i.61', 'lights.bus_i.62', 'lights.bus_i.63', 'lights.bus_i.65', 'lights.bus_i.66']);
-  initChart('lights.bus_v', ['lights.bus_v.61', 'lights.bus_v.62', 'lights.bus_v.63', 'lights.bus_v.65', 'lights.bus_v.66']);
-  initChart('lights.temp', ['lights.temp.61', 'lights.temp.62', 'lights.temp.63', 'lights.temp.65', 'lights.temp.66']);
+  initChart('light.bus_i', ['light.bus_i.61', 'light.bus_i.62', 'light.bus_i.63', 'light.bus_i.65', 'light.bus_i.66']);
+  initChart('light.bus_v', ['light.bus_v.61', 'light.bus_v.62', 'light.bus_v.63', 'light.bus_v.65', 'light.bus_v.66']);
+  initChart('light.temp', ['light.temp.61', 'light.temp.62', 'light.temp.63', 'light.temp.65', 'light.temp.66']);
   initChart('motors.bus_i', ['motors.bus_i.12', 'motors.bus_i.13', 'motors.bus_i.14', 'motors.bus_i.15', 'motors.bus_i.16']);
   initChart('motors.bus_v', ['motors.bus_v.12', 'motors.bus_v.13', 'motors.bus_v.14', 'motors.bus_v.15', 'motors.bus_v.16']);
   initChart('motors.temp', ['motors.temp.12', 'motors.temp.13', 'motors.temp.14', 'motors.temp.15', 'motors.temp.16']);
