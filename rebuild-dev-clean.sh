@@ -6,6 +6,9 @@ F=`which killall`
 mkdir -p openrov/www
 rm openrov/www/*
 cp assets/www/* openrov/www
+mkdir -p openrov/www-ro
+rm openrov/www-ro/*
+cp assets/www-ro/* openrov/www-ro
 
 # Rebuild all services if $1 is empty, otherwise rebuild the specific service and pass it to 'up'
 

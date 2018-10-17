@@ -4,6 +4,9 @@
 mkdir -p openrov/www
 rm openrov/www/*
 cp assets/www/* openrov/www
+mkdir -p openrov/www-ro
+rm openrov/www-ro/*
+cp assets/www-ro/* openrov/www-ro
 
 echo "*************************"
 echo "WARNING - be careful about messing with named volumes in production, you could lose valuable data!"

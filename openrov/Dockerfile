@@ -88,6 +88,7 @@ RUN mkdir -p /etc/openrov \
     && mkdir -p /opt/openrov/logs \
     && mkdir -p /opt/openrov/images \
     && mkdir -p /opt/openrov/www \
+    && mkdir -p /opt/openrov/www-ro \
     && mkdir -p /opt/openrov/data \
     && mkdir -p /opt/openrov/config \
     && mkdir -p /opt/openrov/cockpit \
@@ -128,6 +129,7 @@ RUN cd /opt/openrov/cockpit \
 ## Even though we bind mount over these, we want to be able to run the full
 ## container standalone
 COPY www /opt/openrov/www/
+COPY www-ro /opt/openrov/www-ro/
 
 ## Let Docker know that OpenROV is listening on ports for HTTP, Node/Express, and Mosca MQTT
 EXPOSE 80

@@ -13,6 +13,7 @@ services:
       - "logs:/opt/openrov/logs"
       - "data:/opt/openrov/data"
       - "./assets/www:/opt/openrov/www"
+      - "./assets/www-ro:/opt/openrov/www-ro"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
       - "./assets/adjustments.prod.json:/opt/openrov/cockpit/src/lib/adjustments.json"
     ports:

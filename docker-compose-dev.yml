@@ -12,6 +12,7 @@ services:
       - "logs-dev:/opt/openrov/logs"
       - "data-dev:/opt/openrov/data"
       - "./assets/www:/opt/openrov/www"
+      - "./assets/www-ro:/opt/openrov/www-ro"
       - "./assets/adjustments.dev.json:/opt/openrov/cockpit/src/lib/adjustments.json"
       - "./assets/mqttConfig.dev.json:/opt/openrov/config/mqttConfig.json"
       - "~/.gitconfig:/root/.gitconfig"
@@ -135,7 +136,7 @@ services:
     restart: unless-stopped
     environment:
       - PARTNER=192.168.2.231
-      - NODEIDS="14 15 21 42 51 52"
+      - NODEIDS="14 15 21 42 51 52 81"
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
     ports:
