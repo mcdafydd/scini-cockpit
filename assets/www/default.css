@@ -47,7 +47,7 @@ div.smoothie-chart-tooltip {
   margin-top: 20px;
   font-family: Consolas, monospace;
   color: white;
-  font-size: 12px;
+  font-size: 18px;
   pointer-events: none;
   z-index: 4;
 }
