@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Troubleshooting</title>
+  <link href="default.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/browserMqtt.js"></script>
+  <script type="text/javascript" src="/nav.js"></script>
+  <script type="text/javascript" src="/troubleshooting.js"></script>
+</head>
+<body onload="init()">
+  <nav>
+    <ul>
+      <li><a href="index.html">Camera</a></li>
+      <li><a href="controls.html">Controls</a></li>
+      <li><a href="telemetry.html">Telemetry</a></li>
+      <li><a href="telemetry-brief.html">Telemetry Brief</a></li>
+      <li><a href="files.html">Files</a></li>
+      <li><a class="active" href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="video-gl.html">WebGL Camera (Beta)</a></li>
+      <li><div class="clock"></div></li>
+    </ul>
+  </nav>
+  <h1>No video</h1>
+  Make sure each step passes before proceeding.
+  <ol>
+    <li>The video tabs require Chrome v69+.  You have <b id="browser"></b></li>
+    <li>Make sure cameras are reachable from the surface.  You should see a single image open in a new tab by clicking the following URLs for each camera.  If one fails, check that camera.  If they all fail, there may be a network connectivity problem with the ROV.</li>
+    <ol style="list-style-type: lower-alpha; padding-bottom: 0;">
+      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.211:8081/img">211 Camera</a></li>
+      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.213:8081/img">213 Camera</a></li>
+      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.215:8081/img">215 Camera</a></li>
+      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.217:8081/img">217 Camera</a></li>
+      <li style="margin-left:2em; padding-bottom: 0;"><a target="_blank" href="http://192.168.2.218:8081/img">218 Camera</a></li>
+    </ol>
+    <li>Restart the mjpg_streamer processes by clicking the button.<button id="video-restart">Restart video streamers</button></li>
+    <li>Try reducing resolution to 1/4 or 1/2 on problematic cameras from the controls tab.</li>
+    <li>Try resetting the camera directly from it's native control page.</li>
+  </ol>
+  <h1>Device Control Failure</h1>
+  If you are unable to control a particular device or several devices:
+  <ol>
+    <li>Make sure that all expected RS485 bus "masters" are set to true or false appropriately in <a style="color:greenyellow;" href="files.html">assets/mqttConfig.json</a>.  If a device is set to false, it will receive no messages to pass onto the serial bus.  If multiple devices attached to the same RS485 bus are set to true, messages may be corrupted upon receipt.  Edit the file to make changes, save it, then stop and start the OpenROV server to make the changes take effect.</li>
+  </ol>
+</body>
+</html>

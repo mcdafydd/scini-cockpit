@@ -140,11 +140,16 @@ function initMqtt() {
     else if (topic.match('telemetry/update') !== null) {
       let obj = JSON.parse(payload);
       for (let prop in obj) {
+        // update text and slider or button
         if (prop.match('light\.[0-9]+\.currentPower') !== null) {
           [device, node, func] = prop.split('.');
           let display = document.getElementById(`${device}-${node}-val`);
           if (display !== null) {
             display.innerHTML = `Power: ${obj[prop]}`;
+          }
+          display = document.getElementById(`${device}-${node}`);
+          if (display !== null) {
+            display.value = obj[prop];
           }
         }
         else if (prop.match('servo\.[0-9]+\.') !== null) {
@@ -152,6 +157,33 @@ function initMqtt() {
           let display = document.getElementById(`${device}-${node}-${func}-val`);
           if (display !== null) {
             display.innerHTML = `${func}: ${obj[prop]}`;
+          }
+          display = document.getElementById(`${device}-${node}-${func}`);
+          if (display !== null) {
+            display.value = obj[prop];
+          }
+        }
+        else if (prop.match('camera\.[0-9]+\.') !== null) {
+          [device, node, func] = prop.split('.');
+          if (func !== 'exposure') {
+            let display = document.getElementById(`${func}-${node}-${obj[prop]}`);
+            if (display !== null) {
+              let items = document.getElementsByClassName(`${func}-${node}`);
+              for (let i in items.length) {
+                items[i].classList.remove('btn-current');
+              }
+              display.classList.add('btn-current');
+            }
+          }
+          else {
+            let display = document.getElementById(`${func}-${node}`);
+            if (display !== null) {
+              display.value = parseInt(obj[prop]);
+            }
+            display = document.getElementById(`${func}-${node}-val`);
+            if (display !== null) {
+              display.innerHTML = `${func}: ${obj[prop]}`;
+            }
           }
         }
       }

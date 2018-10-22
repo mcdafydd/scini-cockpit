@@ -17,93 +17,97 @@
 </head>
 
 <body onload="init()">
-  <ul>
-    <li><a href="index.html">Camera</a></li>
-    <li><a class="active" href="controls.html">Controls</a></li>
-    <li><a href="telemetry.html">Telemetry</a></li>
-    <li><a href="telemetry-brief.html">Telemetry Brief</a></li>
-    <li><a href="files.html">Files</a></li>
-    <li><div class="clock"></div></li>
-  </ul>
+  <nav>
+    <ul>
+      <li><a href="index.html">Camera</a></li>
+      <li><a class="active" href="controls.html">Controls</a></li>
+      <li><a href="telemetry.html">Telemetry</a></li>
+      <li><a href="telemetry-brief.html">Telemetry Brief</a></li>
+      <li><a href="files.html">Files</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="video-gl.html">WebGL Camera (Beta)</a></li>
+      <li><div class="clock"></div></li>
+    </ul>
+  </nav>
   <div class="grid">
     <div class="ctrl-item" data-id="1">
       <div class="item-content">
         <h5>211 Resolution</h5>
-        <button id="resolution-211-4">1/4</button>
-        <button id="resolution-211-2">1/2</button>
-        <button id="resolution-211-1")">full</button>
+        <button class="resolution-211" id="resolution-211-4">1/4</button>
+        <button class="resolution-211" id="resolution-211-2">1/2</button>
+        <button class="resolution-211" id="resolution-211-1")">full</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="2">
       <div class="item-content">
           <h5>213 Resolution</h5>
-        <button id="resolution-213-4">1/4</button>
-        <button id="resolution-213-2">1/2</button>
-        <button id="resolution-213-1")">full</button>
+        <button class="resolution-213" id="resolution-213-4">1/4</button>
+        <button class="resolution-213" id="resolution-213-2">1/2</button>
+        <button class="resolution-213" id="resolution-213-1")">full</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="3">
       <div class="item-content">
           <h5>215 Resolution</h5>
-        <button id="resolution-215-4">1/4</button>
-        <button id="resolution-215-2">1/2</button>
-        <button id="resolution-215-1")">full</button>
+        <button class="resolution-215" id="resolution-215-4">1/4</button>
+        <button class="resolution-215" id="resolution-215-2">1/2</button>
+        <button class="resolution-215" id="resolution-215-1")">full</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="4">
       <div class="item-content">
           <h5>217 Resolution</h5>
-        <button id="resolution-217-4">1/4</button>
-        <button id="resolution-217-2">1/2</button>
-        <button id="resolution-217-1")">full</button>
+        <button class="resolution-217" id="resolution-217-4">1/4</button>
+        <button class="resolution-217" id="resolution-217-2">1/2</button>
+        <button class="resolution-217" id="resolution-217-1")">full</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="5">
       <div class="item-content">
           <h5>218 Resolution</h5>
-        <button id="resolution-218-4">1/4</button>
-        <button id="resolution-218-2">1/2</button>
-        <button id="resolution-218-1")">full</button>
+        <button class="resolution-218" id="resolution-218-4">1/4</button>
+        <button class="resolution-218" id="resolution-218-2">1/2</button>
+        <button class="resolution-218" id="resolution-218-1")">full</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="6">
       <div class="item-content">
         <h5>211 Quality</h5>
-        <button id="quality-211-80">80%</button>
-        <button id="quality-211-85">85%</button>
-        <button id="quality-211-92">92%</button>
+        <button class="quality-211" id="quality-211-80">80%</button>
+        <button class="quality-211" id="quality-211-85">85%</button>
+        <button class="quality-211" id="quality-211-92">92%</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="7">
       <div class="item-content">
         <h5>213 Quality</h5>
-        <button id="quality-213-80">80%</button>
-        <button id="quality-213-85">85%</button>
-        <button id="quality-213-92">92%</button>
+        <button class="quality-213" id="quality-213-80">80%</button>
+        <button class="quality-213" id="quality-213-85">85%</button>
+        <button class="quality-213" id="quality-213-92">92%</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="8">
       <div class="item-content">
         <h5>215 Quality</h5>
-        <button id="quality-215-80">80%</button>
-        <button id="quality-215-85">85%</button>
-        <button id="quality-215-92">92%</button>
+        <button class="quality-215" id="quality-215-80">80%</button>
+        <button class="quality-215" id="quality-215-85">85%</button>
+        <button class="quality-215" id="quality-215-92">92%</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="9">
       <div class="item-content">
         <h5>217 Quality</h5>
-        <button id="quality-217-80">80%</button>
-        <button id="quality-217-85">85%</button>
-        <button id="quality-217-92">92%</button>
+        <button class="quality-217" id="quality-217-80">80%</button>
+        <button class="quality-217" id="quality-217-85">85%</button>
+        <button class="quality-217" id="quality-217-92">92%</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="10">
       <div class="item-content">
         <h5>218 Quality</h5>
-        <button id="quality-218-80">80%</button>
-        <button id="quality-218-85">85%</button>
-        <button id="quality-218-92">92%</button>
+        <button class="quality-218" id="quality-218-80">80%</button>
+        <button class="quality-218" id="quality-218-85">85%</button>
+        <button class="quality-218" id="quality-218-92">92%</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="11">
@@ -154,36 +158,36 @@
     <div class="ctrl-item" data-id="17">
       <div class="item-content">
         <h5>211 Raw/Normal Mode</h5>
-        <button id="color-211-5">Raw</button>
-        <button id="color-211-1">Normal</button>
+        <button class="color-211" id="color-211-5">Raw</button>
+        <button class="color-211" id="color-211-1">Normal</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="18">
       <div class="item-content">
         <h5>213 Raw/Normal Mode</h5>
-        <button id="color-213-5">Raw</button>
-        <button id="color-213-1">Normal</button>
+        <button class="color-213" id="color-213-5">Raw</button>
+        <button class="color-213" id="color-213-1">Normal</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="19">
       <div class="item-content">
         <h5>215 Raw/Normal Mode</h5>
-        <button id="color-215-5">Raw</button>
-        <button id="color-215-1">Normal</button>
+        <button class="color-215" id="color-215-5">Raw</button>
+        <button class="color-215" id="color-215-1">Normal</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="20">
       <div class="item-content">
         <h5>217 Raw/Normal Mode</h5>
-        <button id="color-217-5">Raw</button>
-        <button id="color-217-1">Normal</button>
+        <button class="color-217" id="color-217-5">Raw</button>
+        <button class="color-217" id="color-217-1">Normal</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="21">
       <div class="item-content">
         <h5>218 Raw/Normal Mode</h5>
-        <button id="color-218-5">Raw</button>
-        <button id="color-218-1">Normal</button>
+        <button class="color-218" id="color-218-5">Raw</button>
+        <button class="color-218" id="color-218-1">Normal</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="22">

@@ -1,30 +1,25 @@
-.btn-current {
-  border: 2px solid #0099CC;
-  background-color: rgb(137, 39, 190);
-}
-
-.ctrl-item {
+.tel-item {
   display: block;
   position: absolute;
-  width: 20%;
-	height: 100px;
+  width: 100%;
+	height: 160px;
 	margin: 5px;
   z-index: 1;
   background: #000;
   color: #fff;
 }
-.ctrl-item.muuri-item-dragging {
+.tel-item.muuri-item-dragging {
 	z-index: 3;
 	background: blue;
 }
-.ctrl-item.muuri-item-releasing {
+.tel-item.muuri-item-releasing {
 	z-index: 2;
 	background: blueViolet;
 }
-.ctrl-item.muuri-item-hidden {
+.tel-item.muuri-item-hidden {
   z-index: 0;
 }
-.ctrl-item-content {
+.tel-item-content {
   position: relative;
   width: 100%;
   height: 100%;

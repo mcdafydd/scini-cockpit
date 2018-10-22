@@ -22,6 +22,8 @@ self.addEventListener('message', function(e) {
       createImageBitmap(e.data)
       .then(img => {
         if (ctx) {
+          canvas.width = img.width;
+          canvas.height = img.height;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         }
       })

@@ -1,5 +1,28 @@
-// Maps chart timeSeries() objects to telemetry properties
 var dataMap = {};
+var chartMap = {};
+var previous = {};
+var selectMap = {
+  'CPU': 'cpu',
+  'Pressure (bar)': 'depth_p',
+  'Depth (m)': 'depth_d',
+  'Water temp (C)': 'depth_t',
+  'ROV pitch (deg)': 'imu_p',
+  'ROV pitch (deg)': 'imu_r',
+  'IMU Pressure': 'sensors.imuPressure',
+  'IMU Temp': 'sensors.imuTemp',
+  'Light Bus Current': 'light.bus_i',
+  'Light Bus Voltage': 'light.bus_v',
+  'Light Temp': 'light.temp',
+  'Motor Bus Current': 'motors.bus_i',
+  'Motor Bus Voltage': 'motors.bus_v',
+  'Motor Temp': 'motors.temp',
+  'Motor RPM': 'motors.rpm',
+  'Motor Lift': 'motors.lift',
+  'Motor Pitch': 'motors.pitch',
+  'Motor Strafe': 'motors.strafe',
+  'Motor Throttle': 'motors.throttle',
+  'Motor Yaw': 'motors.yaw'
+}
 
 // Array length must match highest initChart() numLines parameter
 var seriesOptions = [{
@@ -52,7 +75,8 @@ function init() {
   initChart('motors.yaw', ['motors.yaw']);
 
   initMqtt();
-  initGrid('telemetryLayout');
+  initGrid('telemetryBriefLayout');
+  initListeners();
 }
 
 function initMqtt() {
@@ -107,6 +131,7 @@ function initChart(chartName, properties) {
 
   // Add each TimeSeries to the chart
   // Bind MQTT telemetry update values to timeSeries
+  // Don't streamTo() chart until it is selected by user
   for (var i = 0; i < numLines; i++) {
     let series = new TimeSeries();
     let options = seriesOptions[i];
@@ -117,5 +142,34 @@ function initChart(chartName, properties) {
     dataMap[properties[i]] = series;
     timeline.addTimeSeries(series, options);
   }
-  timeline.streamTo(document.getElementById(chartName), 1000);
+  chartMap[chartName] = timeline;
+}
+
+// add change event listener and populate select list values
+function initListeners() {
+  const selectors = document.getElementsByTagName('select');
+  selectList = Array.prototype.slice.call(selectors);
+  selectList.forEach(function(selector, idx) {
+    for (let prop in selectMap) {
+      if (typeof selectMap[prop] !== 'function') {
+        let option = document.createElement("option");
+        option.text = prop;
+        selector.add(option);
+      }
+    }
+    selector.addEventListener('change', async function () {
+      // set chart title
+      let titleNode = document.getElementById(`title-${this.id}`);
+      titleNode.innerHTML = this.value;
+
+      let canvas = document.getElementById(`canvas-${this.id}`);
+      let timeline = chartMap[selectMap[this.value]];
+      // stop streaming data to previous chart selection
+      if (previous[this.id] instanceof SmoothieChart) {
+        await previous[this.id].stop();
+      }
+      previous[this.id] = timeline;
+      timeline.streamTo(canvas, 1000);
+    }, false);
+  });
 }

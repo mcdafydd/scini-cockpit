@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Telemetry</title>
+  <link href="default.css" rel="stylesheet" type="text/css">
+  <link href="telemetry-brief.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/browserMqtt.js"></script>
+  <script type="text/javascript" src="/smoothie.js"></script>
+  <script type="text/javascript" src="/hammer.min.js"></script>
+  <script type="text/javascript" src="/muuri.min.js"></script>
+  <script type="text/javascript" src="/nav.js"></script>
+  <script type="text/javascript" src="/grid-shared.js"></script>
+  <script type="text/javascript" src="/telemetry-brief.js"></script>
+</head>
+<body onload="init()">
+  <nav>
+    <ul>
+      <li><a href="index.html">Camera</a></li>
+      <li><a href="controls.html">Controls</a></li>
+      <li><a href="telemetry.html">Telemetry</a></li>
+      <li><a class="active" href="telemetry-brief.html">Telemetry Brief</a></li>
+      <li><a href="files.html">Files</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="video-gl.html">WebGL Camera (Beta)</a></li>
+      <li><div class="clock"></div></li>
+    </ul>
+  </nav>
+  <div class="grid">
+    <div class="tel-item" data-id="1">
+      <div class="item-content">
+        <select id="1"></select>
+        <h5 id="title-1"></h5>
+        <canvas id="canvas-1"></canvas>
+      </div>
+    </div>
+    <div class="tel-item" data-id="2">
+      <div class="item-content">
+        <select id="2"></select>
+        <h5 id="title-2"></h5>
+        <canvas id="canvas-2"></canvas>
+      </div>
+    </div>
+    <div class="tel-item" data-id="3">
+      <div class="item-content">
+        <select id="3"></select>
+        <h5 id="title-3"></h5>
+        <canvas id="canvas-3"></canvas>
+      </div>
+    </div>
+    <div class="tel-item" data-id="4">
+      <div class="item-content">
+        <select id="4"></select>
+        <h5 id="title-4"></h5>
+        <canvas id="canvas-4"></canvas>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
