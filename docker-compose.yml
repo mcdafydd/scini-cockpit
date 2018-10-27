@@ -2,7 +2,7 @@ version: "3"
 services:
 
   openrov:
-    build: openrov/
+    image: scini/openrov:build-20181027
     restart: always
     network_mode: "host"
     command: 192.168.2.215
@@ -42,6 +42,7 @@ services:
         max-file: "10"
 
   file-browser:
+    image: coderaiser/cloudcmd
     restart: always
     environment:
       - PORT=8000
@@ -53,7 +54,6 @@ services:
       - "logs:/opt/openrov/logs:ro"
       - "data:/opt/openrov/data:ro"
       - "./assets:/opt/openrov/assets:rw"
-    image: coderaiser/cloudcmd
     logging:
       options:
         max-size: "500k"
