@@ -448,10 +448,13 @@ class serialTester extends EventEmitter
     header.csrAddress = parsedObj.csrAddress;
 
     // Simulate CT sensor response
+    let counter = (Math.random() * 32768 + 32768).toFixed(0);
+    let temp = (Math.random() * 3.0).toFixed(3);
+    let conductivity = (Math.random() * 2.0 + 49.0).toFixed(3); // device unit is mS/cm
     if (parsedObj.device.cmd === 3) {
       ret = {
         cmd: 3,
-        ct: '61523\t01.331\t32.423\r\n'
+        ct: `${counter}\t${temp}\t${conductivity}\r\n`
       };
       retObj = {h: header, payload: scini.parser.ParserCtsensor.encode(ret)};
     }
