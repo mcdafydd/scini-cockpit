@@ -30,7 +30,7 @@ RUN apt-get update \
 
 ## Install node+nvm
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 8.11.2
+ENV NODE_VERSION 8.12.0
 ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 

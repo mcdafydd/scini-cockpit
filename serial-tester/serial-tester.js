@@ -1,4 +1,4 @@
-#!/root/.nvm/versions/node/v8.11.2/bin/node --inspect=9222
+#!/root/.nvm/versions/node/v8.12.0/bin/node --inspect=9222
 
 const pro4 = require('./pro4');
 const SerialPort = require('serialport');
@@ -241,9 +241,10 @@ class serialTester extends EventEmitter
     // pass length of motors array for dynamic parser length field
     this.parser = new pro4.Pro4(this.motorControl.motors.length, this);
 
+    this.tempIdx = 0;
     this.tiltIdx = 0;
-    this.pressure = 1000000;
-    this.pressureInc = 10000;
+    this.pressure = 10;
+    this.pressureInc = 0.1;
   }
 
   updateGrippers(parsedObj)
@@ -312,20 +313,6 @@ class serialTester extends EventEmitter
     header.flags = parsedObj.flags;
     header.csrAddress = parsedObj.csrAddress;
 
-    // update pressure mock value
-    // change to match sensor quantities - currently pascals
-    let pressureMin = 1000000;
-    let pressureMax = 15000000;
-    if (scini.pressure === pressureMin)
-      scini.pressureInc = 10000;
-    else if (scini.pressure === pressureMax)
-      scini.pressureInc = -10000;
-    else if (scini.pressure < pressureMin || scini.pressure > pressureMax) { // error
-      scini.pressureInc = 10000;
-      scini.pressure = 1000000;
-    }
-    scini.pressure += scini.pressureInc;
-
     let wave = [1.4,1.3,1.2,1.1,1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0,-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1.0,-1.1,-1.2,-1.3,-1.4];
     let tilt = Math.sin(wave[scini.tiltIdx])*180/Math.PI;
     if (scini.tiltIdx == wave.length-1)
@@ -351,7 +338,7 @@ class serialTester extends EventEmitter
       adc24v: 0,
       adc12v: 0,
       kellerTemperature: 0,
-      kellerPressure: scini.pressure,
+      kellerPressure: 0,
       kellerStatus: 0,
       pad: 0,
       accel_x: 0,
@@ -410,6 +397,125 @@ class serialTester extends EventEmitter
     return {h: header, payload: scini.parser.ParserBam.encode(ret)};
   }
 
+  updateKeller(parsedObj)
+  {
+    let header = {};
+    header.sync = pro4.constants.SYNC_RESPONSE8BE;
+    header.id = parsedObj.id;
+    header.flags = parsedObj.flags;
+    header.csrAddress = parsedObj.csrAddress;
+
+    // update pressure mock value
+    // change to match sensor quantities - currently bar;
+    let pressureMin = 10;
+    let pressureMax = 150;
+    if (scini.pressure === pressureMin)
+      scini.pressureInc = 0.1;
+    else if (scini.pressure === pressureMax)
+      scini.pressureInc = -0.1;
+    else if (scini.pressure < pressureMin || scini.pressure > pressureMax) { // error
+      scini.pressureInc = 0.1;
+      scini.pressure = 10;
+    }
+    scini.pressure += scini.pressureInc;
+
+    let wave = [1.4,1.3,1.2,1.1,1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0,-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1.0,-1.1,-1.2,-1.3,-1.4];
+    if (scini.tempIdx == wave.length-1)
+    {
+      scini.tempIdx = 0;
+    }
+    else
+      scini.tempIdx++;
+
+    let ret = {
+      cmd: 4,
+      uptime: 0,
+      status: 0x40,
+      pressure: scini.pressure,
+      temp: wave[scini.tempIdx]
+    }
+    return {h: header, payload: scini.parser.ParserKeller.encode(ret)};
+  }
+
+  updateBoard44(parsedObj)
+  {
+    let ret;
+    let retObj;
+    let header = {};
+    header.sync = pro4.constants.SYNC_RESPONSE8BE;
+    header.id = parsedObj.id;
+    header.flags = parsedObj.flags;
+    header.csrAddress = parsedObj.csrAddress;
+
+    // Simulate CT sensor response
+    if (parsedObj.device.cmd === 3) {
+      ret = {
+        cmd: 3,
+        ct: '61523\t01.331\t32.423\r\n'
+      };
+      retObj = {h: header, payload: scini.parser.ParserCtsensor.encode(ret)};
+    }
+    // Simulate Keller response
+    else if (parsedObj.device.cmd === 4) {
+      // update pressure mock value
+      // change to match sensor quantities - currently bar;
+      let pressureMin = 10;
+      let pressureMax = 150;
+      if (scini.pressure === pressureMin)
+        scini.pressureInc = 0.1;
+      else if (scini.pressure === pressureMax)
+        scini.pressureInc = -0.1;
+      else if (scini.pressure < pressureMin || scini.pressure > pressureMax) { // error
+        scini.pressureInc = 0.1;
+        scini.pressure = 10;
+      }
+      scini.pressure += scini.pressureInc;
+
+      let wave = [1.4,1.3,1.2,1.1,1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0,-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1.0,-1.1,-1.2,-1.3,-1.4];
+      if (scini.tempIdx == wave.length-1)
+      {
+        scini.tempIdx = 0;
+      }
+      else
+        scini.tempIdx++;
+      ret = {
+        cmd: 4,
+        uptime: 0,
+        status: 0x40,
+        pressure: scini.pressure,
+        temp: wave[scini.tempIdx]
+      };
+      retObj = {h: header, payload: scini.parser.ParserKeller.encode(ret)};
+    }
+    else if (parsedObj.device.cmd === 6) {
+      ret = {
+        cmd: 6,
+        uptime: 0,
+        status: 0x40,
+        pressure: 0,
+        minPressure: 0,
+        maxPressure: 0,
+        kellerCust0: 0,
+        kellerCust1: 0,
+        kellerScale0: 0,
+        acs764n1: 0,
+        acs764n2: 0,
+        acs764n3: 0,
+        acs764n4: 0,
+        adc0: 0,
+        adc1: 0,
+        adc2: 0,
+        adc3: 0,
+        adc4: 0,
+        adc5: 0,
+        adc6: 0,
+        adc7: 0
+      };
+      retObj = {h: header, payload: scini.parser.ParserBoard44Bam.encode(ret)};
+    }
+    return retObj;
+  }
+
   async sendUpstream(parsedObj)
   {
     let resp = {};
@@ -420,7 +526,9 @@ class serialTester extends EventEmitter
         sensors: scini.updateSensors,
         lights: scini.updateLights,
         motors: scini.updateMotors,
-        grippers: scini.updateGrippers
+        grippers: scini.updateGrippers,
+        keller: scini.updateKeller,
+        board44: scini.updateBoard44
       }
 
       if (funcMap.hasOwnProperty(parsedObj.type))
@@ -438,27 +546,27 @@ class serialTester extends EventEmitter
         }
         catch(e)
         {
-          logger.debug('BRIDGE: Payload parsing error = ', e.message, '; obj = ', parsedObj);
+          logger.debug('SERIAL: Payload parsing error = ', e.message, '; obj = ', parsedObj);
           parsedObj.status = pro4.constants.STATUS_ERROR;
         }
       }
     }
     else if (parsedObj.status === pro4.constants.STATUS_MOREDATA)
     {
-      logger.debug('BRIDGE: Waiting for more data');
+      logger.debug('SERIAL: Waiting for more data');
     }
 
     // don't use else if to support fall through changing status conditions during processing
     if (parsedObj.status === pro4.constants.STATUS_ERROR)
     {
-      logger.debug('BRIDGE: Error in PRO4 message parser; data = ', parsedObj.data.toString('hex'));
+      logger.debug('SERIAL: Error in PRO4 message parser; data = ', parsedObj.data.toString('hex'));
     }
 
     // well, kinda ugly for now but this needs to get done
     // invalid status
     if ([pro4.constants.STATUS_ERROR,pro4.constants.STATUS_MOREDATA,pro4.constants.STATUS_SUCCESS].indexOf(parsedObj.status) === -1)
     {
-      logger.debug('BRIDGE: Invalid PRO4 parser status = ', parsedObj.status);
+      logger.debug('SERIAL: Invalid PRO4 parser status = ', parsedObj.status);
     }
   };
 
