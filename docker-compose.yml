@@ -4,14 +4,10 @@ services:
   openrov:
     image: scini/openrov:build-20181027
     restart: always
-    network_mode: "host"
     command: 192.168.2.215
     cap_add:
       - SYS_NICE
     volumes:
-      - "images:/opt/openrov/images"
-      - "logs:/opt/openrov/logs"
-      - "data:/opt/openrov/data"
       - "./assets/www:/opt/openrov/www"
       - "./assets/www-ro:/opt/openrov/www-ro"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
@@ -23,11 +19,11 @@ services:
       - "3000:3000"
       - "7011:7011"
       - "8080:8080"
-      - "8100:8200"
-      - "8101:8201"
-      - "8102:8202"
-      - "8103:8203"
-      - "8104:8204"
+      - "8100:8100"
+      - "8101:8101"
+      - "8102:8102"
+      - "8103:8103"
+      - "8104:8104"
       - "8200:8200"
       - "8201:8201"
       - "8202:8202"
@@ -50,16 +46,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - "images:/opt/openrov/images:ro"
-      - "logs:/opt/openrov/logs:ro"
-      - "data:/opt/openrov/data:ro"
       - "./assets:/opt/openrov/assets:rw"
     logging:
       options:
         max-size: "500k"
         max-file: "10"
-
-volumes:
-  images:
-  logs:
-  data:

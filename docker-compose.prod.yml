@@ -1,0 +1,20 @@
+version: "3"
+services:
+
+  openrov:
+    network_mode: "host"
+    volumes:
+      - "images:/opt/openrov/images"
+      - "logs:/opt/openrov/logs"
+      - "data:/opt/openrov/data"
+
+  file-browser:
+    volumes:
+      - "images:/opt/openrov/images:ro"
+      - "logs:/opt/openrov/logs:ro"
+      - "data:/opt/openrov/data:ro"
+
+volumes:
+  images:
+  logs:
+  data:

@@ -2,47 +2,18 @@ version: "3"
 services:
 
   openrov:
+    image: scini/openrov:dev
     build: openrov/
     restart: unless-stopped
-    command: 192.168.2.215 dev
-    cap_add:
-      - SYS_NICE
+    command: 192.168.1.222 dev
     volumes:
       - "images-dev:/opt/openrov/images"
       - "logs-dev:/opt/openrov/logs"
       - "data-dev:/opt/openrov/data"
-      - "./assets/www:/opt/openrov/www"
-      - "./assets/www-ro:/opt/openrov/www-ro"
-      - "./assets/adjustments.dev.json:/opt/openrov/cockpit/src/lib/adjustments.json"
-      - "./assets/mqttConfig.dev.json:/opt/openrov/config/mqttConfig.json"
       - "~/.gitconfig:/root/.gitconfig"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "1883:1883"
-      - "3000:3000"
-      - "7011:7011"
-      - "8080:8080"
-      - "8100:8100"
-      - "8101:8101"
-      - "8102:8102"
-      - "8103:8103"
-      - "8104:8104"
-      - "8200:8200"
-      - "8201:8201"
-      - "8202:8202"
-      - "8203:8203"
-      - "8204:8204"
-      - "8300:8300"
-      - "9000:9000"
-      - "9229:9229"
     networks:
       scini:
         ipv4_address: 192.168.2.2
-    logging:
-      options:
-        max-size: "500k"
-        max-file: "10"
     depends_on:
       - fwdcam-mock
       - downcam-mock
@@ -54,8 +25,13 @@ services:
     restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
-    ports:
+    environment:
+      - MQTT_INTERFACE=eth0
+    expose:
+      - "1883"
+      - "3000"
       - "8081"
+      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.215
@@ -69,8 +45,13 @@ services:
     restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
-    ports:
-      - "8081:8081"
+    environment:
+      - MQTT_INTERFACE=eth0
+    expose:
+      - "1883"
+      - "3000"
+      - "8081"
+      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.218
@@ -84,8 +65,13 @@ services:
     restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
-    ports:
+    environment:
+      - MQTT_INTERFACE=eth0
+    expose:
+      - "1883"
+      - "3000"
       - "8081"
+      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.213
@@ -99,8 +85,13 @@ services:
     restart: unless-stopped
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
-    ports:
+    environment:
+      - MQTT_INTERFACE=eth0
+    expose:
+      - "1883"
+      - "3000"
       - "8081"
+      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.211
@@ -109,33 +100,11 @@ services:
         max-size: "50k"
         max-file: "10"
 
-  mqtt-fwd:
-    build: mqttclient-mock/
-    restart: unless-stopped
-    environment:
-      - MQTT_INTERFACE=eth0
-    volumes:
-      - "~/.gitconfig:/root/.gitconfig"
-    expose:
-      - "1883"
-      - "3000"
-      - "50000"
-    networks:
-      scini:
-        ipv4_address: 192.168.2.231
-    logging:
-      options:
-        max-size: "500k"
-        max-file: "10"
-    depends_on:
-      - openrov
-
-
   serial-fwd:
     build: serial-tester/
     restart: unless-stopped
     environment:
-      - PARTNER=192.168.2.231
+      - PARTNER=192.168.2.215
       - NODEIDS="14 15 21 42 51 52 81"
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
@@ -149,28 +118,17 @@ services:
         max-size: "500k"
         max-file: "10"
     depends_on:
-      - mqtt-fwd
+      - fwdcam-mock
 
   file-browser:
     restart: unless-stopped
-    environment:
-      - PORT=8000
-      - CLOUDCMD_ROOT=/opt/openrov/
-    ports:
-      - "8000:8000"
     volumes:
       - "images-dev:/opt/openrov/images:ro"
       - "logs-dev:/opt/openrov/logs:ro"
       - "data-dev:/opt/openrov/data:ro"
-      - "./assets:/opt/openrov/assets:rw"
-    image: coderaiser/cloudcmd
     networks:
       scini:
         ipv4_address: 192.168.2.151
-    logging:
-      options:
-        max-size: "500k"
-        max-file: "10"
 
 networks:
   scini:
