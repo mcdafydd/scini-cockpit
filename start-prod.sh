@@ -15,9 +15,11 @@ if [ -n "$CURRENTVER" -a -n "$REMOTEVERS" ]; then
       D=0
     fi
     if [ "$D" -gt "$CURRENTVER" ]; then
+      echo "*******************"
       echo "Newer container version build-$VER available in Docker Hub."
       echo "Change this value in docker-compose.yml and re-run start-prod.sh"
       echo "if you want to use it."
+      echo "*******************"
     fi
   done
 fi
