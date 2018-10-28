@@ -50,6 +50,8 @@ function init() {
   initChart('motors.strafe', ['motors.strafe']);
   initChart('motors.throttle', ['motors.throttle']);
   initChart('motors.yaw', ['motors.yaw']);
+  initChart('board44.temp', ['board44.temp.81', 'board44.temp.82', 'board44.temp.83', 'board44.temp.84', 'board44.temp.85']);
+  initChart('board44.conductivity', ['board44.conductivity.81', 'board44.conductivity.82', 'board44.conductivity.83', 'board44.conductivity.84', 'board44.conductivity.85']);
 
   initMqtt();
   initGrid('telemetryLayout');

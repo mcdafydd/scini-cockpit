@@ -36,8 +36,8 @@ function init() {
   initChart('depth_t', ['depth_t']);
   initChart('imu_p', ['imu_p']);
   initChart('imu_r', ['imu_r']);
-  initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.53', 'sensors.imuPressure.54', 'sensors.imuPressure.55']);
-  initChart('sensors.imuTemp', ['sensors.imuTemp.51', 'pilot.imuTemp.52', 'sensors.imuTemp.53', 'sensors.imuTemp.54', 'sensors.imuTemp.55']);
+  initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.57', 'sensors.imuPressure.58', 'sensors.imuPressure.67']);
+  initChart('sensors.imuTemp', ['sensors.imuTemp.51', 'pilot.imuTemp.52', 'sensors.imuTemp.57', 'sensors.imuTemp.58', 'sensors.imuTemp.67']);
   initChart('light.bus_i', ['light.bus_i.61', 'light.bus_i.62', 'light.bus_i.63', 'light.bus_i.65', 'light.bus_i.66']);
   initChart('light.bus_v', ['light.bus_v.61', 'light.bus_v.62', 'light.bus_v.63', 'light.bus_v.65', 'light.bus_v.66']);
   initChart('light.temp', ['light.temp.61', 'light.temp.62', 'light.temp.63', 'light.temp.65', 'light.temp.66']);
@@ -50,6 +50,8 @@ function init() {
   initChart('motors.strafe', ['motors.strafe']);
   initChart('motors.throttle', ['motors.throttle']);
   initChart('motors.yaw', ['motors.yaw']);
+  initChart('board44.temp', ['board44.temp.81', 'board44.temp.82', 'board44.temp.83', 'board44.temp.84', 'board44.temp.85']);
+  initChart('board44.conductivity', ['board44.conductivity.81', 'board44.conductivity.82', 'board44.conductivity.83', 'board44.conductivity.84', 'board44.conductivity.85']);
 
   initMqtt();
   initGrid('telemetryLayout');

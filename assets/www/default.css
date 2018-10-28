@@ -48,6 +48,22 @@ nav li a:hover:not(.active) {
   background-color: #111;
 }
 
+nav li span.dot {
+  height: 25px;
+  width: 25px;
+  background-color: yellow;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+nav li span.btn-active {
+  color: green;
+}
+
+nav li span.btn-inactive {
+  color: red;
+}
+
 div.smoothie-chart-tooltip {
   background: #444;
   padding: 1em;
