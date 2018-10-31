@@ -95,20 +95,17 @@ If you find yourself wanting to edit one of the other services, for example seri
 
 ** Still under development **
 
-The openrov entrypoint (not the scini-cockpit start-dev.sh script!) `start-dev.sh` starts node with the `--inspect` flag to enable remote debugging.  Port 9229 is exposed from the OpenROV container so that Chrome DevTools can find the instance.
-
-This quick method doesn't always seem to work so well when running node in a container:
+The openrov entrypoint (not the scini-cockpit start-dev.sh script!) `start-dev.sh` starts node with the `--inspect` flag to enable remote debugging.  Port 9229 is exposed from the OpenROV container so that Chrome DevTools can find the instance.  This seems to work fine for debugging the OpenROV container using node v6:
 
 * Open chrome and visit chrome://inspect
 * Look for src/cockpit.js and click **Inspect**
 
-This method seems to work OK for now:
+In node v8 (ie: serial-tester), the default inspect flag in node v8 doesn't bind to 0.0.0.0 and only to localhost.  In order to use inspect while running the dev container stack, you need to either:
 
-* Open a new Chrome tab and visit http://172.17.0.1:9229/json
-* Grab the URL in the devtoolsFrontendUrl value
-* Paste the URL into a new tab
+- Temporarily change `serial-tester/serial-tester.js` first line to read `--inspect=0.0.0.0:9222` (beware possible security issues!) and rebuild this container, or
+- Forward an SSH tunnel into the container
 
-For more info about this external URL and devtools see https://github.com/nodejs/node/issues/14639.
+For more info, see: https://nodejs.org/en/docs/guides/debugging-getting-started/#enabling-remote-debugging-scenarios 
 
 ## Clean Up Docker
 
