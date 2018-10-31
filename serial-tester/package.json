@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "binary-parser-encoder": "^1.3.2",
+    "binary-parser-encoder": "^1.4.1",
     "crc": "^3.7.0",
     "events": "^3.0.0",
     "javascript-state-machine": "^2.4.0",

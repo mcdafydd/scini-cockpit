@@ -31,13 +31,14 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-//const logger        = require('AppFramework.js').logger;
 const logger        = require('pino')();
 const Parser        = require('binary-parser-encoder').Parser;
 const StateMachine  = require('javascript-state-machine');
 const CRC           = require('crc');
 const EventEmitter  = require('events');
 const SmartBuffer   = require('smart-buffer').SmartBuffer;
+
+logger.level = 'warn';
 
 // ******************************************************************
 //  Device types are defined by VideoRay
@@ -203,23 +204,21 @@ class Pro4 extends EventEmitter
     this.ParserCtsensorReq = Parser.start()
       .string('ct', {
         encoding: 'ascii',
-        length: function() {
-          return this.length;
-        }
+        length: 33
       });
 
-    let stop = Parser.start();
+    this.stop = new Parser();
     // Board44 keller request payload
     this.ParserBoard44Req = new Parser()
       .uint8('cmd')
       .choice({
         tag: 'cmd',
         choices: {
-          3: this.ParserCtsensorReq, // When tagValue == 1, execute parser1
-          4: stop,
-          6: stop
+          3: this.ParserCtsensorReq,
+          4: this.stop,
+          6: this.stop
         }
-      })
+      });
 
     // Keller sensor module response payload
     this.ParserKeller = Parser.start()
@@ -234,10 +233,8 @@ class Pro4 extends EventEmitter
       .uint8('cmd')
       .string('ct', {
         encoding: 'ascii',
-        length: function() {
-          return this.length;
-        }
-       });
+        length: 33
+      });
 
     // Board 44 BAM data status response payload
     this.ParserBoard44Bam = Parser.start()
@@ -262,6 +259,18 @@ class Pro4 extends EventEmitter
       .floatle('adc5')
       .floatle('adc6')
       .floatle('adc7');
+
+    // PRO4 translator 44 board
+    this.ParserBoard44 = new Parser()
+      .uint8('cmd')
+      .choice('data', {
+        tag: 'cmd',
+        choices: {
+          3: this.ParserCtsensor,
+          4: this.ParserKeller,
+          6: this.ParserBoard44Bam
+        }
+      });
 
     // SCINI crumb644 PRO4 request payload
     // Pre-IMU payload
@@ -648,10 +657,10 @@ class Pro4 extends EventEmitter
       }
       case 81:
       {
-        this.parsedObj.type = 'keller';
+        this.parsedObj.type = 'board44';
         if (this.request == 0)
         {
-          return await this.ParserKeller.parse(this.parsedObj.payload);
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
         }
         else
         {
@@ -660,10 +669,10 @@ class Pro4 extends EventEmitter
       }
       case 82:
       {
-        this.parsedObj.type = 'keller';
+        this.parsedObj.type = 'board44';
         if (this.request == 0)
         {
-          return await this.ParserKeller.parse(this.parsedObj.payload);
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
         }
         else
         {
@@ -675,7 +684,7 @@ class Pro4 extends EventEmitter
         this.parsedObj.type = 'board44';
         if (this.request == 0)
         {
-          return await this.ParserCtsensor.parse(this.parsedObj.payload);
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
         }
         else
         {
@@ -687,7 +696,7 @@ class Pro4 extends EventEmitter
         this.parsedObj.type = 'board44';
         if (this.request == 0)
         {
-          return await this.ParserCtsensor.parse(this.parsedObj.payload);
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
         }
         else
         {
@@ -699,7 +708,43 @@ class Pro4 extends EventEmitter
         this.parsedObj.type = 'board44';
         if (this.request == 0)
         {
-          return await this.ParserCtsensor.parse(this.parsedObj.payload);
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
+        }
+        else
+        {
+          return await this.ParserBoard44Req.parse(this.parsedObj.payload);
+        }
+      }
+      case 86:
+      {
+        this.parsedObj.type = 'board44';
+        if (this.request == 0)
+        {
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
+        }
+        else
+        {
+          return await this.ParserBoard44Req.parse(this.parsedObj.payload);
+        }
+      }
+      case 87:
+      {
+        this.parsedObj.type = 'board44';
+        if (this.request == 0)
+        {
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
+        }
+        else
+        {
+          return await this.ParserBoard44Req.parse(this.parsedObj.payload);
+        }
+      }
+      case 88:
+      {
+        this.parsedObj.type = 'board44';
+        if (this.request == 0)
+        {
+          return await this.ParserBoard44.parse(this.parsedObj.payload);
         }
         else
         {

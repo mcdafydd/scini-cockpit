@@ -1,4 +1,6 @@
-#!/root/.nvm/versions/node/v8.12.0/bin/node --inspect=9222
+#!/root/.nvm/versions/node/v8.12.0/bin/node
+
+//--inspect=9222
 
 const pro4 = require('./pro4');
 const SerialPort = require('serialport');
@@ -505,8 +507,9 @@ class serialTester extends EventEmitter
           resp = funcMap[parsedObj.type](parsedObj);
           // get final packet to return
           let packetBuf = await scini.parser.encode(resp.h.sync, resp.h.id, resp.h.flags, resp.h.csrAddress, resp.payload.length, resp.payload);
-          if (process.env.STANDALONE == 'true') {
-            scini.parser.parseBuf.writeBuffer(packetBuf);
+          if (process.env.STANDALONE === 'true') {
+            let val = scini.parser.parseBuf.writeBuffer(packetBuf);
+            console.dir(val);
             let respObj = await scini.parser.parse(packetBuf.length, true);
             console.log(`sync1 = ${respObj.sync1}, sync2= ${respObj.sync2}, id = ${respObj.id}, flags = ${respObj.flags}, csr = ${respObj.csrAddress}, len = ${respObj.payloadLen}, crcHead = ${respObj.crcHead}, crcTotal = ${respObj.crcTotal}, type = ${respObj.type}`);
             console.dir(respObj.device);
@@ -551,9 +554,9 @@ class serialTester extends EventEmitter
 const scini = new serialTester();
 
 let port;
-// if STANDALONE=true, accept a hex string on stdin, process that and
+// if STANDALONE='true', accept a hex string on stdin, process that and
 // send it through parsing for easier troubleshooting than inside container
-if (process.env.STANDALONE == 'true') {
+if (process.env.STANDALONE === 'true') {
   logger.debug('SERIAL: Running in standalone mode');
   port = process.stdin;
   port.pipe(require('split')());
@@ -572,7 +575,7 @@ port.on('error', (e) => {
 
 // Switches the port into "flowing mode"
 port.on('data', (data) => {
-  if (process.env.STANDALONE == 'true') {
+  if (process.env.STANDALONE === 'true') {
     data = Buffer.from(data.toString('utf8'), 'hex');
   }
   scini.parser.emit('receivedSerialData', data);

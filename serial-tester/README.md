@@ -6,4 +6,5 @@ To run this in standalone mode without any dependency on the rest of the scini-c
 A few example hex strings (PRO4 requests) can be found in the file `testreq.pro4` .  Copy and paste a single line onto stdin and this will trigger the a full request parse and generation of a simulated response packet.  It will then parse the generated response packet and output the decoded object on stdout.
 
 # TODO
-Handle receivedSerialData events that send a PRO4 response instead of request.
+* Handle receivedSerialData events that send a PRO4 response instead of request.
+* Handle RangeError for Board44Bam response messages in standalone mode
