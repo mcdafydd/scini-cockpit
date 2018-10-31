@@ -137,9 +137,8 @@ class Pro4 extends EventEmitter
     // event listeners
     this.on('receivedSerialData', function(data) {
       this.receivedSerialData(data)});
-    // arrow function to reference parent context
     this.on('parseSerialData', function(length) {
-      this.parse(length)});
+      this.parse(length, false)});
     this.on('error', function(e) {
       logger.debug('PRO4: Error = ', e.message);
     });
@@ -309,9 +308,9 @@ class Pro4 extends EventEmitter
       .uint8('pad')
 
     // SCINI crumb644 PRO4 request payload
-    this.ParserBamReqNoop = new Parser()
+    this.ParserBamReqNoop = Parser.start()
       .uint8('cmd') // 0 = read?; 1 = read?; 2 = BAM; 0x40 = error string in payload (implemented?)
-    this.ParserBamReqFull = new Parser()
+    this.ParserBamReqFull = Parser.start()
       .uint8('cmd') // 0 = read?; 1 = read?; 2 = BAM; 0x40 = error string in payload (implemented?)
       .uint16le('servo1')
       .uint16le('servo2')
@@ -752,7 +751,7 @@ class Pro4 extends EventEmitter
   }
 
   // Decode PRO4 response, calculate checksum, and pass to device parser
-  async parse(length)
+  async parse(length, returnObject)
   {
     let self = this;
 
@@ -793,14 +792,16 @@ class Pro4 extends EventEmitter
         {
           let byte = self.parseBuf.readUInt8();
           if ((byte == self.constants.SYNC_RESPONSE8_b2 && self.parsedObj.sync1 == self.constants.SYNC_RESPONSE8_b1) ||
-              (byte == self.constants.SYNC_RESPONSE32_b2 && self.parsedObj.sync1 == self.constants.SYNC_RESPONSE32_b1))
+          (byte == self.constants.SYNC_RESPONSE32_b2 && self.parsedObj.sync1 == self.constants.SYNC_RESPONSE32_b1))
           {
+            self.request = 0;
             self.parsedObj.sync2 = byte;
             self.headBuf[1] = self.parsedObj.sync2;
           }
           else if ((byte == self.constants.SYNC_REQUEST8_b2 && self.parsedObj.sync1 == self.constants.SYNC_REQUEST8_b1) ||
               (byte == self.constants.SYNC_REQUEST32_b2 && self.parsedObj.sync1 == self.constants.SYNC_REQUEST32_b1))
           {
+            self.request = 1;
             self.parsedObj.sync2 = byte;
             self.headBuf[1] = self.parsedObj.sync2;
           }
@@ -895,7 +896,13 @@ class Pro4 extends EventEmitter
             else
             {
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
-              this.ctx.emit('parsedPacket', self.parsedObj);
+              if (returnObject === true) {
+                let copy = JSON.parse(JSON.stringify(self.parsedObj));;
+                self.reset();
+                return copy;
+              }
+              else
+                this.ctx.emit('parsedPacket', self.parsedObj);
               self.reset();
             }
           }
@@ -937,7 +944,13 @@ class Pro4 extends EventEmitter
               else
               {
                 self.parsedObj.status = self.constants.STATUS_SUCCESS;
-                this.ctx.emit('parsedPacket', self.parsedObj);
+                if (returnObject === true) {
+                  let copy = JSON.parse(JSON.stringify(self.parsedObj));;
+                  self.reset();
+                  return copy;
+                }
+                else
+                  this.ctx.emit('parsedPacket', self.parsedObj);
                 self.reset();
               }
             }
@@ -1017,7 +1030,13 @@ class Pro4 extends EventEmitter
               self.parsedObj.crcTotal = byte;
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
               self.parsedObj.device = await self.parsePayload();
-              this.ctx.emit('parsedPacket', self.parsedObj);
+              if (returnObject === true) {
+                let copy = JSON.parse(JSON.stringify(self.parsedObj));;
+                self.reset();
+                return copy;
+              }
+              else
+                this.ctx.emit('parsedPacket', self.parsedObj);
             }
           }
           else // 4-byte CRC
@@ -1058,7 +1077,13 @@ class Pro4 extends EventEmitter
               logger.debug('PRO4: Good total CRC32; obj = ', self.parsedObj);
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
               self.parsedObj.device = await self.parsePayload();
-              this.ctx.emit('parsedPacket', self.parsedObj);
+              if (returnObject === true) {
+                let copy = JSON.parse(JSON.stringify(self.parsedObj));;
+                self.reset();
+                return copy;
+              }
+              else
+                this.ctx.emit('parsedPacket', self.parsedObj);
             }
 
             if (self.counter <= 0 || self.counter > self.parsedObj.crcTotal.length) // something went awry

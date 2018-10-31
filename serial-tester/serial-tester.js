@@ -241,6 +241,9 @@ class serialTester extends EventEmitter
     // pass length of motors array for dynamic parser length field
     this.parser = new pro4.Pro4(this.motorControl.motors.length, this);
 
+    // used for simulated device data
+    this.rand = 0.213;
+    this.randomInterval = setInterval( () => { this.rand = Math.random(); }, 100);
     this.tempIdx = 0;
     this.tiltIdx = 0;
     this.pressure = 10;
@@ -277,8 +280,8 @@ class serialTester extends EventEmitter
 
     let ret = {
       deviceType: 0,
-      bus_v: (Math.random() * (48.3 - 48.0) + 48.0).toFixed(2),
-      bus_i: (Math.random() * (1.58 - 0.1) + 0.1).toFixed(2),
+      bus_v: (scini.rand * (48.3 - 48.0) + 48.0).toFixed(2),
+      bus_i: (scini.rand * (1.58 - 0.1) + 0.1).toFixed(2),
       fault: 0
     }
     return {h: header, payload: scini.parser.ParserLights.encode(ret)};
@@ -292,13 +295,11 @@ class serialTester extends EventEmitter
     header.flags = parsedObj.flags;
     header.csrAddress = parsedObj.csrAddress;
 
-    let rand = Math.random();
-
     let ret = {
       deviceType: 0,
-      rpm: (rand * (2000.0 - 50.0) + 50.0).toFixed(2),
-      bus_v: (rand * (48.3 - 48.0) + 48.0).toFixed(2),
-      bus_i: (rand * (1.58 - 0.1) + 0.1).toFixed(2),
+      rpm: (scini.rand * (2000.0 - 50.0) + 50.0).toFixed(2),
+      bus_v: (scini.rand * (48.3 - 48.0) + 48.0).toFixed(2),
+      bus_i: (scini.rand * (1.58 - 0.1) + 0.1).toFixed(2),
       fault: 0
     }
     return {h: header, payload: scini.parser.ParserMotors.encode(ret)};
@@ -315,84 +316,46 @@ class serialTester extends EventEmitter
 
     let wave = [1.4,1.3,1.2,1.1,1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0,-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1.0,-1.1,-1.2,-1.3,-1.4];
     let tilt = Math.sin(wave[scini.tiltIdx])*180/Math.PI;
-    if (scini.tiltIdx == wave.length-1)
-    {
-      scini.tiltIdx = 0;
+    if (parsedObj.id == 52) {
+      if (scini.tiltIdx == wave.length-1)
+      {
+        scini.tiltIdx = 0;
+      }
+      else
+        scini.tiltIdx++;
     }
-    else
-      scini.tiltIdx++;
 
     let ret = {
       scni: 'SCNI',
-      len: 0,
+      len: 80,
       cmd: 0,
       servo1: 0,
       servo2: 0,
       gpioOut: 0,
       gpioIn: 0,
-      acs764: [0, 0, 0, 0],
-      tmp102: [0, 0, 0, 0],
-      adcKelvin: [0, 0],
-      adcVolts: [0, 0, 0],
-      adc48v: 0,
-      adc24v: 0,
-      adc12v: 0,
-      kellerTemperature: 0,
-      kellerPressure: 0,
-      kellerStatus: 0,
+      acs764: [scini.rand + 5.0, scini.rand + 5.0, scini.rand + 5.0, scini.rand + 5.0],
+      tmp102: [scini.rand + 50.0, scini.rand + 50.0, scini.rand + 50.0, scini.rand + 50.0],
+      adcKelvin: [scini.rand + 500.0, scini.rand + 500.0],
+      adcVolts: [scini.rand + 48.0, scini.rand + 48.0, scini.rand + 48.0],
+      adc48v: scini.rand + 48.0,
+      adc24v: scini.rand + 24.0,
+      adc12v: scini.rand + 12.0,
+      kellerTemperature: scini.rand + 50.0,
+      kellerPressure: scini.rand + 8.0,
+      kellerStatus: 64,
       pad: 0,
       accel_x: 0,
       accel_y: 0,
       accel_z: 0,
-      angle_x: tilt,
-      angle_y: tilt,
+      angle_x: tilt.toFixed(0),
+      angle_y: tilt.toFixed(0),
       angle_z: 0,
       rot_x: 0,
       rot_y: 0,
       rot_z: 0,
-      uptimeMillis: 0,
-      imuPressure: 0,
-      imuTemp: 0
-    }
-    return {h: header, payload: scini.parser.ParserBam.encode(ret)};
-  }
-
-  updateSensors(parsedObj)
-  {
-    let header = {};
-    header.sync = pro4.constants.SYNC_RESPONSE8BE;
-    header.id = parsedObj.id;
-    header.flags = parsedObj.flags;
-    header.csrAddress = parsedObj.csrAddress;
-
-    let ret = {
-      scni: 'SCNI',
-      len: 0,
-      cmd: 0,
-      servo1: 0,
-      servo2: 0,
-      gpioOut: 0,
-      gpioIn: 0,
-      acs764: [0, 0, 0, 0],
-      tmp102: [0, 0, 0, 0],
-      adcKelvin: [0, 0],
-      adcVolts: [0, 0, 0],
-      adc48v: 0,
-      adc24v: 0,
-      adc12v: 0,
-      kellerTemperature: 0,
-      kellerPressure: 0,
-      kellerStatus: 0,
-      pad: 0,
-      accel_x: 0,
-      accel_y: 0,
-      accel_z: 0,
-      angle_x: 0,
-      angle_y: 0,
-      angle_z: 0,
-      rot_x: 0,
-      rot_y: 0,
-      rot_z: 0
+      uptimeMillis: (scini.rand * 16384 + 16384).toFixed(0),
+      imuPressure: (scini.rand * 16384 + 16384).toFixed(0),
+      imuTemp: (scini.rand * 16384 + 16384).toFixed(0)
     }
     return {h: header, payload: scini.parser.ParserBam.encode(ret)};
   }
@@ -448,9 +411,9 @@ class serialTester extends EventEmitter
     header.csrAddress = parsedObj.csrAddress;
 
     // Simulate CT sensor response
-    let counter = (Math.random() * 32768 + 32768).toFixed(0);
-    let temp = (Math.random() * 3.0).toFixed(3);
-    let conductivity = (Math.random() * 2.0 + 49.0).toFixed(3); // device unit is mS/cm
+    let counter = (scini.rand * 32768 + 32768).toFixed(0);
+    let temp = (scini.rand * 3.0).toFixed(3);
+    let conductivity = (scini.rand * 2.0 + 49.0).toFixed(3); // device unit is mS/cm
     if (parsedObj.device.cmd === 3) {
       ret = {
         cmd: 3,
@@ -490,29 +453,30 @@ class serialTester extends EventEmitter
       };
       retObj = {h: header, payload: scini.parser.ParserKeller.encode(ret)};
     }
+    // board44 BAM
     else if (parsedObj.device.cmd === 6) {
       ret = {
         cmd: 6,
         uptime: 0,
         status: 0x40,
-        pressure: 0,
-        minPressure: 0,
-        maxPressure: 0,
-        kellerCust0: 0,
-        kellerCust1: 0,
-        kellerScale0: 0,
-        acs764n1: 0,
-        acs764n2: 0,
-        acs764n3: 0,
-        acs764n4: 0,
-        adc0: 0,
-        adc1: 0,
-        adc2: 0,
-        adc3: 0,
-        adc4: 0,
-        adc5: 0,
-        adc6: 0,
-        adc7: 0
+        pressure: scini.rand + 8.0,
+        minPressure: 1.0,
+        maxPressure: 10.0,
+        kellerCust0: scini.rand,
+        kellerCust1: scini.rand,
+        kellerScale0: scini.rand + 3.0,
+        acs764n1: scini.rand * 0.3 + 5.0,
+        acs764n2: scini.rand * 0.3 + 5.0,
+        acs764n3: scini.rand * 0.3 + 5.0,
+        acs764n4: scini.rand * 0.3 + 5.0,
+        adc0: scini.rand * 0.3 + 5.0,
+        adc1: scini.rand * 0.3 + 5.0,
+        adc2: scini.rand * 0.3 + 5.0,
+        adc3: scini.rand * 0.3 + 5.0,
+        adc4: scini.rand * 0.3 + 5.0,
+        adc5: scini.rand * 0.3 + 5.0,
+        adc6: scini.rand * 0.3 + 5.0,
+        adc7: scini.rand * 0.3 + 5.0
       };
       retObj = {h: header, payload: scini.parser.ParserBoard44Bam.encode(ret)};
     }
@@ -526,7 +490,7 @@ class serialTester extends EventEmitter
     {
       let funcMap = {
         pilot: scini.updateNav,
-        sensors: scini.updateSensors,
+        sensors: scini.updateNav,
         lights: scini.updateLights,
         motors: scini.updateMotors,
         grippers: scini.updateGrippers,
@@ -538,18 +502,27 @@ class serialTester extends EventEmitter
       {
         try
         {
-          resp = await funcMap[parsedObj.type](parsedObj);
+          resp = funcMap[parsedObj.type](parsedObj);
           // get final packet to return
           let packetBuf = await scini.parser.encode(resp.h.sync, resp.h.id, resp.h.flags, resp.h.csrAddress, resp.payload.length, resp.payload);
-          port.write(packetBuf, function(err) {
-            if (err) {
-              return logger.debug('Error on write: ', err.message);
-            }
-          });
+          if (process.env.STANDALONE == 'true') {
+            scini.parser.parseBuf.writeBuffer(packetBuf);
+            let respObj = await scini.parser.parse(packetBuf.length, true);
+            console.log(`sync1 = ${respObj.sync1}, sync2= ${respObj.sync2}, id = ${respObj.id}, flags = ${respObj.flags}, csr = ${respObj.csrAddress}, len = ${respObj.payloadLen}, crcHead = ${respObj.crcHead}, crcTotal = ${respObj.crcTotal}, type = ${respObj.type}`);
+            console.dir(respObj.device);
+          }
+          else {
+            port.write(packetBuf, function(err) {
+              if (err) {
+                return logger.debug('Error on write: ', err.message);
+              }
+            });
+          }
         }
         catch(e)
         {
-          logger.debug('SERIAL: Payload parsing error = ', e.message, '; obj = ', parsedObj);
+          logger.debug('SERIAL: Payload parsing error = ', e.message);
+          logger.debug(e.stack);
           parsedObj.status = pro4.constants.STATUS_ERROR;
         }
       }
@@ -562,7 +535,7 @@ class serialTester extends EventEmitter
     // don't use else if to support fall through changing status conditions during processing
     if (parsedObj.status === pro4.constants.STATUS_ERROR)
     {
-      logger.debug('SERIAL: Error in PRO4 message parser; data = ', parsedObj.data.toString('hex'));
+      logger.debug('SERIAL: Error in PRO4 message parser; data = ', parsedObj.toString('hex'));
     }
 
     // well, kinda ugly for now but this needs to get done
@@ -576,9 +549,20 @@ class serialTester extends EventEmitter
 } // end class serialTester
 
 const scini = new serialTester();
-const port = new SerialPort(process.env.PTY, {
-  baudRate: 115200
-});
+
+let port;
+// if STANDALONE=true, accept a hex string on stdin, process that and
+// send it through parsing for easier troubleshooting than inside container
+if (process.env.STANDALONE == 'true') {
+  logger.debug('SERIAL: Running in standalone mode');
+  port = process.stdin;
+  port.pipe(require('split')());
+}
+else {
+  port = new SerialPort(process.env.PTY, {
+    baudRate: 115200
+  });
+}
 
 // Open errors will be emitted as an error event
 port.on('error', (e) => {
@@ -588,5 +572,8 @@ port.on('error', (e) => {
 
 // Switches the port into "flowing mode"
 port.on('data', (data) => {
+  if (process.env.STANDALONE == 'true') {
+    data = Buffer.from(data.toString('utf8'), 'hex');
+  }
   scini.parser.emit('receivedSerialData', data);
 });
