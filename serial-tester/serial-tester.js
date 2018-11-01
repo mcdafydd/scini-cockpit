@@ -508,8 +508,7 @@ class serialTester extends EventEmitter
           // get final packet to return
           let packetBuf = await scini.parser.encode(resp.h.sync, resp.h.id, resp.h.flags, resp.h.csrAddress, resp.payload.length, resp.payload);
           if (process.env.STANDALONE === 'true') {
-            let val = scini.parser.parseBuf.writeBuffer(packetBuf);
-            console.dir(val);
+            scini.parser.parseBuf.writeBuffer(packetBuf);
             let respObj = await scini.parser.parse(packetBuf.length, true);
             console.log(`sync1 = ${respObj.sync1}, sync2= ${respObj.sync2}, id = ${respObj.id}, flags = ${respObj.flags}, csr = ${respObj.csrAddress}, len = ${respObj.payloadLen}, crcHead = ${respObj.crcHead}, crcTotal = ${respObj.crcTotal}, type = ${respObj.type}`);
             console.dir(respObj.device);
