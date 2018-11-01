@@ -31,9 +31,9 @@ var seriesOptions = [{
 
 function init() {
   initChart('cpu', ['cpu']);
-  initChart('depth_p', ['depth_p']);
-  initChart('depth_d', ['depth_d']);
-  initChart('depth_t', ['depth_t']);
+  initChart('depth_p', ['depth_p', 'board44.pressure.81']);
+  initChart('depth_d', ['depth_d', 'board44.depth.81']);
+  initChart('depth_t', ['depth_t', 'board44.temp.81']);
   initChart('imu_p', ['imu_p']);
   initChart('imu_r', ['imu_r']);
   initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.57', 'sensors.imuPressure.58', 'sensors.imuPressure.67']);
@@ -50,8 +50,8 @@ function init() {
   initChart('motors.strafe', ['motors.strafe']);
   initChart('motors.throttle', ['motors.throttle']);
   initChart('motors.yaw', ['motors.yaw']);
-  initChart('board44.temp', ['board44.temp.81', 'board44.temp.82', 'board44.temp.83', 'board44.temp.84', 'board44.temp.85']);
-  initChart('board44.conductivity', ['board44.conductivity.81', 'board44.conductivity.82', 'board44.conductivity.83', 'board44.conductivity.84', 'board44.conductivity.85']);
+  initChart('ctsensor.temp', ['board44.temp.85']);
+  initChart('ctsensor.conductivity', ['board44.conductivity.85']);
 
   initMqtt();
   initGrid('telemetryLayout');
@@ -77,6 +77,7 @@ function initMqtt() {
   });
   client.on('message', (topic, payload) => {
     let obj = JSON.parse(payload);
+    console.dir(obj);
     if (topic === 'telemetry/update') {
       let ts = new Date().getTime();
       for (let prop in obj) {
@@ -96,13 +97,13 @@ function initChart(chartName, properties) {
   }
   // Build the chart object
   var timeline = new SmoothieChart({
-    millisPerPixel: 20,
+    millisPerPixel: 500, // 5 min per chart
     responsive: true,
     tooltip: true,
     grid: {
       strokeStyle: '#555555',
       lineWidth: 1,
-      millisPerLine: 1000,
+      millisPerLine: 20000,
       verticalSections: 4,
     }
   });

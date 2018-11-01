@@ -126,6 +126,7 @@ function initMqtt() {
         this.cameraMap[id] = {};
         this.cameraMap[id].port = val[0];
         this.cameraMap[id].ts = val[3];
+        this.cameraMap[id].record = val[4];
         window.localStorage.setItem('cameraMap', JSON.stringify(this.cameraMap));
       }
       // make sure it is still valid
@@ -133,7 +134,19 @@ function initMqtt() {
         if (this.cameraMap[id].ts !== val[3]) {
           this.cameraMap[id].port = val[0];
           this.cameraMap[id].ts = val[3];
+          this.cameraMap[id].record = val[4];
           window.localStorage.setItem('cameraMap', JSON.stringify(this.cameraMap));
+        }
+      }
+      let statusNode = document.getElementById(`video-${id}-record`);
+      if (statusNode) {
+        if (this.cameraMap[id].record == true) {
+          statusNode.classList.remove('btn-inactive');
+          statusNode.classList.add('btn-active');
+        }
+        else {
+          statusNode.classList.remove('btn-active');
+          statusNode.classList.add('btn-inactive');
         }
       }
     }

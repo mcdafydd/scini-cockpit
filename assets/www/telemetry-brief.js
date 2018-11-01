@@ -3,11 +3,11 @@ var chartMap = {};
 var previous = {};
 var selectMap = {
   'CPU': 'cpu',
-  'Pressure (bar)': 'depth_p',
-  'Depth (m)': 'depth_d',
-  'Water temp (C)': 'depth_t',
+  'ROV (82) and Clump (81) Water Pressure (bar)': 'depth_p',
+  'ROV (82) and Clump (81) Water Depth (m)': 'depth_d',
+  'ROV (82) and Clump (81) Water Temperature (C)': 'depth_t',
   'ROV pitch (deg)': 'imu_p',
-  'ROV pitch (deg)': 'imu_r',
+  'ROV roll (deg)': 'imu_r',
   'IMU Pressure': 'sensors.imuPressure',
   'IMU Temp': 'sensors.imuTemp',
   'Light Bus Current': 'light.bus_i',
@@ -22,8 +22,8 @@ var selectMap = {
   'Motor Strafe': 'motors.strafe',
   'Motor Throttle': 'motors.throttle',
   'Motor Yaw': 'motors.yaw',
-  'Board44 Temp (C)': 'board44.temp',
-  'CT Sensor Conductivity (mS/cm)': 'board44.conductivity'
+  'CT Sensor Temp (C)': 'ctsensor.temp',
+  'CT Sensor Conductivity (mS/cm)': 'ctsensor.conductivity'
 }
 
 // Array length must match highest initChart() numLines parameter
@@ -56,9 +56,9 @@ var seriesOptions = [{
 
 function init() {
   initChart('cpu', ['cpu']);
-  initChart('depth_p', ['depth_p']);
-  initChart('depth_d', ['depth_d']);
-  initChart('depth_t', ['depth_t']);
+  initChart('depth_p', ['depth_p', 'board44.pressure.81']);
+  initChart('depth_d', ['depth_d', 'board44.depth.81']);
+  initChart('depth_t', ['depth_t', 'board44.temp.81']);
   initChart('imu_p', ['imu_p']);
   initChart('imu_r', ['imu_r']);
   initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.57', 'sensors.imuPressure.58', 'sensors.imuPressure.67']);
@@ -75,8 +75,8 @@ function init() {
   initChart('motors.strafe', ['motors.strafe']);
   initChart('motors.throttle', ['motors.throttle']);
   initChart('motors.yaw', ['motors.yaw']);
-  initChart('board44.temp', ['board44.temp.81', 'board44.temp.82', 'board44.temp.83', 'board44.temp.84', 'board44.temp.85']);
-  initChart('board44.conductivity', ['board44.conductivity.81', 'board44.conductivity.82', 'board44.conductivity.83', 'board44.conductivity.84', 'board44.conductivity.85']);
+  initChart('ctsensor.temp', ['board44.temp.85']);
+  initChart('ctsensor.conductivity', ['board44.conductivity.85']);
 
   initMqtt();
   initGrid('telemetryBriefLayout');
@@ -122,13 +122,13 @@ function initChart(chartName, properties) {
   }
   // Build the chart object
   var timeline = new SmoothieChart({
-    millisPerPixel: 20,
+    millisPerPixel: 1500,
     responsive: true,
     tooltip: true,
     grid: {
       strokeStyle: '#555555',
       lineWidth: 1,
-      millisPerLine: 1000,
+      millisPerLine: 40000,
       verticalSections: 4,
     }
   });
