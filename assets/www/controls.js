@@ -141,12 +141,12 @@ function initMqtt() {
       let statusNode = document.getElementById(`video-${id}-record`);
       if (statusNode) {
         if (this.cameraMap[id].record == true) {
-          statusNode.classList.remove('btn-inactive');
-          statusNode.classList.add('btn-active');
+          statusNode.classList.remove('dot-inactive');
+          statusNode.classList.add('dot-active');
         }
         else {
-          statusNode.classList.remove('btn-active');
-          statusNode.classList.add('btn-inactive');
+          statusNode.classList.remove('dot-active');
+          statusNode.classList.add('dot-inactive');
         }
       }
     }
@@ -183,9 +183,9 @@ function initMqtt() {
             if (display !== null) {
               let items = document.getElementsByClassName(`${func}-${node}`);
               for (let i in items.length) {
-                items[i].classList.remove('btn-current');
+                items[i].classList.remove('dot-current');
               }
-              display.classList.add('btn-current');
+              display.classList.add('dot-current');
             }
           }
           else {

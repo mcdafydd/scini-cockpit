@@ -48,20 +48,59 @@ nav li a:hover:not(.active) {
   background-color: #111;
 }
 
-nav li span.dot {
+.dot {
   height: 25px;
   width: 25px;
   background-color: yellow;
   border-radius: 50%;
   display: inline-block;
+  position: relative;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
-nav li span.btn-active {
+.dot .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 10;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.dot:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* Tooltip text */
+.dot .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.dot-active {
   color: green;
 }
 
-nav li span.btn-inactive {
+.dot-inactive {
   color: red;
+}
+
+.dot-current {
+  border: 2px solid #0099CC;
+  background-color: rgb(137, 39, 190);
 }
 
 div.smoothie-chart-tooltip {
