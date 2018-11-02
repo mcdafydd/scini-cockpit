@@ -132,6 +132,18 @@ The containers run the same MQTT client software deployed on the Elphel 353 came
 
 These containers use an updated version of the openrov-cockpit's pro4.js parsing module, that includes both request and response parsing as well as payload encoding, to simulate the actions of MCU modules (ie: thrusters, lights, sensors) in the ROV.  It will generate simulated telemetry to send back upstream to the OpenROV server and any connected browser users.
 
+### Serial-tester Standalone Mode
+
+You can run this container in standalone mode without any dependency on the rest of the scini-cockpit containers.  First:
+
+```
+nvm install v8.12.0 (or latest v8+)
+nvm use v8.12.0 (if already installed)
+PTY="/dev/null" STANDALONE="true" NODEIDS="11" node --inspect serial-tester.js
+```
+
+A few example hex strings (PRO4 requests) can be found in the file `testreq.pro4` .  Copy and paste a single line from that file onto stdin and hit ENTER. This will trigger the a full request parse and generation of a simulated response packet.  It will then parse the generated response packet and output the decoded object on stdout.
+
 # Rebuilding Cached Services
 
 If you've built the stack at least once, the cloned git repositories will be cached in that RUN layer of its container.  If you need to force Docker to pull down changes from the remote repository, remove any named volumes and then rebuild that one service.  There are helper scripts `rebuild-dev.sh` and `rebuild-dev-clean.sh` to assist with these tasks.
