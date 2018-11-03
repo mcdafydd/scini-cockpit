@@ -3,9 +3,17 @@
 This repository contains that allow for developing the Dockerfiles necessary to build a test SCINI ROV
 for development.  It is the parent repository for all of the SCINI surface-to-serial components.  Code that runs on devices at the end of an RS-485 or other non-IP connection does not currently live on github and does not get built by this repository.  This includes everything a user sees when they open the OpenROV cockpit in a browser, control devices using a joystick or keyboard/mouse action,
 
+# Quick getting started
+
+0. Clone this repository
+1. `cd scini-cockpit`
+2. Review the script `./install-prereqs.sh`, which installs docker, other dependencies, and performs some setup.
+3. Run `./start-dev.sh` (this will take a while to run the first time to build local containers and pull down the openrov container from docker hub)
+4. To access the dev openrov instance, open Chrome and visit `http://localhost`. To access the co-pilot interfaces found in `assets/www` go to http://localhost:8204, or port `8200`, `8201`, or `8203`.
+
 # Prerequisites
 
-- Chrome 69+ is required to view the MJPEG streams due to use of the new OffscreenCanvas() with 2d rendering context 
+- Chrome 69+ is required to view the MJPEG streams due to use of the new OffscreenCanvas() with 2d rendering context
 - A USB game joystick is optional as all of the cockpit controls can be accessed by keyboard.
 
 Ensure the following software is installed on the host:
@@ -18,7 +26,7 @@ Feel free to test the `install-prereqs.sh` script.  It's essentially a copy of t
 
 # Running In Production
 
-If you want to run a production system for field work or a tank test, use the `docker-compose.yml` file.  This file starts the minimal environment to maximize performance. It expects the physical network to match what is specified in the openrov container `start.sh` entrypoint. 
+If you want to run a production system for field work or a tank test, use the `docker-compose.yml` file.  This file starts the minimal environment to maximize performance. It expects the physical network to match what is specified in the openrov container `start.sh` entrypoint.
 
 0. Edit `docker-compose.yml` and set the IP address on `command:` to match the IP address of the forward camera
 1. Run `docker-compose up`
@@ -30,7 +38,7 @@ Don't delete your critical data!  The production environment specified in `docke
 
 Brief description of key volumes:
 * images - Stores individual JPEG images from all camera MJPEG streams
-* logs - Stores openrov system logs, see `assets/adjustments.prod.json` 
+* logs - Stores openrov system logs, see `assets/adjustments.prod.json`
 * data - Stores all system and device telemetry
 
 Volume lables and docker config files.
@@ -61,6 +69,17 @@ For more info on Docker networking, see https://github.com/docker/libnetwork/blo
 
 ** NOTE: the named volume is only loaded into the openrov container to work in this environment. If you want to make changes to containers other than openrov-cockpit, be careful not to lose changes made inside the writeable, non-persistent layer of a container without a named volume. **
 
+## Learning And Troubleshooting from the Network
+
+The network traffic flowing between containers can be a great way to diagnose problems you might be working.
+
+After starting the dev environent, from the host, run:
+
+`tcpdump -i any -s0 -w debug.pcap`
+
+After capturing some traffic, hit CTRL-C, then view the packet capture using Wireshark.  Traffic on port 3000 will show you websocket MQTT client traffic, port 1883 will show you the imgsrv-mock container MQTT traffic from `mqttclient`, port 50000 will show you the serial payloads (PRO4 protocol) flowing between the imgsrv-mock containers and serial-tester container(s).
+
+
 ## Using a Real Elphel Camera
 
 If you have an Elphel 353 camera on your local network, you may use it by changing the IP address in the `command:` line of the openrov service in `docker-compose.dev.yml`.
@@ -71,7 +90,7 @@ The primary service you will probably edit is the fork of openrov-cockpit, which
 
 0. Clone a local copy of the repository from `https://github.com/mcdafydd/openrov-cockpit`.
 1. Checkout the `platform/scini-dev` branch (which should be up to date with the 'master' `platform/scini` branch.
-2. Follow the build steps for everything inside of /opt/openrov/cockpit specified in `openrov/Dockerfile`.  This requires local copies of things like node v6. 
+2. Follow the build steps for everything inside of /opt/openrov/cockpit specified in `openrov/Dockerfile`.  This requires local copies of things like node v6.
 3. Add a bind mount volume inside of `docker-compose.dev.yml` that looks like:
 
 `- "/path/to/your/local/openrov-cockpit:/opt/openrov/cockpit"`
@@ -105,7 +124,7 @@ In node v8 (ie: serial-tester), the default inspect flag in node v8 doesn't bind
 - Temporarily change `serial-tester/serial-tester.js` first line to read `--inspect=0.0.0.0:9222` (beware possible security issues!) and rebuild this container, or
 - Forward an SSH tunnel into the container
 
-For more info, see: https://nodejs.org/en/docs/guides/debugging-getting-started/#enabling-remote-debugging-scenarios 
+For more info, see: https://nodejs.org/en/docs/guides/debugging-getting-started/#enabling-remote-debugging-scenarios
 
 ## Clean Up Docker
 
