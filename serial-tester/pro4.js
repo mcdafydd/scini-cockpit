@@ -38,7 +38,7 @@ const CRC           = require('crc');
 const EventEmitter  = require('events');
 const SmartBuffer   = require('smart-buffer').SmartBuffer;
 
-logger.level = 'warn';
+logger.level = 'fatal';
 
 // ******************************************************************
 //  Device types are defined by VideoRay
@@ -204,7 +204,7 @@ class Pro4 extends EventEmitter
     this.ParserCtsensorReq = Parser.start()
       .string('ct', {
         encoding: 'ascii',
-        length: 33
+        greedy: true
       });
 
     this.stop = new Parser();
@@ -233,7 +233,7 @@ class Pro4 extends EventEmitter
       .uint8('cmd')
       .string('ct', {
         encoding: 'ascii',
-        length: 33
+        greedy: true
       });
 
     // Board 44 BAM data status response payload
@@ -839,14 +839,12 @@ class Pro4 extends EventEmitter
           if ((byte == self.constants.SYNC_RESPONSE8_b2 && self.parsedObj.sync1 == self.constants.SYNC_RESPONSE8_b1) ||
           (byte == self.constants.SYNC_RESPONSE32_b2 && self.parsedObj.sync1 == self.constants.SYNC_RESPONSE32_b1))
           {
-            self.request = 0;
             self.parsedObj.sync2 = byte;
             self.headBuf[1] = self.parsedObj.sync2;
           }
           else if ((byte == self.constants.SYNC_REQUEST8_b2 && self.parsedObj.sync1 == self.constants.SYNC_REQUEST8_b1) ||
               (byte == self.constants.SYNC_REQUEST32_b2 && self.parsedObj.sync1 == self.constants.SYNC_REQUEST32_b1))
           {
-            self.request = 1;
             self.parsedObj.sync2 = byte;
             self.headBuf[1] = self.parsedObj.sync2;
           }

@@ -5,7 +5,7 @@ services:
     image: scini/openrov:dev
     build: openrov/
     restart: unless-stopped
-    command: 192.168.1.222 dev
+    command: 192.168.2.215 dev
     volumes:
       - "images-dev:/opt/openrov/images"
       - "logs-dev:/opt/openrov/logs"
@@ -27,11 +27,11 @@ services:
       - "~/.gitconfig:/root/.gitconfig"
     environment:
       - MQTT_INTERFACE=eth0
+      - PARTNER=192.168.2.232
     expose:
       - "1883"
       - "3000"
       - "8081"
-      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.215
@@ -51,7 +51,6 @@ services:
       - "1883"
       - "3000"
       - "8081"
-      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.218
@@ -71,7 +70,6 @@ services:
       - "1883"
       - "3000"
       - "8081"
-      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.213
@@ -91,7 +89,6 @@ services:
       - "1883"
       - "3000"
       - "8081"
-      - "50000"
     networks:
       scini:
         ipv4_address: 192.168.2.211
@@ -104,10 +101,11 @@ services:
     build: serial-tester/
     restart: unless-stopped
     environment:
-      - PARTNER=192.168.2.215
       - NODEIDS="14 15 21 42 51 52 81"
     volumes:
       - "~/.gitconfig:/root/.gitconfig"
+    expose:
+      - "50000"
     ports:
       - "9222:9222"
     networks:
@@ -117,8 +115,6 @@ services:
       options:
         max-size: "500k"
         max-file: "10"
-    depends_on:
-      - fwdcam-mock
 
   file-browser:
     restart: unless-stopped
@@ -129,6 +125,15 @@ services:
     networks:
       scini:
         ipv4_address: 192.168.2.151
+
+  logger:
+    build: logger/
+    restart: unless-stopped
+    expose:
+      - "514"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.242
 
 networks:
   scini:

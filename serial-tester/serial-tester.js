@@ -1,13 +1,10 @@
-#!/root/.nvm/versions/node/v8.12.0/bin/node
-
-//--inspect=9222
+#!/root/.nvm/versions/node/v8.12.0/bin/node --inspect=9222
 
 const pro4 = require('./pro4');
-const SerialPort = require('serialport');
 const logger = require('pino')();
 const EventEmitter = require('events');
 
-logger.level = 'debug';
+logger.level = 'fatal';
 
 let mockNodeIds = [];
 if (process.env.hasOwnProperty('NODEIDS'))
@@ -514,7 +511,7 @@ class serialTester extends EventEmitter
             console.dir(respObj.device);
           }
           else {
-            port.write(packetBuf, function(err) {
+            process.stdout.write(packetBuf, function(err) {
               if (err) {
                 return logger.debug('Error on write: ', err.message);
               }
@@ -552,28 +549,20 @@ class serialTester extends EventEmitter
 
 const scini = new serialTester();
 
-let port;
 // if STANDALONE='true', accept a hex string on stdin, process that and
 // send it through parsing for easier troubleshooting than inside container
 if (process.env.STANDALONE === 'true') {
   logger.debug('SERIAL: Running in standalone mode');
-  port = process.stdin;
-  port.pipe(require('split')());
-}
-else {
-  port = new SerialPort(process.env.PTY, {
-    baudRate: 115200
-  });
+  process.stdin.pipe(require('split')());
 }
 
 // Open errors will be emitted as an error event
-port.on('error', (e) => {
+process.stdin.on('error', (e) => {
   logger.debug('SERIAL: Error = ', e.message);
   process.exit(1);
 });
 
-// Switches the port into "flowing mode"
-port.on('data', (data) => {
+process.stdin.on('data', (data) => {
   if (process.env.STANDALONE === 'true') {
     data = Buffer.from(data.toString('utf8'), 'hex');
   }

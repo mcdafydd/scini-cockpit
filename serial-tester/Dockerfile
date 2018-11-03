@@ -3,28 +3,16 @@ LABEL maintainer="david@linkconsultinginc.com"
 SHELL ["/bin/bash", "-c"]
 
 ## Install dependencies
-## Linux headers required to build seriaport Node module
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         bash-completion \
-        build-essential \
         ca-certificates \
         curl \
-        g++ \
-        gcc \
-        git \
-        linux-headers-`uname -r` \
         lsof \
-        make \
         net-tools \
-        nmap \
-        python \
-        python3 \
         socat \
-        tcpdump \
         udev \
         vim \
-        wget \
     && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,15 +32,13 @@ COPY serial-tester.js pro4.js package.json /srv/
 COPY start.sh /usr/local/bin
 
 # Install dependencies from package.json
-# See https://www.npmjs.com/package/serialport
 RUN cd /srv \
-    && npm install serialport --build-from-source --unsafe-perm \
     && npm install
 
 RUN chmod 755 /srv/serial-tester.js /usr/local/bin/start.sh
 
 # For node debugging
-EXPOSE 9229
+EXPOSE 9222
 
 ## Start the mock server platform (no external camera)
 WORKDIR /srv/

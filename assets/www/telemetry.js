@@ -77,7 +77,6 @@ function initMqtt() {
   });
   client.on('message', (topic, payload) => {
     let obj = JSON.parse(payload);
-    console.dir(obj);
     if (topic === 'telemetry/update') {
       let ts = new Date().getTime();
       for (let prop in obj) {

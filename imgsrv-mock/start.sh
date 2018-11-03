@@ -1,5 +1,11 @@
 #!/bin/bash
 
 mjpeg-server.py 8081 &
-http-server.js &
-socat pty,raw,echo=0,link=/tmp/link TCP-LISTEN:50000,fork,reuseaddr & sleep 1 && USBDEVICE=/tmp/link /usr/local/bin/mqttclient
+if [ -n "$PARTNER" ]; then
+  http-server.js &
+  socat PTY,link=/tmp/link,raw,echo=0,wait-slave TCP:$PARTNER:50000 &
+  sleep 1
+  USBDEVICE=/tmp/link /usr/local/bin/mqttclient
+else
+  http-server.js
+fi
