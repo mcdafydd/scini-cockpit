@@ -2,7 +2,7 @@ version: "3"
 services:
 
   openrov:
-    image: scini/openrov:build-20181103
+    image: scini/openrov:build-20181104
     restart: always
     command: 192.168.2.215
     cap_add:
