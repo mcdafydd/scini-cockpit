@@ -17,19 +17,15 @@
   <nav>
     <ul>
       <li><a href="index.html">Camera</a></li>
-      <li><a href="controls.html">Controls</a></li>
       <li><a class="active" href="telemetry.html">Telemetry</a></li>
-      <li><a href="telemetry-brief.html">Telemetry Brief</a></li>
-      <li><a href="files.html">Files</a></li>
-      <li><a href="troubleshooting.html">Troubleshooting</a></li>
-      <li><a href="video-gl.html">WebGL Camera (Beta)</a></li>
       <li><div class="clock"></div></li>
     </ul>
   </nav>
   <div class="grid">
     <div class="item" data-id="1">
       <div class="item-content">
-        <h5>OpenROV Server CPU</h5>
+        <h5 id="cpu-title">OpenROV Server CPU</h5>
+        <h5 id="cpu-values"></h5>
         <canvas id="cpu"></canvas>
       </div>
     </div>
@@ -47,19 +43,19 @@
     </div>
     <div class="item" data-id="4">
       <div class="item-content">
-        <h5>Water Pressure (bar)</h5>
+        <h5>ROV (82) and Clump (81) Water Pressure (bar)</h5>
         <canvas id="depth_p"></canvas>
       </div>
     </div>
     <div class="item" data-id="5">
       <div class="item-content">
-        <h5>Water Depth (m)</h5>
+        <h5>ROV (82) and Clump (81) Water Depth (m)</h5>
         <canvas id="depth_d"></canvas>
       </div>
     </div>
     <div class="item" data-id="6">
       <div class="item-content">
-        <h5>Water Temperature (C)</h5>
+        <h5>ROV (82) and Clump (81) Water Temperature (C)</h5>
         <canvas id="depth_t"></canvas>
       </div>
     </div>
@@ -149,14 +145,50 @@
     </div>
     <div class="item" data-id="21">
       <div class="item-content">
-        <h5>Board44 Temp (C)</h5>
-        <canvas id="board44.temp"></canvas>
+        <h5>CT Sensor Temp (C)</h5>
+        <canvas id="ctsensor.temp"></canvas>
       </div>
     </div>
     <div class="item" data-id="22">
       <div class="item-content">
         <h5>CT Sensor Conductivity (mS/cm)</h5>
-        <canvas id="board44.conductivity"></canvas>
+        <canvas id="ctsensor.conductivity"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="23">
+      <div class="item-content">
+        <h5>Gripper Current</h5>
+        <canvas id="grippers.current"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="24">
+      <div class="item-content">
+        <h5>Gripper Temp</h5>
+        <canvas id="grippers.temp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="25">
+      <div class="item-content">
+        <h5>Power Supply 1 Currents</h5>
+        <canvas id="powerSupply1.current"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="26">
+      <div class="item-content">
+        <h5>Power Supply 1 Voltages</h5>
+        <canvas id="powerSupply1.voltage"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="27">
+      <div class="item-content">
+        <h5>Power Supply 2 Currents</h5>
+        <canvas id="powerSupply2.current"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="28">
+      <div class="item-content">
+        <h5>Power Supply 2 Voltages</h5>
+        <canvas id="powerSupply2.voltage"></canvas>
       </div>
     </div>
   </div>

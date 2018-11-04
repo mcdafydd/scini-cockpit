@@ -11,9 +11,17 @@ h4 {
 
 h5 {
   margin-bottom: 2.5px;
+  margin-top: 2.5px;
 }
 
-ul {
+iframe {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -21,15 +29,15 @@ ul {
   background-color: #333;
 }
 
-li {
+nav li {
   float: left;
 }
 
-li:last-child {
+nav li:last-child {
   float: right;
 }
 
-li a {
+nav li a {
   display: block;
   color: white;
   text-align: center;
@@ -37,8 +45,62 @@ li a {
   text-decoration: none;
 }
 
-li a:hover:not(.active) {
+nav li a:hover:not(.active) {
   background-color: #111;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: yellow;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.dot .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  top: 150%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.dot:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* Tooltip text */
+.dot .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.dot-active {
+  color: green;
+}
+
+.dot-inactive {
+  color: red;
+}
+
+.dot-current {
+  border: 2px solid #0099CC;
+  background-color: rgb(137, 39, 190);
 }
 
 div.smoothie-chart-tooltip {
@@ -47,7 +109,7 @@ div.smoothie-chart-tooltip {
   margin-top: 20px;
   font-family: Consolas, monospace;
   color: white;
-  font-size: 12px;
+  font-size: 18px;
   pointer-events: none;
   z-index: 4;
 }
@@ -57,6 +119,7 @@ button {
   /* Green */
   border: none;
   color: white;
+  margin-bottom: 2px;
   padding: 5px 16px;
   text-align: center;
   text-decoration: none;

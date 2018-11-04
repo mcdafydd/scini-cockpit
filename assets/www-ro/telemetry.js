@@ -26,14 +26,29 @@ var seriesOptions = [{
     strokeStyle: 'rgba(128, 128, 128, 1)',
     fillStyle: 'rgba(128, 128, 128, 0.1)',
     lineWidth: 3
+  },
+  {
+    strokeStyle: 'rgba(0, 255, 255, 1)',
+    fillStyle: 'rgba(0, 255, 255, 0.1)',
+    lineWidth: 3
+  },
+  {
+    strokeStyle: 'rgba(255, 0, 255, 1)',
+    fillStyle: 'rgba(255, 0, 255, 0.1)',
+    lineWidth: 3
+  },
+  {
+    strokeStyle: 'rgba(64, 128, 128, 1)',
+    fillStyle: 'rgba(64, 128, 128, 0.1)',
+    lineWidth: 3
   }
 ];
 
 function init() {
   initChart('cpu', ['cpu']);
-  initChart('depth_p', ['depth_p']);
-  initChart('depth_d', ['depth_d']);
-  initChart('depth_t', ['depth_t']);
+  initChart('depth_p', ['depth_p', 'board44.pressure.81']);
+  initChart('depth_d', ['depth_d', 'board44.depth.81']);
+  initChart('depth_t', ['depth_t', 'board44.temp.81']);
   initChart('imu_p', ['imu_p']);
   initChart('imu_r', ['imu_r']);
   initChart('sensors.imuPressure', ['sensors.imuPressure.51', 'pilot.imuPressure.52', 'sensors.imuPressure.57', 'sensors.imuPressure.58', 'sensors.imuPressure.67']);
@@ -50,8 +65,14 @@ function init() {
   initChart('motors.strafe', ['motors.strafe']);
   initChart('motors.throttle', ['motors.throttle']);
   initChart('motors.yaw', ['motors.yaw']);
-  initChart('board44.temp', ['board44.temp.81', 'board44.temp.82', 'board44.temp.83', 'board44.temp.84', 'board44.temp.85']);
-  initChart('board44.conductivity', ['board44.conductivity.81', 'board44.conductivity.82', 'board44.conductivity.83', 'board44.conductivity.84', 'board44.conductivity.85']);
+  initChart('ctsensor.temp', ['board44.temp.85']);
+  initChart('ctsensor.conductivity', ['board44.conductivity.85']);
+  initChart('grippers.temp', ['gripper.temp.24', 'waterSampler.temp.24', 'trim.temp.21']);
+  initChart('grippers.current', ['gripper.current.24', 'waterSampler.current.24', 'trim.current.21']);
+  initChart('powerSupply1.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83']);
+  initChart('powerSupply1.voltage', ['board44.adc0.83', 'board44.adc1.83', 'board44.adc2.83', 'board44.adc3.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83', 'board44.adc7.83']);
+  initChart('powerSupply2.current', ['board44.acs764n1.87', 'board44.acs764n2.87', 'board44.acs764n3.87', 'board44.acs764n4.87']);
+  initChart('powerSupply2.voltage', ['board44.adc0.87', 'board44.adc1.87', 'board44.adc2.87', 'board44.adc3.87', 'board44.adc4.87', 'board44.adc5.87', 'board44.adc6.87', 'board44.adc7.87']);
 
   initMqtt();
   initGrid('telemetryLayout');
@@ -80,6 +101,10 @@ function initMqtt() {
     if (topic === 'telemetry/update') {
       let ts = new Date().getTime();
       for (let prop in obj) {
+        let elem = document.getElementById(`${prop}-values`);
+        if (elem) {
+          elem.innerHTML = parseFloat(obj[prop]).toFixed(2);
+        }
         if (dataMap.hasOwnProperty(prop)) {
           dataMap[prop].append(ts, obj[prop]);
         }
@@ -96,13 +121,13 @@ function initChart(chartName, properties) {
   }
   // Build the chart object
   var timeline = new SmoothieChart({
-    millisPerPixel: 20,
+    millisPerPixel: 500, // 5 min per chart
     responsive: true,
     tooltip: true,
     grid: {
       strokeStyle: '#555555',
       lineWidth: 1,
-      millisPerLine: 1000,
+      millisPerLine: 20000,
       verticalSections: 4,
     }
   });
@@ -112,7 +137,11 @@ function initChart(chartName, properties) {
   for (var i = 0; i < numLines; i++) {
     let series = new TimeSeries();
     let options = seriesOptions[i];
-    if (properties[i].match(/\.[0-9]+$/) !== null) {
+    if (chartName.match(/powerSupply.*/) !== null) {
+      let labels = properties[i].split(/\./);
+      options.tooltipLabel = labels[labels.length-2];
+    }
+    else if (properties[i].match(/\.[0-9]+$/) !== null) {
       let labels = properties[i].split(/\./);
       options.tooltipLabel = labels[labels.length-1];
     }
