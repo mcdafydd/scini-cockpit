@@ -5,7 +5,7 @@ var selectMap = {
   'CPU': 'cpu',
   'ROV (82) and Clump (81) Water Pressure (bar)': 'depth_p',
   'ROV (82) and Clump (81) Water Depth (m)': 'depth_d',
-  'ROV (82) and Clump (81) Water Temperature (C)': 'depth_t',
+  'ROV (82) and Clump (81) Water Temperature (C)  ': 'depth_t',
   'ROV pitch (deg)': 'imu_p',
   'ROV roll (deg)': 'imu_r',
   'IMU Pressure': 'sensors.imuPressure',
@@ -23,7 +23,13 @@ var selectMap = {
   'Motor Throttle': 'motors.throttle',
   'Motor Yaw': 'motors.yaw',
   'CT Sensor Temp (C)': 'ctsensor.temp',
-  'CT Sensor Conductivity (mS/cm)': 'ctsensor.conductivity'
+  'CT Sensor Conductivity (mS/cm)': 'ctsensor.conductivity',
+  'Gripper Temp': 'grippers.temp',
+  'Gripper Current': 'grippers.current',
+  'Power Supply 1 Currents': 'powerSupply1.current',
+  'Power Supply 1 Voltages': 'powerSupply1.voltage',
+  'Power Supply 2 Currents': 'powerSupply2.current',
+  'Power Supply 2 Voltages': 'powerSupply2.voltage'
 }
 
 // Array length must match highest initChart() numLines parameter
@@ -51,6 +57,21 @@ var seriesOptions = [{
     strokeStyle: 'rgba(128, 128, 128, 1)',
     fillStyle: 'rgba(128, 128, 128, 0.1)',
     lineWidth: 3
+  },
+  {
+    strokeStyle: 'rgba(0, 255, 255, 1)',
+    fillStyle: 'rgba(0, 255, 255, 0.1)',
+    lineWidth: 3
+  },
+  {
+    strokeStyle: 'rgba(255, 0, 255, 1)',
+    fillStyle: 'rgba(255, 0, 255, 0.1)',
+    lineWidth: 3
+  },
+  {
+    strokeStyle: 'rgba(64, 128, 128, 1)',
+    fillStyle: 'rgba(64, 128, 128, 0.1)',
+    lineWidth: 3
   }
 ];
 
@@ -77,6 +98,12 @@ function init() {
   initChart('motors.yaw', ['motors.yaw']);
   initChart('ctsensor.temp', ['board44.temp.85']);
   initChart('ctsensor.conductivity', ['board44.conductivity.85']);
+  initChart('grippers.temp', ['gripper.temp.24', 'waterSampler.temp.24', 'trim.temp.21']);
+  initChart('grippers.current', ['gripper.current.24', 'waterSampler.current.24', 'trim.current.21']);
+  initChart('powerSupply1.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83']);
+  initChart('powerSupply1.voltage', ['board44.adc0.83', 'board44.adc1.83', 'board44.adc2.83', 'board44.adc3.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83', 'board44.adc7.83']);
+  initChart('powerSupply2.current', ['board44.acs764n1.87', 'board44.acs764n2.87', 'board44.acs764n3.87', 'board44.acs764n4.87']);
+  initChart('powerSupply2.voltage', ['board44.adc0.87', 'board44.adc1.87', 'board44.adc2.87', 'board44.adc3.87', 'board44.adc4.87', 'board44.adc5.87', 'board44.adc6.87', 'board44.adc7.87']);
 
   initMqtt();
   initGrid('telemetryBriefLayout');
@@ -139,7 +166,11 @@ function initChart(chartName, properties) {
   for (var i = 0; i < numLines; i++) {
     let series = new TimeSeries();
     let options = seriesOptions[i];
-    if (properties[i].match(/\.[0-9]+$/) !== null) {
+    if (chartName.match(/powerSupply.*/) !== null) {
+      let labels = properties[i].split(/\./);
+      options.tooltipLabel = labels[labels.length-2];
+    }
+    else if (properties[i].match(/\.[0-9]+$/) !== null) {
       let labels = properties[i].split(/\./);
       options.tooltipLabel = labels[labels.length-1];
     }

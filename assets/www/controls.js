@@ -71,7 +71,6 @@ function initListeners() {
       if (device === 'servo') {
         let center = parseInt(document.getElementById(`${device}-${node}-center`).value);
         let speed = parseInt(document.getElementById(`${device}-${node}-speed`).value);
-        console.log('HI = ', center, speed, device, node, this.id, val);
         if (val === 'pos') {
           sendServo('move', node, (center+speed).toString());
         }

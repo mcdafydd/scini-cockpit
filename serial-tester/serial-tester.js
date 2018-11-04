@@ -261,8 +261,8 @@ class serialTester extends EventEmitter
       cmd: 0,
       cmdStatus: 0,
       lim_i: 0,
-      current: 0,
-      temp: 0,
+      current: (scini.rand * 5.0 + 1.0).toFixed(2),
+      temp: (scini.rand * 3.0 + 35.0).toFixed(2),
       devAddress: 0,
       firmwareVersion: 0
     }
@@ -492,7 +492,9 @@ class serialTester extends EventEmitter
         sensors: scini.updateNav,
         lights: scini.updateLights,
         motors: scini.updateMotors,
-        grippers: scini.updateGrippers,
+        gripper: scini.updateGrippers,
+        waterSampler: scini.updateGrippers,
+        trim: scini.updateGrippers,
         keller: scini.updateKeller,
         board44: scini.updateBoard44
       }

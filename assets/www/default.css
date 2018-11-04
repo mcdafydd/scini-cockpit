@@ -11,6 +11,7 @@ h4 {
 
 h5 {
   margin-bottom: 2.5px;
+  margin-top: 2.5px;
 }
 
 iframe {
@@ -67,8 +68,7 @@ nav li a:hover:not(.active) {
   padding: 5px 0;
   border-radius: 6px;
   position: absolute;
-  z-index: 10;
-  bottom: 150%;
+  top: 150%;
   left: 50%;
   margin-left: -60px;
 }
@@ -82,12 +82,12 @@ nav li a:hover:not(.active) {
 .dot .tooltiptext::after {
   content: " ";
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: black transparent transparent transparent;
+  border-color: transparent transparent black transparent;
 }
 
 .dot-active {
