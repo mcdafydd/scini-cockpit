@@ -62,6 +62,11 @@ function initMqtt() {
   const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
   client.on('connect', function (connack) {
     console.log('Connected to MQTT broker');
+    client.subscribe('toCamera/cameraRegistration', function (e) {
+      if (!e) {
+        console.log('Subscribed to MQTT toCamera/cameraRegistration');
+      }
+    });
   });
   client.on('offline', function () {
     console.log('MQTT client offline');

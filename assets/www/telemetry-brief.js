@@ -118,6 +118,11 @@ function initMqtt() {
         console.log('Subscribed to MQTT telemetry/update');
       }
     });
+    client.subscribe('toCamera/cameraRegistration', function (e) {
+      if (!e) {
+        console.log('Subscribed to MQTT toCamera/cameraRegistration');
+      }
+    });
   });
   client.on('offline', function () {
     console.log('MQTT client offline');
@@ -129,8 +134,8 @@ function initMqtt() {
     console.error('MQTT client error: ', error);
   });
   client.on('message', (topic, payload) => {
-    let obj = JSON.parse(payload);
     if (topic === 'telemetry/update') {
+      let obj = JSON.parse(payload);
       let ts = new Date().getTime();
       for (let prop in obj) {
         if (dataMap.hasOwnProperty(prop)) {

@@ -33,13 +33,12 @@ function initListeners() {
     else if (device === 'servo') {
       let display = document.getElementById(`${device}-${node}-${func}-val`);
       if (func === 'speed')
-        display.innerHTML = `${func}: 8192`;
+        display.innerHTML = `spd: 8192`;
       else if (func === 'center')
-        display.innerHTML = `${func}: 32768`;
+        display.innerHTML = `ctr: 32768`;
     }
-    input.addEventListener('change', function() {
+    input.addEventListener('input', function() {
       [device, node, func] = input.id.split('-'); // func may be undefined
-      console.debug('event ', input.id, 'val ', this.value);
       if (device === 'light') {
         let display = document.getElementById(device+'-'+node+'-val');
         display.innerHTML = `Power: ${this.value}`;
@@ -57,7 +56,10 @@ function initListeners() {
       }
       else if (device === 'servo') {
         let display = document.getElementById(`${device}-${node}-${func}-val`);
-        display.innerHTML = `${func}: ${this.value}`;
+        if (func === 'speed')
+          display.innerHTML = `spd: ${this.value}`;
+        else if (func === 'center')
+          display.innerHTML = `ctr: ${this.value}`;
         sendServo(func, node, this.value);
       }
     }, false);
@@ -103,9 +105,16 @@ function initMqtt() {
   window['mqttClient'] = mqttClient;  // yeah...
   mqttClient.on('connect', function (connack) {
     if (connack) {
-      console.log('MQTT connected to broker');
-      mqttClient.subscribe('toCamera/cameraRegistration');
-      mqttClient.subscribe('telemetry/update');
+      mqttClient.subscribe('telemetry/update', function (e) {
+        if (!e) {
+          console.log('Subscribed to MQTT telemetry/update');
+        }
+      });
+      mqttClient.subscribe('toCamera/cameraRegistration', function (e) {
+        if (!e) {
+          console.log('Subscribed to MQTT toCamera/cameraRegistration');
+        }
+      });
     }
   });
   mqttClient.on('offline', function () {
@@ -168,7 +177,12 @@ function initMqtt() {
           [device, node, func] = prop.split('.');
           let display = document.getElementById(`${device}-${node}-${func}-val`);
           if (display !== null) {
-            display.innerHTML = `${func}: ${obj[prop]}`;
+            if (func === 'speed')
+              display.innerHTML = `spd: ${obj[prop]}`;
+            else if (func === 'center')
+              display.innerHTML = `ctr: ${obj[prop]}`;
+            else
+              display.innerHTML = `${func}: ${obj[prop]}`;
           }
           display = document.getElementById(`${device}-${node}-${func}`);
           if (display !== null) {

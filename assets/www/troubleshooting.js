@@ -22,6 +22,11 @@ function initMqtt() {
     if (connack) {
       console.log('Connected to MQTT broker');
     }
+    client.subscribe('toCamera/cameraRegistration', function (e) {
+      if (!e) {
+        console.log('Subscribed to MQTT toCamera/cameraRegistration');
+      }
+    });
   });
   client.on('offline', function () {
     console.log('MQTT client offline');
