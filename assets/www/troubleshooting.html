@@ -78,5 +78,16 @@
   <ol>
     <li>Make sure that all expected RS485 bus "masters" are set to true or false appropriately in <a style="color:greenyellow;" href="files.html">assets/mqttConfig.json</a>.  If a device is set to false, it will receive no messages to pass onto the serial bus.  If multiple devices attached to the same RS485 bus are set to true, messages may be corrupted upon receipt.  Edit the file to make changes, save it, then stop and start the OpenROV server to make the changes take effect.</li>
   </ol>
+  <h1>Check Camera for USB Audio Detection</h1>
+  This information can be useful in trying to determine the status of USB audio device connectivity.  Successful detection should show something like:
+  <pre>[Device         ]: USB-Audio - USB PnP Sound Device
+      C-Media Electronics Inc.       USB PnP Sound Device </pre>
+  <ol style="padding-bottom: 0;">
+    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">211 Camera USB Audio</a></li>
+    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.213/phpshell.php?command=cat%20/proc/asound/cards">213 Camera USB Audio</a></li>
+    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.215/phpshell.php?command=cat%20/proc/asound/cards">215 Camera USB Audio</a></li>
+    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.217/phpshell.php?command=cat%20/proc/asound/cards">217 Camera USB Audio</a></li>
+    <li style="margin-left:2em; padding-bottom: 0;"><a target="_blank" href="http://192.168.2.218/phpshell.php?command=cat%20/proc/asound/cards">218 Camera USB Audio</a></li>
+  </ol>
 </body>
 </html>
