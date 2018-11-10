@@ -251,12 +251,12 @@ canvas {
   color: #fff;
 }
 .ctrl-item.muuri-item-dragging {
-	z-index: 3;
-	background: blue;
+  z-index: 3;
+  background: blue;
 }
 .ctrl-item.muuri-item-releasing {
-	z-index: 2;
-	background: blueViolet;
+  z-index: 2;
+  background: blueViolet;
 }
 .ctrl-item.muuri-item-hidden {
   z-index: 0;
