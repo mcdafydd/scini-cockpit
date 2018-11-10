@@ -1,3 +1,5 @@
+@import "rainbow.css";
+
 body {
   background-color: #111111;
   color: #eeeeee;
@@ -236,4 +238,58 @@ canvas {
   padding: var(--default-padding-half);
   background-color: var(--material-red-500);
   color: white;
+}
+
+.ctrl-item {
+  display: block;
+  position: absolute;
+  width: 18%;
+  height: 90px;
+  margin: 5px;
+  z-index: 1;
+  background: #000;
+  color: #fff;
+}
+.ctrl-item.muuri-item-dragging {
+	z-index: 3;
+	background: blue;
+}
+.ctrl-item.muuri-item-releasing {
+	z-index: 2;
+	background: blueViolet;
+}
+.ctrl-item.muuri-item-hidden {
+  z-index: 0;
+}
+.ctrl-item-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ctrl-btn-large {
+  border: none;
+  color: white;
+  margin-bottom: 2px;
+  padding: 5px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  width: 80%;
+  height: 60%;
+}
+
+.ctrl-a {
+  padding: 0.35em 0.35em;
+  text-decoration: none;
+  width: 30%;
+}
+
+.ctrl-a:hover {
+  background-color: #555;
+}
+
+.ctrl-a:active {
+  background-color: black;
 }

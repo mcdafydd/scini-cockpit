@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>ROV Controls</title>
   <link href="default.css" rel="stylesheet" type="text/css">
-  <link href="controls.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="/browserMqtt.js"></script>
   <script type="text/javascript" src="/mousetrap.min.js"></script>
   <script type="text/javascript" src="/hammer.min.js"></script>
@@ -153,31 +152,31 @@
     <div class="ctrl-item" data-id="16">
       <div class="item-content">
         <h5>Side Snap</h5>
-        <button class="ctrl-btn-large" id="snapFull-211-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="snapFull-211-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="17">
       <div class="item-content">
         <h5>Bore Snap</h5>
-        <button class="ctrl-btn-large" id="snapFull-213-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="snapFull-213-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="18">
       <div class="item-content">
         <h5>Forward Snap</h5>
-        <button class="ctrl-btn-large" id="snapFull-215-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="snapFull-215-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="19">
       <div class="item-content">
         <h5>Up Snap</h5>
-        <button class="ctrl-btn-large" id="snapFull-217-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="snapFull-217-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="20">
       <div class="item-content">
         <h5>Down Snap</h5>
-        <button class="ctrl-btn-large" id="snapFull-218-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="snapFull-218-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="21">
@@ -224,9 +223,18 @@
         <span id="servo-51-speed-val" class="sliderVal"></span>
       </div>
     </div>
+    <div class="ctrl-item" data-id="34">
+      <div class="item-content">
+        <h5>Bore Servo Settings</h5>
+        <input class="slider-servo" id="servo-67-center" type="range" min="0" max="65535" step="100" value="32768">
+        <span id="servo-67-center-val" class="sliderVal"></span>
+        <input class="slider-servo" id="servo-67-speed" type="range" min="0" max="32768" step="100" value="2000">
+        <span id="servo-67-speed-val" class="sliderVal"></span>
+      </div>
+    </div>
     <div class="ctrl-item" data-id="28">
       <div class="item-content">
-        <h5>Forward  Servo Settings</h5>
+        <h5>Forward Servo Settings</h5>
         <input class="slider-servo" id="servo-52-center" type="range" min="0" max="65535" step="100" value="32768">
         <span id="servo-52-center-val" class="sliderVal"></span>
         <input class="slider-servo" id="servo-52-speed" type="range" min="0" max="32768" step="100" value="2000">
@@ -251,48 +259,46 @@
         <span id="servo-58-speed-val" class="sliderVal"></span>
       </div>
     </div>
-    <div class="ctrl-item" data-id="34">
-      <div class="item-content">
-        <h5>Bore Servo Settings</h5>
-        <input class="slider-servo" id="servo-67-center" type="range" min="0" max="65535" step="100" value="32768">
-        <span id="servo-67-center-val" class="sliderVal"></span>
-        <input class="slider-servo" id="servo-67-speed" type="range" min="0" max="32768" step="100" value="2000">
-        <span id="servo-67-speed-val" class="sliderVal"></span>
-      </div>
-    </div>
     <div class="ctrl-item" data-id="27">
       <div class="item-content">
-        <h5>Camera Side Focus</h5>
-        <button id="servo-51-pos">Clockwise</button>
-        <button id="servo-51-neg">Counter-clockwise</button>
-      </div>
-    </div>
-    <div class="ctrl-item" data-id="29">
-      <div class="item-content">
-        <h5>Camera Forward Focus</h5>
-        <button id="servo-52-pos">Clockwise</button>
-        <button id="servo-52-neg">Counter-clockwise</button>
-      </div>
-    </div>
-    <div class="ctrl-item" data-id="31">
-      <div class="item-content">
-        <h5>Camera Up Focus</h5>
-        <button id="servo-57-pos">Clockwise</button>
-        <button id="servo-57-neg">Counter-clockwise</button>
-      </div>
-    </div>
-    <div class="ctrl-item" data-id="33">
-      <div class="item-content">
-        <h5>Camera Down Focus</h5>
-        <button id="servo-58-pos">Clockwise</button>
-        <button id="servo-58-neg">Counter-clockwise</button>
+        <h5>Side Camera Focus</h5>
+        <button id="servo-51-pos">Counter-clockwise</button>
+        <button id="servo-51-neg">Clockwise</button>
       </div>
     </div>
     <div class="ctrl-item" data-id="35">
       <div class="item-content">
-        <h5>Camera Bore Focus</h5>
-        <button id="servo-67-pos">Clockwise</button>
-        <button id="servo-67-neg">Counter-clockwise</button>
+        <h5>Bore Camera Focus</h5>
+        <button id="servo-67-pos">Counter-clockwise</button>
+        <button id="servo-67-neg">Clockwise</button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="29">
+      <div class="item-content">
+        <h5>Forward Camera Focus</h5>
+        <button id="servo-52-pos">Counter-clockwise</button>
+        <button id="servo-52-neg">Clockwise</button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="31">
+      <div class="item-content">
+        <h5>Up Camera Focus</h5>
+        <button id="servo-57-pos">Counter-clockwise</button>
+        <button id="servo-57-neg">Clockwise</button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="33">
+      <div class="item-content">
+        <h5>Down Camera Focus</h5>
+        <button id="servo-58-pos">Counter-clockwise</button>
+        <button id="servo-58-neg">Clockwise</button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="40">
+      <div class="item-content">
+        <h5>Side Lights</h5>
+        <input class="slider" id="light-66" type="range" min="0" max="1.0" step="0.05" value="0.0">
+        <span id="light-66-val" class="sliderVal"></span>
       </div>
     </div>
     <div class="ctrl-item" data-id="36">
@@ -323,41 +329,89 @@
         <span id="light-65-val" class="sliderVal"></span>
       </div>
     </div>
-    <div class="ctrl-item" data-id="40">
-      <div class="item-content">
-        <h5>Side Lights</h5>
-        <input class="slider" id="light-66" type="range" min="0" max="1.0" step="0.05" value="0.0">
-        <span id="light-66-val" class="sliderVal"></span>
-      </div>
-    </div>
     <div class="ctrl-item" data-id="44">
       <div class="item-content">
         <h5>Side Defaults</h5>
-        <button class="ctrl-btn-large" id="defaults-211-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="defaults-211-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="45">
       <div class="item-content">
         <h5>Bore Defaults</h5>
-        <button class="ctrl-btn-large" id="defaults-213-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="defaults-213-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="46">
       <div class="item-content">
         <h5>Forward Defaults</h5>
-        <button class="ctrl-btn-large" id="defaults-215-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="defaults-215-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="47">
       <div class="item-content">
         <h5>Up Defaults</h5>
-        <button class="ctrl-btn-large" id="defaults-217-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="defaults-217-1"></button>
       </div>
     </div>
     <div class="ctrl-item" data-id="48">
       <div class="item-content">
         <h5>Down Defaults</h5>
-        <button class="ctrl-btn-large" id="defaults-218-1"></button>
+        <button class="ctrl-btn-large rb rb-green" id="defaults-218-1"></button>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="49">
+      <div class="item-content">
+        <h5>Side Camera Flip</h5>
+        <p>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.211/setparams_demo.php?FLIPH=0">Horz 0</a>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.211/setparams_demo.php?FLIPV=0">Vert 0</a>
+        </p>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.211/setparams_demo.php?FLIPH=1">Horz 1</a>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.211/setparams_demo.php?FLIPV=1">Vert 1</a>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="50">
+      <div class="item-content">
+        <h5>Bore Camera Flip</h5>
+        <p>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.213/setparams_demo.php?FLIPH=0">Horz 0</a>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.213/setparams_demo.php?FLIPV=0">Vert 0</a>
+        </p>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.213/setparams_demo.php?FLIPH=1">Horz 1</a>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.213/setparams_demo.php?FLIPV=1">Vert 1</a>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="51">
+      <div class="item-content">
+        <h5>Forward Camera Flip</h5>
+        <p>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.215/setparams_demo.php?FLIPH=0">Horz 0</a>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.215/setparams_demo.php?FLIPV=0">Vert 0</a>
+        </p>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.215/setparams_demo.php?FLIPH=1">Horz 1</a>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.215/setparams_demo.php?FLIPV=1">Vert 1</a>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="52">
+      <div class="item-content">
+        <h5>Up Camera Flip</h5>
+        <p>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.217/setparams_demo.php?FLIPH=0">Horz 0</a>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.217/setparams_demo.php?FLIPV=0">Vert 0</a>
+        </p>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.217/setparams_demo.php?FLIPH=1">Horz 1</a>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.217/setparams_demo.php?FLIPV=1">Vert 1</a>
+      </div>
+    </div>
+    <div class="ctrl-item" data-id="53">
+      <div class="item-content">
+        <h5>Down Camera Flip</h5>
+        <p>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.218/setparams_demo.php?FLIPH=0">Horz 0</a>
+          <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.218/setparams_demo.php?FLIPV=0">Vert 0</a>
+        </p>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.218/setparams_demo.php?FLIPH=1">Horz 1</a>
+        <a class="ctrl-a rb-green" target="_blank" href="http://192.168.2.218/setparams_demo.php?FLIPV=1">Vert 1</a>
       </div>
     </div>
     <div class="ctrl-item" data-id="41">

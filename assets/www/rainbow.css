@@ -1,0 +1,766 @@
+/*
+** Rainbow
+** A set of colorful CSS3 buttons
+**
+** https://github.com/cristianradu/rainbow
+** by Cristian Radu <code@cristianradu.com>
+**
+**
+** Based on "Apple OS X Lion Buttons in CSS" by Pixify
+** http://pixify.com/blog/use-os-x-lion-to-improve-your-ui/
+**
+** License: Creative Commons CC-BY
+** http://creativecommons.org/licenses/by/3.0/
+*/
+.rb {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+    border: 1px solid #7f7f7f;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 3em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.15em 1.5em 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=1, Direction=90, Color='#ffffff')";
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=1, Direction=90, Color='#ffffff');
+    -webkit-transition: border-color 0.218s;
+    -moz-transition: border 0.218s;
+    -o-transition: border-color 0.218s;
+    transition: border-color 0.218s;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.rb:hover {
+    color: #282828;
+    background: #fefefe;
+    background: -webkit-linear-gradient(top, white, #dfdfdf);
+    background: -moz-linear-gradient(top, white, #dfdfdf);
+    background: -ms-linear-gradient(top, white, #dfdfdf);
+    background: -o-linear-gradient(top, white, #dfdfdf);
+    background: linear-gradient(top, white, #dfdfdf);
+    text-decoration: none;
+    border: 1px solid #333333;
+}
+
+.rb:active,
+.rb.selected {
+    background: #d0d0d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a8a8a8), color-stop(15%, #c6c6c6), to(#d8d8d8));
+    background: -webkit-linear-gradient(top, #a8a8a8, #c6c6c6 15%, #d8d8d8);
+    background: -moz-linear-gradient(top, #a8a8a8, #c6c6c6 15%, #d8d8d8);
+    background: -ms-linear-gradient(top, #a8a8a8, #c6c6c6 15%, #d8d8d8);
+    background: -o-linear-gradient(top, #a8a8a8, #c6c6c6 15%, #d8d8d8);
+    background: linear-gradient(top, #a8a8a8, #c6c6c6 15%, #d8d8d8);
+    border: 1px solid #7f7f7f;
+}
+
+.rb.disabled {
+    color: #b4b4b4;
+    background: #f0f0f0;
+    border: 1px solid #b4b4b4;
+}
+
+.rb.disabled:hover {
+    cursor: default;
+}
+
+.rb.small {
+    font-size: 0.6875rem;
+    line-height: 2.25em;
+    padding: 0.2em 1.2em 0 1.2em;
+}
+
+/*
+** remember to remove the whitespace between them using one of the methods listed here:
+** http://css-tricks.com/fighting-the-space-between-inline-block-elements/
+*/
+.rb-left {
+    border-right: solid 1px #b0b0b0;
+    -webkit-border-top-left-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topright: 0;
+    border-top-right-radius: 0;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    border-bottom-left-radius: 4px;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    border-bottom-right-radius: 0;
+}
+
+.rb-middle {
+    border-left: solid 1px rgba(255, 255, 255, 0);
+    border-right: solid 1px #b0b0b0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.rb-middle:hover {
+    border-left: solid 1px #333333;
+}
+
+.rb-middle:active,
+.rb-middle.selected {
+    border-left: solid 1px #7f7f7f;
+}
+
+.rb-right {
+    border-left: solid 1px rgba(255, 255, 255, 0);
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-right-radius: 4px;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 4px;
+    -moz-border-radius-bottomright: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.rb-right:hover {
+    border-left: solid 1px #333333;
+}
+
+.rb-right:active,
+.rb-right.selected {
+    border-left: solid 1px #7f7f7f;
+}
+
+.rb-red {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #f0b4b4;
+    background: -webkit-linear-gradient(top, #f7bbbb, #d19595);
+    background: -moz-linear-gradient(top, #f7bbbb, #d19595);
+    background: -ms-linear-gradient(top, #f7bbbb, #d19595);
+    background: -o-linear-gradient(top, #f7bbbb, #d19595);
+    background: linear-gradient(top, #f7bbbb, #d19595);
+}
+
+.rb-red.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-red:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #fec2c2;
+    background: -webkit-linear-gradient(top, #ffc9c9, #dfa3a3);
+    background: -moz-linear-gradient(top, #ffc9c9, #dfa3a3);
+    background: -ms-linear-gradient(top, #ffc9c9, #dfa3a3);
+    background: -o-linear-gradient(top, #ffc9c9, #dfa3a3);
+    background: linear-gradient(top, #ffc9c9, #dfa3a3);
+    border: 1px solid #333333;
+}
+
+.rb-red:active,
+.rb-red.selected {
+    background: #d09494;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a86c6c), color-stop(15%, #c68a8a), to(#d89c9c));
+    background: -webkit-linear-gradient(top, #a86c6c, #c68a8a 15%, #d89c9c);
+    background: -moz-linear-gradient(top, #a86c6c, #c68a8a 15%, #d89c9c);
+    background: -ms-linear-gradient(top, #a86c6c, #c68a8a 15%, #d89c9c);
+    background: -o-linear-gradient(top, #a86c6c, #c68a8a 15%, #d89c9c);
+    background: linear-gradient(top, #a86c6c, #c68a8a 15%, #d89c9c);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-red.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-orange {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #f0d2b4;
+    background: -webkit-linear-gradient(top, #f7d9bb, #d1b395);
+    background: -moz-linear-gradient(top, #f7d9bb, #d1b395);
+    background: -ms-linear-gradient(top, #f7d9bb, #d1b395);
+    background: -o-linear-gradient(top, #f7d9bb, #d1b395);
+    background: linear-gradient(top, #f7d9bb, #d1b395);
+}
+
+.rb-orange.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-orange:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #fee0c2;
+    background: -webkit-linear-gradient(top, #ffe7c9, #dfc1a3);
+    background: -moz-linear-gradient(top, #ffe7c9, #dfc1a3);
+    background: -ms-linear-gradient(top, #ffe7c9, #dfc1a3);
+    background: -o-linear-gradient(top, #ffe7c9, #dfc1a3);
+    background: linear-gradient(top, #ffe7c9, #dfc1a3);
+    border: 1px solid #333333;
+}
+
+.rb-orange:active,
+.rb-orange.selected {
+    background: #d0b294;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a88a6c), color-stop(15%, #c6a88a), to(#d8ba9c));
+    background: -webkit-linear-gradient(top, #a88a6c, #c6a88a 15%, #d8ba9c);
+    background: -moz-linear-gradient(top, #a88a6c, #c6a88a 15%, #d8ba9c);
+    background: -ms-linear-gradient(top, #a88a6c, #c6a88a 15%, #d8ba9c);
+    background: -o-linear-gradient(top, #a88a6c, #c6a88a 15%, #d8ba9c);
+    background: linear-gradient(top, #a88a6c, #c6a88a 15%, #d8ba9c);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-orange.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-yellow {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #f0f0b4;
+    background: -webkit-linear-gradient(top, #f7f7bb, #d1d195);
+    background: -moz-linear-gradient(top, #f7f7bb, #d1d195);
+    background: -ms-linear-gradient(top, #f7f7bb, #d1d195);
+    background: -o-linear-gradient(top, #f7f7bb, #d1d195);
+    background: linear-gradient(top, #f7f7bb, #d1d195);
+}
+
+.rb-yellow.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-yellow:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #fefec2;
+    background: -webkit-linear-gradient(top, #ffffc9, #dfdfa3);
+    background: -moz-linear-gradient(top, #ffffc9, #dfdfa3);
+    background: -ms-linear-gradient(top, #ffffc9, #dfdfa3);
+    background: -o-linear-gradient(top, #ffffc9, #dfdfa3);
+    background: linear-gradient(top, #ffffc9, #dfdfa3);
+    border: 1px solid #333333;
+}
+
+.rb-yellow:active,
+.rb-yellow.selected {
+    background: #d0d094;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a8a86c), color-stop(15%, #c6c68a), to(#d8d89c));
+    background: -webkit-linear-gradient(top, #a8a86c, #c6c68a 15%, #d8d89c);
+    background: -moz-linear-gradient(top, #a8a86c, #c6c68a 15%, #d8d89c);
+    background: -ms-linear-gradient(top, #a8a86c, #c6c68a 15%, #d8d89c);
+    background: -o-linear-gradient(top, #a8a86c, #c6c68a 15%, #d8d89c);
+    background: linear-gradient(top, #a8a86c, #c6c68a 15%, #d8d89c);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-yellow.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-green {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #72ec72;
+    background: -webkit-linear-gradient(top, #66f566, #4dc84d);
+    background: -moz-linear-gradient(top, #66f566, #4dc84d);
+    background: -ms-linear-gradient(top, #66f566, #4dc84d);
+    background: -o-linear-gradient(top, #66f566, #4dc84d);
+    background: linear-gradient(top, #66f566, #4dc84d);
+}
+
+.rb-green.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-green:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #c2fec2;
+    background: -webkit-linear-gradient(top, #c9ffc9, #a3dfa3);
+    background: -moz-linear-gradient(top, #c9ffc9, #a3dfa3);
+    background: -ms-linear-gradient(top, #c9ffc9, #a3dfa3);
+    background: -o-linear-gradient(top, #c9ffc9, #a3dfa3);
+    background: linear-gradient(top, #c9ffc9, #a3dfa3);
+    border: 1px solid #333333;
+}
+
+.rb-green:active,
+.rb-green.selected {
+    background: #94d094;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6ca86c), color-stop(15%, #8ac68a), to(#9cd89c));
+    background: -webkit-linear-gradient(top, #6ca86c, #8ac68a 15%, #9cd89c);
+    background: -moz-linear-gradient(top, #6ca86c, #8ac68a 15%, #9cd89c);
+    background: -ms-linear-gradient(top, #6ca86c, #8ac68a 15%, #9cd89c);
+    background: -o-linear-gradient(top, #6ca86c, #8ac68a 15%, #9cd89c);
+    background: linear-gradient(top, #6ca86c, #8ac68a 15%, #9cd89c);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-green.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-blue {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #b4d2f0;
+    background: -webkit-linear-gradient(top, #bbd9f7, #95b3d1);
+    background: -moz-linear-gradient(top, #bbd9f7, #95b3d1);
+    background: -ms-linear-gradient(top, #bbd9f7, #95b3d1);
+    background: -o-linear-gradient(top, #bbd9f7, #95b3d1);
+    background: linear-gradient(top, #bbd9f7, #95b3d1);
+}
+
+.rb-blue.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-blue:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #c2e0fe;
+    background: -webkit-linear-gradient(top, #c9e7ff, #a3c1df);
+    background: -moz-linear-gradient(top, #c9e7ff, #a3c1df);
+    background: -ms-linear-gradient(top, #c9e7ff, #a3c1df);
+    background: -o-linear-gradient(top, #c9e7ff, #a3c1df);
+    background: linear-gradient(top, #c9e7ff, #a3c1df);
+    border: 1px solid #333333;
+}
+
+.rb-blue:active,
+.rb-blue.selected {
+    background: #94b2d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6c8aa8), color-stop(15%, #8aa8c6), to(#9cbad8));
+    background: -webkit-linear-gradient(top, #6c8aa8, #8aa8c6 15%, #9cbad8);
+    background: -moz-linear-gradient(top, #6c8aa8, #8aa8c6 15%, #9cbad8);
+    background: -ms-linear-gradient(top, #6c8aa8, #8aa8c6 15%, #9cbad8);
+    background: -o-linear-gradient(top, #6c8aa8, #8aa8c6 15%, #9cbad8);
+    background: linear-gradient(top, #6c8aa8, #8aa8c6 15%, #9cbad8);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-blue.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-purple {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #d2b4f0;
+    background: -webkit-linear-gradient(top, #d9bbf7, #b395d1);
+    background: -moz-linear-gradient(top, #d9bbf7, #b395d1);
+    background: -ms-linear-gradient(top, #d9bbf7, #b395d1);
+    background: -o-linear-gradient(top, #d9bbf7, #b395d1);
+    background: linear-gradient(top, #d9bbf7, #b395d1);
+}
+
+.rb-purple.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-purple:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #e0c2fe;
+    background: -webkit-linear-gradient(top, #e7c9ff, #c1a3df);
+    background: -moz-linear-gradient(top, #e7c9ff, #c1a3df);
+    background: -ms-linear-gradient(top, #e7c9ff, #c1a3df);
+    background: -o-linear-gradient(top, #e7c9ff, #c1a3df);
+    background: linear-gradient(top, #e7c9ff, #c1a3df);
+    border: 1px solid #333333;
+}
+
+.rb-purple:active,
+.rb-purple.selected {
+    background: #b294d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#8a6ca8), color-stop(15%, #a88ac6), to(#ba9cd8));
+    background: -webkit-linear-gradient(top, #8a6ca8, #a88ac6 15%, #ba9cd8);
+    background: -moz-linear-gradient(top, #8a6ca8, #a88ac6 15%, #ba9cd8);
+    background: -ms-linear-gradient(top, #8a6ca8, #a88ac6 15%, #ba9cd8);
+    background: -o-linear-gradient(top, #8a6ca8, #a88ac6 15%, #ba9cd8);
+    background: linear-gradient(top, #8a6ca8, #a88ac6 15%, #ba9cd8);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-purple.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-pink {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #f0b4f0;
+    background: -webkit-linear-gradient(top, #f7bbf7, #d195d1);
+    background: -moz-linear-gradient(top, #f7bbf7, #d195d1);
+    background: -ms-linear-gradient(top, #f7bbf7, #d195d1);
+    background: -o-linear-gradient(top, #f7bbf7, #d195d1);
+    background: linear-gradient(top, #f7bbf7, #d195d1);
+}
+
+.rb-pink.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-pink:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #fec2fe;
+    background: -webkit-linear-gradient(top, #ffc9ff, #dfa3df);
+    background: -moz-linear-gradient(top, #ffc9ff, #dfa3df);
+    background: -ms-linear-gradient(top, #ffc9ff, #dfa3df);
+    background: -o-linear-gradient(top, #ffc9ff, #dfa3df);
+    background: linear-gradient(top, #ffc9ff, #dfa3df);
+    border: 1px solid #333333;
+}
+
+.rb-pink:active,
+.rb-pink.selected {
+    background: #d094d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a86ca8), color-stop(15%, #c68ac6), to(#d89cd8));
+    background: -webkit-linear-gradient(top, #a86ca8, #c68ac6 15%, #d89cd8);
+    background: -moz-linear-gradient(top, #a86ca8, #c68ac6 15%, #d89cd8);
+    background: -ms-linear-gradient(top, #a86ca8, #c68ac6 15%, #d89cd8);
+    background: -o-linear-gradient(top, #a86ca8, #c68ac6 15%, #d89cd8);
+    background: linear-gradient(top, #a86ca8, #c68ac6 15%, #d89cd8);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-pink.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-lime {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #d2f0b4;
+    background: -webkit-linear-gradient(top, #d9f7bb, #b3d195);
+    background: -moz-linear-gradient(top, #d9f7bb, #b3d195);
+    background: -ms-linear-gradient(top, #d9f7bb, #b3d195);
+    background: -o-linear-gradient(top, #d9f7bb, #b3d195);
+    background: linear-gradient(top, #d9f7bb, #b3d195);
+}
+
+.rb-lime.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-lime:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #e0fec2;
+    background: -webkit-linear-gradient(top, #e7ffc9, #c1dfa3);
+    background: -moz-linear-gradient(top, #e7ffc9, #c1dfa3);
+    background: -ms-linear-gradient(top, #e7ffc9, #c1dfa3);
+    background: -o-linear-gradient(top, #e7ffc9, #c1dfa3);
+    background: linear-gradient(top, #e7ffc9, #c1dfa3);
+    border: 1px solid #333333;
+}
+
+.rb-lime:active,
+.rb-lime.selected {
+    background: #b2d094;
+    background: -webkit-gradient(linear, left top, left bottom, from(#8aa86c), color-stop(15%, #a8c68a), to(#bad89c));
+    background: -webkit-linear-gradient(top, #8aa86c, #a8c68a 15%, #bad89c);
+    background: -moz-linear-gradient(top, #8aa86c, #a8c68a 15%, #bad89c);
+    background: -ms-linear-gradient(top, #8aa86c, #a8c68a 15%, #bad89c);
+    background: -o-linear-gradient(top, #8aa86c, #a8c68a 15%, #bad89c);
+    background: linear-gradient(top, #8aa86c, #a8c68a 15%, #bad89c);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-lime.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-mint {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #b4f0d2;
+    background: -webkit-linear-gradient(top, #bbf7d9, #95d1b3);
+    background: -moz-linear-gradient(top, #bbf7d9, #95d1b3);
+    background: -ms-linear-gradient(top, #bbf7d9, #95d1b3);
+    background: -o-linear-gradient(top, #bbf7d9, #95d1b3);
+    background: linear-gradient(top, #bbf7d9, #95d1b3);
+}
+
+.rb-mint.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-mint:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #c2fee0;
+    background: -webkit-linear-gradient(top, #c9ffe7, #a3dfc1);
+    background: -moz-linear-gradient(top, #c9ffe7, #a3dfc1);
+    background: -ms-linear-gradient(top, #c9ffe7, #a3dfc1);
+    background: -o-linear-gradient(top, #c9ffe7, #a3dfc1);
+    background: linear-gradient(top, #c9ffe7, #a3dfc1);
+    border: 1px solid #333333;
+}
+
+.rb-mint:active,
+.rb-mint.selected {
+    background: #94d0b2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6ca88a), color-stop(15%, #8ac6a8), to(#9cd8ba));
+    background: -webkit-linear-gradient(top, #6ca88a, #8ac6a8 15%, #9cd8ba);
+    background: -moz-linear-gradient(top, #6ca88a, #8ac6a8 15%, #9cd8ba);
+    background: -ms-linear-gradient(top, #6ca88a, #8ac6a8 15%, #9cd8ba);
+    background: -o-linear-gradient(top, #6ca88a, #8ac6a8 15%, #9cd8ba);
+    background: linear-gradient(top, #6ca88a, #8ac6a8 15%, #9cd8ba);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-mint.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-aqua {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #b4f0f0;
+    background: -webkit-linear-gradient(top, #bbf7f7, #95d1d1);
+    background: -moz-linear-gradient(top, #bbf7f7, #95d1d1);
+    background: -ms-linear-gradient(top, #bbf7f7, #95d1d1);
+    background: -o-linear-gradient(top, #bbf7f7, #95d1d1);
+    background: linear-gradient(top, #bbf7f7, #95d1d1);
+}
+
+.rb-aqua.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-aqua:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #c2fefe;
+    background: -webkit-linear-gradient(top, #c9ffff, #a3dfdf);
+    background: -moz-linear-gradient(top, #c9ffff, #a3dfdf);
+    background: -ms-linear-gradient(top, #c9ffff, #a3dfdf);
+    background: -o-linear-gradient(top, #c9ffff, #a3dfdf);
+    background: linear-gradient(top, #c9ffff, #a3dfdf);
+    border: 1px solid #333333;
+}
+
+.rb-aqua:active,
+.rb-aqua.selected {
+    background: #94d0d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6ca8a8), color-stop(15%, #8ac6c6), to(#9cd8d8));
+    background: -webkit-linear-gradient(top, #6ca8a8, #8ac6c6 15%, #9cd8d8);
+    background: -moz-linear-gradient(top, #6ca8a8, #8ac6c6 15%, #9cd8d8);
+    background: -ms-linear-gradient(top, #6ca8a8, #8ac6c6 15%, #9cd8d8);
+    background: -o-linear-gradient(top, #6ca8a8, #8ac6c6 15%, #9cd8d8);
+    background: linear-gradient(top, #6ca8a8, #8ac6c6 15%, #9cd8d8);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-aqua.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-cobalt {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #b4b4f0;
+    background: -webkit-linear-gradient(top, #bbbbf7, #9595d1);
+    background: -moz-linear-gradient(top, #bbbbf7, #9595d1);
+    background: -ms-linear-gradient(top, #bbbbf7, #9595d1);
+    background: -o-linear-gradient(top, #bbbbf7, #9595d1);
+    background: linear-gradient(top, #bbbbf7, #9595d1);
+}
+
+.rb-cobalt.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-cobalt:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #c2c2fe;
+    background: -webkit-linear-gradient(top, #c9c9ff, #a3a3df);
+    background: -moz-linear-gradient(top, #c9c9ff, #a3a3df);
+    background: -ms-linear-gradient(top, #c9c9ff, #a3a3df);
+    background: -o-linear-gradient(top, #c9c9ff, #a3a3df);
+    background: linear-gradient(top, #c9c9ff, #a3a3df);
+    border: 1px solid #333333;
+}
+
+.rb-cobalt:active,
+.rb-cobalt.selected {
+    background: #9494d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6c6ca8), color-stop(15%, #8a8ac6), to(#9c9cd8));
+    background: -webkit-linear-gradient(top, #6c6ca8, #8a8ac6 15%, #9c9cd8);
+    background: -moz-linear-gradient(top, #6c6ca8, #8a8ac6 15%, #9c9cd8);
+    background: -ms-linear-gradient(top, #6c6ca8, #8a8ac6 15%, #9c9cd8);
+    background: -o-linear-gradient(top, #6c6ca8, #8a8ac6 15%, #9c9cd8);
+    background: linear-gradient(top, #6c6ca8, #8a8ac6 15%, #9c9cd8);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-cobalt.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
+
+.rb-rose {
+    color: #3a3a3a;
+    text-shadow: 0 1px 0 #eaeaea;
+    background: #f0b4d2;
+    background: -webkit-linear-gradient(top, #f7bbd9, #d195b3);
+    background: -moz-linear-gradient(top, #f7bbd9, #d195b3);
+    background: -ms-linear-gradient(top, #f7bbd9, #d195b3);
+    background: -o-linear-gradient(top, #f7bbd9, #d195b3);
+    background: linear-gradient(top, #f7bbd9, #d195b3);
+}
+
+.rb-rose.rb-chameleon {
+    color: #484848;
+    text-shadow: 0 1px 0 white;
+    background: #f0f0f0;
+    background: -webkit-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -moz-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -ms-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: -o-linear-gradient(top, #f7f7f7, #d1d1d1);
+    background: linear-gradient(top, #f7f7f7, #d1d1d1);
+}
+
+.rb-rose:hover {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+    background: #fec2e0;
+    background: -webkit-linear-gradient(top, #ffc9e7, #dfa3c1);
+    background: -moz-linear-gradient(top, #ffc9e7, #dfa3c1);
+    background: -ms-linear-gradient(top, #ffc9e7, #dfa3c1);
+    background: -o-linear-gradient(top, #ffc9e7, #dfa3c1);
+    background: linear-gradient(top, #ffc9e7, #dfa3c1);
+    border: 1px solid #333333;
+}
+
+.rb-rose:active,
+.rb-rose.selected {
+    background: #d094b2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a86c8a), color-stop(15%, #c68aa8), to(#d89cba));
+    background: -webkit-linear-gradient(top, #a86c8a, #c68aa8 15%, #d89cba);
+    background: -moz-linear-gradient(top, #a86c8a, #c68aa8 15%, #d89cba);
+    background: -ms-linear-gradient(top, #a86c8a, #c68aa8 15%, #d89cba);
+    background: -o-linear-gradient(top, #a86c8a, #c68aa8 15%, #d89cba);
+    background: linear-gradient(top, #a86c8a, #c68aa8 15%, #d89cba);
+    border: 1px solid #7f7f7f;
+}
+
+.rb-rose.selected {
+    color: #0a0a0a;
+    text-shadow: 0 1px 0 #fafafa;
+}
