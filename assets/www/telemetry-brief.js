@@ -28,8 +28,10 @@ var selectMap = {
   'Gripper Current': 'grippers.current',
   'Power Supply 1 Currents': 'powerSupply1.current',
   'Power Supply 1 Voltages': 'powerSupply1.voltage',
+  'Power Supply 1 Temperatures': 'powerSupply1.temp',
   'Power Supply 2 Currents': 'powerSupply2.current',
-  'Power Supply 2 Voltages': 'powerSupply2.voltage'
+  'Power Supply 2 Voltages': 'powerSupply2.voltage',
+  'Power Supply 2 Temperatures': 'powerSupply2.temp'
 }
 
 // Array length must match highest initChart() numLines parameter
@@ -75,6 +77,27 @@ var seriesOptions = [{
   }
 ];
 
+var psOptions = [{
+  strokeStyle: 'rgba(255, 255, 0, 1)',
+  fillStyle: 'rgba(255, 255, 0, 0.1)',
+  lineWidth: 3
+},
+{
+  strokeStyle: 'rgba(0, 0, 255, 1)',
+  fillStyle: 'rgba(0, 0, 255, 0.1)',
+  lineWidth: 3
+},
+{
+  strokeStyle: 'rgba(255, 165, 0, 1)',
+  fillStyle: 'rgba(255, 165, 0, 0.1)',
+  lineWidth: 3
+},
+{
+  strokeStyle: 'rgba(255, 0, 0, 1)',
+  fillStyle: 'rgba(255, 0, 0, 0.1)',
+  lineWidth: 3
+}];
+
 function init() {
   initChart('cpu', ['cpu']);
   initChart('depth_p', ['depth_p', 'board44.pressure.81']);
@@ -100,10 +123,13 @@ function init() {
   initChart('ctsensor.conductivity', ['board44.conductivity.85']);
   initChart('grippers.temp', ['gripper.temp.24', 'waterSampler.temp.24', 'trim.temp.21']);
   initChart('grippers.current', ['gripper.current.24', 'waterSampler.current.24', 'trim.current.21']);
-  initChart('powerSupply1.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83']);
-  initChart('powerSupply1.voltage', ['board44.adc0.83', 'board44.adc1.83', 'board44.adc2.83', 'board44.adc3.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83', 'board44.adc7.83']);
-  initChart('powerSupply2.current', ['board44.acs764n1.87', 'board44.acs764n2.87', 'board44.acs764n3.87', 'board44.acs764n4.87']);
-  initChart('powerSupply2.voltage', ['board44.adc0.87', 'board44.adc1.87', 'board44.adc2.87', 'board44.adc3.87', 'board44.adc4.87', 'board44.adc5.87', 'board44.adc6.87', 'board44.adc7.87']);
+  initChart('powerSupply1.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
+  initChart('powerSupply1.voltage', ['board44.adc2.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83'], ['5V', '48V', '24V', '12V']);
+  initChart('powerSupply1.temp', ['board44.adc1.83', 'board44.adc7.83'], ['Temp 12', 'Temp 24']);
+  initChart('powerSupply2.current', ['board44.acs764n1.87', 'board44.acs764n2.87', 'board44.acs764n3.87', 'board44.acs764n4.87'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
+  initChart('powerSupply2.voltage', ['board44.adc2.87', 'board44.adc4.87', 'board44.adc5.87', 'board44.adc6.87'], ['5V', '48V', '24V', '12V']);
+  initChart('powerSupply2.temp', ['board44.adc1.87', 'board44.adc7.87'], ['Temp 12', 'Temp 24']);
+
 
   initMqtt();
   initGrid('telemetryBriefLayout');
@@ -146,7 +172,7 @@ function initMqtt() {
   });
 }
 
-function initChart(chartName, properties) {
+function initChart(chartName, properties, labels) {
 
   let numLines = 1;
   if (Array.isArray(properties)) {
@@ -172,12 +198,12 @@ function initChart(chartName, properties) {
     let series = new TimeSeries();
     let options = seriesOptions[i];
     if (chartName.match(/powerSupply.*/) !== null) {
-      let labels = properties[i].split(/\./);
-      options.tooltipLabel = labels[labels.length-2];
+      options = psOptions[i];
+      options.tooltipLabel = labels[i];
     }
     else if (properties[i].match(/\.[0-9]+$/) !== null) {
-      let labels = properties[i].split(/\./);
-      options.tooltipLabel = labels[labels.length-1];
+      let tooltips = properties[i].split(/\./);
+      options.tooltipLabel = tooltips[tooltips.length-1];
     }
     dataMap[properties[i]] = series;
     timeline.addTimeSeries(series, options);

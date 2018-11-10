@@ -139,7 +139,9 @@ function initMqtt() {
       }
       // make sure it is still valid
       else {
-        if (this.cameraMap[id].ts !== val[3]) {
+        if (this.cameraMap[id].port != val[0]
+            || this.cameraMap[id].ts != val[3]
+            || this.cameraMap[id].record != val[4]) {
           this.cameraMap[id].port = val[0];
           this.cameraMap[id].ts = val[3];
           this.cameraMap[id].record = val[4];
@@ -148,7 +150,7 @@ function initMqtt() {
       }
       let statusNode = document.getElementById(`video-${id}-record`);
       if (statusNode) {
-        if (this.cameraMap[id].record == true) {
+        if (this.cameraMap[id].record === "true") {
           statusNode.classList.remove('dot-inactive');
           statusNode.classList.add('dot-active');
         }
