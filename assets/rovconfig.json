@@ -1,0 +1,1906 @@
+{
+  "plugins": {
+    "globalization": {
+      "selectedLocal": "en-US"
+    },
+    "plugin-manager": {},
+    "software-update": {
+      "showAlerts": {
+        "showAlerts": true
+      }
+    },
+    "ui-manager": {
+      "selectedUI": "new-ui"
+    },
+    "inputConfigurator": {
+      "presets": [
+        {
+          "name": "defaults",
+          "actions": [
+            [
+              "plugin.blackbox.record",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "r",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "A",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "]",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.center",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "\\",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "B",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "[",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.diveProfile.zeroDepth",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+d",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.resolutionFull",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+1",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.resolutionHalf",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+2",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.resolutionQuarter",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+4",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.quality70",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+7",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.quality80",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+8",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.quality90",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+9",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.quality100",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift+0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.exposureAdd",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "+",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.exposureSubtract",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "_",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.elphel-config.snapFull",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "space",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "=",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "-",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.imu.zeroYaw",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+y",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.laser.Toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "l",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "X",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": ".",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_RIGHT",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": ",",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_LEFT",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "/",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "Y",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.mqtt-broker.sayHello",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.navigationData.toggleHeadsUpDisplay",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "systemDiagnostics.popup",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+s d i a g",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel1",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "1",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel2",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "2",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel3",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "3",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel4",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "4",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel5",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "5",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveForward",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "w",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveBackwards",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "s",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveLeft",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "a",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveRight",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "d",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveUp",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "e",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "LB",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveDown",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "c",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_TRIGGER",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.decrementPowerLevel",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "-",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_TRIGGER",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.incrementPowerLevel",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "=",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "RB",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveThrottle",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_STICK_Y",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveYaw",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_STICK_X",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.toggleHeadingHold",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "h",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.toggleDepthHold",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "y",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniGripper.gripper_open",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "u",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_UP",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniGripper.gripper_close",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "i",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_DOWN",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniGripper.sampler_open",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "j",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniGripper.sampler_close",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "k",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniGripper.trim_open",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "n",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniGripper.trim_close",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "m",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniPilot.strafeLeft",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "f",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniPilot.strafeRight",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "g",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniPilot.moveStrafe",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_STICK_X",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": true,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "sciniPilot.movePitch",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_STICK_Y",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "OpenROV Classic",
+          "actions": [
+            [
+              "plugin.blackbox.record",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "r",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "q",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "Y",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.center",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "a",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "B",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "z",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "A",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.diveProfile.zeroDepth",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+d",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.example.sayHello",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "=",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "-",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.imu.zeroYaw",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+y",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.laser.Toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "l",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "p",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_UP",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "o",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_DOWN",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "i",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.navigationData.toggleHeadsUpDisplay",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "\\",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "systemDiagnostics.popup",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+s d i a g",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel1",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "1",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel2",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "2",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel3",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "3",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel4",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "4",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel5",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "5",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.decrementPowerLevel",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "7",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_TRIGGER",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.incrementPowerLevel",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "8",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_TRIGGER",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveForward",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "up",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveBackwards",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "down",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveLeft",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "left",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveRight",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "right",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveUp",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveDown",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "ctrl",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveThrottle",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_STICK_Y",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveYaw",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_STICK_X",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveLift",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_STICK_Y",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "SCINI",
+          "actions": [
+            [
+              "plugin.blackbox.record",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "r",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "q",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "Y",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.center",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "a",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "B",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.cameraServo.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "z",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "A",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.diveProfile.zeroDepth",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+d",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.example.sayHello",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "0",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "=",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.externalLights.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "-",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.imu.zeroYaw",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+y",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.laser.Toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "l",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.stepPositive",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "p",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_UP",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.stepNegative",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "o",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "DPAD_DOWN",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.lights.toggle",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "i",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "plugin.navigationData.toggleHeadsUpDisplay",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "\\",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "systemDiagnostics.popup",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "alt+s d i a g",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel1",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "1",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel2",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "2",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel3",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "3",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel4",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "4",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.powerLevel5",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "5",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.decrementPowerLevel",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "7",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_TRIGGER",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.incrementPowerLevel",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "8",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ],
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_TRIGGER",
+                    "controller": "gamepad",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveForward",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "up",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveBackwards",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "down",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveLeft",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "left",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveRight",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "right",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveUp",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "shift",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveDown",
+              [
+                [
+                  "keyboard",
+                  {
+                    "name": "ctrl",
+                    "controller": "keyboard",
+                    "type": "button"
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveThrottle",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_STICK_Y",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveYaw",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "LEFT_STICK_X",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ],
+            [
+              "rovPilot.moveLift",
+              [
+                [
+                  "gamepad",
+                  {
+                    "name": "RIGHT_STICK_Y",
+                    "controller": "gamepad",
+                    "type": "axis",
+                    "options": {
+                      "inverted": false,
+                      "exponentialSticks": {
+                        "enabled": false,
+                        "rate": 1
+                      }
+                    }
+                  }
+                ]
+              ]
+            ]
+          ]
+        }
+      ],
+      "lastPreset": "defaults"
+    },
+    "cameraServo": {
+      "speed": 45,
+      "controlSensitivity": 1,
+      "rangeMax": 32.8,
+      "rangeMin": -40.6,
+      "stepResolution": 10,
+      "inverted": false
+    },
+    "diveProfile": {
+      "waterType": "Fresh"
+    },
+    "elphel-config": {
+      "exposureMillis": 100,
+      "jpgQuality": 85,
+      "resolution": 4,
+      "autoExposure": false,
+      "whiteBalance": false,
+      "colorMode": false
+    },
+    "example": {
+      "firstName": "Open",
+      "lastName": "Rov"
+    },
+    "imu": {
+      "rollOffset": 0,
+      "pitchOffset": 0
+    },
+    "mqttBroker": {
+      "port": 3000
+    },
+    "mqtt-controls": {},
+    "notifications": {
+      "persistBetweenReboots": true
+    },
+    "rovPilot": {
+      "configurations": []
+    },
+    "sciniGripper": {
+      "configurations": []
+    },
+    "sciniPilot": {
+      "configurations": []
+    },
+    "thrusters5x1": {
+      "motor-response-delay-ms": 0,
+      "thruster": {
+        "reversed": false,
+        "forward-modifier": 1.5,
+        "reverse-modifier": 1.5
+      },
+      "vertical": {
+        "reversed": false,
+        "forward-modifier": 1,
+        "reverse-modifier": 1
+      },
+      "starboard": {
+        "reversed": false,
+        "forward-modifier": 1,
+        "reverse-modifier": 1
+      },
+      "aftvertical": {
+        "reversed": false,
+        "forward-modifier": 1,
+        "reverse-modifier": 1
+      },
+      "aftstarboard": {
+        "reversed": false,
+        "forward-modifier": 1,
+        "reverse-modifier": 1
+      }
+    }
+  }
+}

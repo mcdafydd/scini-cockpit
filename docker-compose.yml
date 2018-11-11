@@ -2,7 +2,7 @@ version: "3"
 services:
 
   openrov:
-    image: scini/openrov:build-20181104
+    image: scini/openrov:build-20181109
     restart: always
     command: 192.168.2.215
     cap_add:
@@ -11,6 +11,7 @@ services:
       - "./assets/www:/opt/openrov/www"
       - "./assets/www-ro:/opt/openrov/www-ro"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
+      - "./assets/rovconfig.json:/tmp/rovconfig.json"
       - "./assets/adjustments.prod.json:/opt/openrov/cockpit/src/lib/adjustments.json"
     ports:
       - "80:80"
