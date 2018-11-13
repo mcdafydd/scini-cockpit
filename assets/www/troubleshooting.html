@@ -27,6 +27,53 @@
       <li><div class="clock"></div></li>
     </ul>
   </nav>
+  <h1>Command Grid</h1>
+  <table class="tg">
+    <tr>
+      <th class="tg-0lax"><em>Func</em></th>
+      <th class="tg-0lax"><a href="http://192.168.2.211" target="_blank">211</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.213" target="_blank">213</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.215" target="_blank">215</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.217" target="_blank">217</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.218" target="_blank">218</a></th>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a id="ping" href="#no-video">Ping</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211:8081/img">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a href="#dmesg">Dmesg</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a href="#usb-audio">Audio</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">Video</td>
+      <td colspan="5" class="tg-0lax"><p class="rb rb-purple">Restart Video</p></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">Raw (Not done)</td>
+      <td class="tg-0lax"><p class="rb rb-purple">T</p><p class="rb rb-purple">F</p></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+    </tr>
+  </table>
   <h1>How to Stop/Start Recording</h1>
   ** This process will be updated as soon as possible **
   <ol>
@@ -36,32 +83,21 @@
     <li>Click Video</li>
     <li>Find "RecordOnServer" and set the value to True - if it's already True, video should be recording on the server</li>
   </ol>
-  <h1>No video</h1>
+  <h1 id="no-video">No video</h1>
   Make sure each step passes before proceeding.
   <ol>
     <li>The video tabs require Chrome v69+.  You have <b id="browser"></b></li>
-    <li>Make sure cameras are reachable from the surface.  You should see a single image open in a new tab by clicking the following URLs for each camera.  If one fails, check that camera.  If they all fail, there may be a network connectivity problem with the ROV.</li>
-    <ol style="list-style-type: lower-alpha; padding-bottom: 0;">
-      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.211:8081/img">211 Camera</a></li>
-      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.213:8081/img">213 Camera</a></li>
-      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.215:8081/img">215 Camera</a></li>
-      <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.217:8081/img">217 Camera</a></li>
-      <li style="margin-left:2em; padding-bottom: 0;"><a target="_blank" href="http://192.168.2.218:8081/img">218 Camera</a></li>
-    </ol>
+    <li>Make sure cameras are reachable from the surface.  You should see a single image open in a new tab by clicking the <a href="#ping">ping buttons above for each camera</a>.  If one fails, check that camera.  If they all fail, there may be a network connectivity problem with the ROV.</li>
+
     <li>Restart the mjpg_streamer processes by clicking the button.<button id="video-restart">Restart video streamers</button></li>
     <li>Try reducing resolution to 1/4 or 1/2 on problematic cameras from the controls tab.</li>
     <li>Try resetting the camera directly from it's native control page.</li>
   </ol>
-  <h1>View Camera Boot Messages</h1>
+
+  <h1 id="dmesg">View Camera Boot Messages</h1>
   This information can be useful in trying to determine the status of USB device connectivity and other potential hardware issues captured by the camera's operating system.
-  <ol style="padding-bottom: 0;">
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">211 Camera Dmesg</a></li>
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.213/phpshell.php?command=dmesg">213 Camera Dmesg</a></li>
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.215/phpshell.php?command=dmesg">215 Camera Dmesg</a></li>
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.217/phpshell.php?command=dmesg">217 Camera Dmesg</a></li>
-    <li style="margin-left:2em; padding-bottom: 0;"><a target="_blank" href="http://192.168.2.218/phpshell.php?command=dmesg">218 Camera Dmesg</a></li>
-  </ol>
-  <h1>Add or Remove an RS-485 Master</h1>
+
+  <h1 id="bus-master">Add or Remove an RS-485 Master</h1>
   <ol style="padding-bottom: 0;">
     <li style="margin-left:2em"><a target="_blank" href="/files.html">Click to open the Files browser in a new tab</a></li>
     <li style="margin-left:2em">Click assets</li>
@@ -73,21 +109,38 @@
     <li style="margin-left:2em">Right-click -> Close</li>
     <li style="margin-left:2em">Stop and start server using icons on server desktop</li>
   </ol>
-  <h1>Device Control Failure</h1>
+  <h1 id="dev-control">Device Control Failure</h1>
   If you are unable to control a particular device or several devices:
   <ol>
     <li>Make sure that all expected RS485 bus "masters" are set to true or false appropriately in <a style="color:greenyellow;" href="files.html">assets/mqttConfig.json</a>.  If a device is set to false, it will receive no messages to pass onto the serial bus.  If multiple devices attached to the same RS485 bus are set to true, messages may be corrupted upon receipt.  Edit the file to make changes, save it, then stop and start the OpenROV server to make the changes take effect.</li>
   </ol>
-  <h1>Check Camera for USB Audio Detection</h1>
+
+  <h1 id="usb-audio">Check Camera for USB Audio Detection</h1>
   This information can be useful in trying to determine the status of USB audio device connectivity.  Successful detection should show something like:
   <pre>[Device         ]: USB-Audio - USB PnP Sound Device
       C-Media Electronics Inc.       USB PnP Sound Device </pre>
-  <ol style="padding-bottom: 0;">
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">211 Camera USB Audio</a></li>
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.213/phpshell.php?command=cat%20/proc/asound/cards">213 Camera USB Audio</a></li>
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.215/phpshell.php?command=cat%20/proc/asound/cards">215 Camera USB Audio</a></li>
-    <li style="margin-left:2em"><a target="_blank" href="http://192.168.2.217/phpshell.php?command=cat%20/proc/asound/cards">217 Camera USB Audio</a></li>
-    <li style="margin-left:2em; padding-bottom: 0;"><a target="_blank" href="http://192.168.2.218/phpshell.php?command=cat%20/proc/asound/cards">218 Camera USB Audio</a></li>
+
+  <h1 id="virus-scan">Temporarily Disable On-Demand Antivirus Scanning</h1>
+  If you need to temporarily disable Sophos Antivirus scanning due to heavy demand on disk write performance, like during a dive, run the following command on the OpenROV server computer console:
+
+  <pre>/opt/sophos-av/bin/savdctl disable</pre>
+
+  Don't forget to re-enable it when you're connecting to any shared network using the following command:
+
+  <pre>/opt/sophos-av/bin/savdctl enable</pre>
+
+  For more information, see the <a href="https://www.sophos.com/en-us/medialibrary/PDFs/documentation/savl_9_cgeng.pdf">user manual - Sections 3.3 and 3.4.</a>
+
+  <h1 id="chrome-throttle">Disable Chrome Expensive Background Timer Throttling</h1>
+  <ol>
+    <li>Copy the text in the window below</li>
+    <textarea style="width: 40%;">chrome://flags/#expensive-background-timer-throttling</textarea>
+    <li><a target="_blank" class="rb-purple" href="about:blank">Click to open a new blank tab</a></li>
+    <li>Paste the text you copied into the URL bar on the new tab</li>
+    <li>Set this flag to "Disable"</li>
+    <li>Restart your browser</li>
   </ol>
+
+  <p>For more information, see <a target="_blank" href="https://www.chromestatus.com/feature/6172836527865856">this link.</a></p>
 </body>
 </html>
