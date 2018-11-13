@@ -6,10 +6,7 @@ function init() {
   initKeyboardControls();
   initMqtt();
 
-  var doVisualUpdates = true;
-  document.addEventListener('visibilitychange', function(){
-    doVisualUpdates = !document.hidden;
-  });
+  SilentAudio();
 
   const offscreen = document.querySelector('canvas').transferControlToOffscreen();
   const worker = new Worker('/worker.js');
@@ -21,6 +18,19 @@ function init() {
     hostname: window.location.hostname,
     wsPort: window.location.port-100
   });
+}
+
+function SilentAudio(audioCtx) {
+  var self = this
+  //if (!(self instanceof SilentAudio)) return new SilentAudio(audioCtx)
+
+  audioCtx = audioCtx || new AudioContext()
+  var source = audioCtx.createConstantSource()
+  var gainNode = audioCtx.createGain()
+  gainNode.gain.value = 0.001 // required to prevent popping on start
+  source.connect(gainNode)
+  gainNode.connect(audioCtx.destination)
+  source.start()
 }
 
 function initKeyboardControls() {
