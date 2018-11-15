@@ -272,6 +272,19 @@ canvas {
   height: 100%;
 }
 
+.ctrl-btn-sm {
+  border: none;
+  color: white;
+  margin: 0px;
+  padding: 0px 0px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  width: 80%;
+  height: 60%;
+}
+
 .ctrl-btn-large {
   border: none;
   color: white;
@@ -281,7 +294,7 @@ canvas {
   text-decoration: none;
   display: inline-block;
   font-size: 12px;
-  width: 80%;
+  width: 60%;
   height: 60%;
 }
 
@@ -334,4 +347,20 @@ canvas {
 
 .tg tr:hover  {
   background-color: #706161;
+}
+
+.tg .tg-0lax .tg-container {
+  position: relative;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0px;
+  font-size: 11px;
+}
+
+.top {
+  position: absolute;
+  top: 0px;
+  font-size: 11px;
 }
