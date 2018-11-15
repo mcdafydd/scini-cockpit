@@ -42,6 +42,29 @@ function initListeners() {
       if (device === 'light') {
         let display = document.getElementById(device+'-'+node+'-val');
         display.innerHTML = `Power: ${this.value}`;
+      }
+      else if (device === 'exposure') {
+        let display = document.getElementById(device+'-'+node+'-val');
+        display.innerHTML = `Time: ${this.value}ms`;
+        if (self.cameraMap.hasOwnProperty(node)) {
+          let port = self.cameraMap[node].port;
+        }
+        else
+          console.warn(`missing cameraMap at ${this.id}! Cannot control this device`);
+      }
+      else if (device === 'servo') {
+        let display = document.getElementById(`${device}-${node}-${func}-val`);
+        if (func === 'speed')
+          display.innerHTML = `spd: ${this.value}`;
+        else if (func === 'center')
+          display.innerHTML = `ctr: ${this.value}`;
+      }
+    }, false);
+    input.addEventListener('change', function() {
+      [device, node, func] = input.id.split('-'); // func may be undefined
+      if (device === 'light') {
+        let display = document.getElementById(device+'-'+node+'-val');
+        display.innerHTML = `Power: ${this.value}`;
         sendLight(node, this.value);
       }
       else if (device === 'exposure') {
