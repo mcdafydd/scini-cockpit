@@ -6,13 +6,13 @@ const EventEmitter = require('events');
 
 logger.level = 'fatal';
 
-let mockNodeIds = [];
+let filterList = [];
 if (process.env.hasOwnProperty('NODEIDS'))
 {
-  mockNodeIds = process.env['NODEIDS'].split(' ');
-  for (let i = 0; i < mockNodeIds.length; i++)
+  filterList = process.env['NODEIDS'].split(/\s+/);
+  for (let i = 0; i < filterList.length; i++)
   {
-    mockNodeIds[i] = +mockNodeIds[i]; // convert string to int
+    filterList[i] = +filterList[i]; // convert string to int
   }
 }
 else
@@ -22,7 +22,6 @@ else
   logger.debug('Exiting...');
   process.exit(1);
 }
-
 
 class serialTester extends EventEmitter
 {
@@ -35,8 +34,12 @@ class serialTester extends EventEmitter
     this.on('error', (e) => {
       logger.debug('Error: ', e.message);
     });
+    // only called on requests from MQTT to subscribed topics
+    // filter out PRO4 IDs not in process.env['NODEIDS']
     this.on('parsedPacket', function(parsedObj) {
-      this.sendUpstream(parsedObj);
+      if (filterList.indexOf(parsedObj.id) !== -1) {
+        this.sendUpstream(parsedObj);
+      }
     });
 
     // *********** SCINI specific platform hardware request state *************
@@ -464,18 +467,18 @@ class serialTester extends EventEmitter
         kellerCust0: scini.rand,
         kellerCust1: scini.rand,
         kellerScale0: scini.rand + 3.0,
-        acs764n1: scini.rand * 0.3 + 5.0,
-        acs764n2: scini.rand * 0.3 + 5.0,
-        acs764n3: scini.rand * 0.3 + 5.0,
-        acs764n4: scini.rand * 0.3 + 5.0,
-        adc0: scini.rand * 0.3 + 5.0,
-        adc1: scini.rand * 0.3 + 5.0,
+        acs764n1: scini.rand * 0.3 + 48.0,
+        acs764n2: scini.rand * 0.3 + 12.0,
+        acs764n3: scini.rand * 0.6 + 48.0,
+        acs764n4: scini.rand * 0.3 + 24.0,
+        adc0: scini.rand * 0.3 + 5.0,  // not used
+        adc1: scini.rand + 3.0,        // temp K/100 on 24v PS side
         adc2: scini.rand * 0.3 + 5.0,
-        adc3: scini.rand * 0.3 + 5.0,
-        adc4: scini.rand * 0.3 + 5.0,
-        adc5: scini.rand * 0.3 + 5.0,
-        adc6: scini.rand * 0.3 + 5.0,
-        adc7: scini.rand * 0.3 + 5.0
+        adc3: scini.rand * 0.3 + 5.0,  // not used
+        adc4: scini.rand * 0.3 + 48.0,
+        adc5: scini.rand * 0.3 + 24.0,
+        adc6: scini.rand * 0.3 + 12.0,
+        adc7: scini.rand * 0.3 + 3.0   // temp K/100 on 12v PS side
       };
       retObj = {h: header, payload: scini.parser.ParserBoard44Bam.encode(ret)};
     }
@@ -513,11 +516,36 @@ class serialTester extends EventEmitter
             console.dir(respObj.device);
           }
           else {
-            process.stdout.write(packetBuf, function(err) {
-              if (err) {
-                return logger.debug('Error on write: ', err.message);
-              }
-            });
+            // simulate variable embedded response delays
+            // plus base delay of 5ms
+            // small chance of splitting packetBuf into 2 parts before sending
+            if (Math.random() < 0.04) {
+              let l = Math.floor(packetBuf.length/2);
+              let buf1 = packetBuf.slice(0, l);
+              let buf2 = packetBuf.slice(l, packetBuf.length);
+              setTimeout(process.stdout.write(buf1, function(err) {
+                if (err) {
+                  return logger.debug('Error on write: ', err.message);
+                }
+                else {
+                  // write remaining packetBuf with another base delay
+                  setTimeout(process.stdout.write(buf2, function(err) {
+                    if (err) {
+                      return logger.debug('Error on write: ', err.message);
+                    }
+                  }), Math.random() + 5);
+                }
+              }), Math.random()*70 + 5);
+            }
+            else {
+              // send in one packet
+              setTimeout(process.stdout.write(packetBuf, function(err) {
+                if (err) {
+                  return logger.debug('Error on write: ', err.message);
+                }
+              }), Math.random()*70 + 5);
+            }
+
           }
         }
         catch(e)
