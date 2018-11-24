@@ -13,8 +13,7 @@
     "crc": "^3.7.0",
     "events": "^3.0.0",
     "javascript-state-machine": "^2.4.0",
-    "pino": "^4.17.5",
-    "serialport": "^6.2.2",
+    "syslog-client": "^1.1.1",
     "smart-buffer": "^4.0.1"
   }
 }

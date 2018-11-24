@@ -1,25 +1,20 @@
-#!/root/.nvm/versions/node/v8.12.0/bin/node --inspect=9222
+#!/root/.nvm/versions/node/v8.12.0/bin/node
 
-const pro4 = require('./pro4');
-const logger = require('pino')();
-const EventEmitter = require('events');
-
-logger.level = 'fatal';
+const pro4          = require('./pro4');
+const syslog        = require('syslog-client');
+const logger        = syslog.createClient('logger');
+const EventEmitter  = require('events');
 
 let filterList = [];
 if (process.env.hasOwnProperty('NODEIDS'))
 {
   filterList = process.env['NODEIDS'].split(/\s+/);
-  for (let i = 0; i < filterList.length; i++)
-  {
-    filterList[i] = +filterList[i]; // convert string to int
-  }
 }
 else
 {
-  logger.debug('Missing space separated list of NODEIDS in environment variable');
-  logger.debug('Example: export NODEIDS="14 15 16"');
-  logger.debug('Exiting...');
+  logger.log('Missing space separated list of NODEIDS in environment variable');
+  logger.log('Example: export NODEIDS="14 15 16"');
+  logger.log('Exiting...');
   process.exit(1);
 }
 
@@ -32,12 +27,13 @@ class serialTester extends EventEmitter
 
     // event listeners
     this.on('error', (e) => {
-      logger.debug('Error: ', e.message);
+      logger.log(`Error: ${e.message}`);
     });
     // only called on requests from MQTT to subscribed topics
     // filter out PRO4 IDs not in process.env['NODEIDS']
     this.on('parsedPacket', function(parsedObj) {
-      if (filterList.indexOf(parsedObj.id) !== -1) {
+      if (filterList.indexOf(parsedObj.id.toString()) !== -1) {
+        logger.log(`sendUpstream = ${parsedObj.id}`);
         this.sendUpstream(parsedObj);
       }
     });
@@ -523,55 +519,60 @@ class serialTester extends EventEmitter
               let l = Math.floor(packetBuf.length/2);
               let buf1 = packetBuf.slice(0, l);
               let buf2 = packetBuf.slice(l, packetBuf.length);
-              setTimeout(process.stdout.write(buf1, function(err) {
-                if (err) {
-                  return logger.debug('Error on write: ', err.message);
-                }
-                else {
-                  // write remaining packetBuf with another base delay
-                  setTimeout(process.stdout.write(buf2, function(err) {
-                    if (err) {
-                      return logger.debug('Error on write: ', err.message);
-                    }
-                  }), Math.random() + 5);
-                }
-              }), Math.random()*70 + 5);
+              setTimeout(function() {
+                process.stdout.write(buf1, function(err) {
+                  if (err) {
+                    return logger.log(`Error on write: ${err.message}`);
+                  }
+                  else {
+                    // write remaining packetBuf with another base delay
+                    setTimeout(function() {
+                      process.stdout.write(buf2, function(err) {
+                        if (err) {
+                          return logger.log(`Error on write: ${err.message}`);
+                        }
+                      })
+                    }, Math.random() + 5);
+                  }
+                })
+              }, Math.random()*70 + 5);
             }
             else {
               // send in one packet
-              setTimeout(process.stdout.write(packetBuf, function(err) {
-                if (err) {
-                  return logger.debug('Error on write: ', err.message);
-                }
-              }), Math.random()*70 + 5);
+              setTimeout(function() {
+                process.stdout.write(packetBuf, function(err) {
+                  if (err) {
+                    return logger.log(`Error on write: ${err.message}`);
+                  }
+                })
+              }, Math.random()*70 + 5);
             }
-
           }
         }
         catch(e)
         {
-          logger.debug('SERIAL: Payload parsing error = ', e.message);
-          logger.debug(e.stack);
+          logger.log(`SERIAL: Payload parsing error = ${e.message}`);
+          logger.log(e.stack);
           parsedObj.status = pro4.constants.STATUS_ERROR;
         }
       }
     }
     else if (parsedObj.status === pro4.constants.STATUS_MOREDATA)
     {
-      logger.debug('SERIAL: Waiting for more data');
+      logger.log('SERIAL: Waiting for more data');
     }
 
     // don't use else if to support fall through changing status conditions during processing
     if (parsedObj.status === pro4.constants.STATUS_ERROR)
     {
-      logger.debug('SERIAL: Error in PRO4 message parser; data = ', parsedObj.toString('hex'));
+      logger.log(`SERIAL: Error in PRO4 message parser; data = ${parsedObj.toString('hex')}`);
     }
 
     // well, kinda ugly for now but this needs to get done
     // invalid status
     if ([pro4.constants.STATUS_ERROR,pro4.constants.STATUS_MOREDATA,pro4.constants.STATUS_SUCCESS].indexOf(parsedObj.status) === -1)
     {
-      logger.debug('SERIAL: Invalid PRO4 parser status = ', parsedObj.status);
+      logger.log(`SERIAL: Invalid PRO4 parser status = ${parsedObj.status}`);
     }
   };
 
@@ -582,13 +583,13 @@ const scini = new serialTester();
 // if STANDALONE='true', accept a hex string on stdin, process that and
 // send it through parsing for easier troubleshooting than inside container
 if (process.env.STANDALONE === 'true') {
-  logger.debug('SERIAL: Running in standalone mode');
+  logger.log('SERIAL: Running in standalone mode');
   process.stdin.pipe(require('split')());
 }
 
 // Open errors will be emitted as an error event
 process.stdin.on('error', (e) => {
-  logger.debug('SERIAL: Error = ', e.message);
+  logger.log(`SERIAL: Error = ${e.message}`);
   process.exit(1);
 });
 

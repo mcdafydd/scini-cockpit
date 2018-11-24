@@ -2,7 +2,7 @@
     "192.168.2.211": {
         "id": "",
         "location": "clump",
-        "receiveMqtt": false
+        "receiveMqtt": true
     },
     "192.168.2.213": {
         "id": "",

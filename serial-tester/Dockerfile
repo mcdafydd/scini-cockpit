@@ -37,8 +37,8 @@ RUN cd /srv \
 
 RUN chmod 755 /srv/serial-tester.js /usr/local/bin/start.sh
 
-# For node debugging
-EXPOSE 9222
+EXPOSE 50000
+EXPOSE 50001
 
 ## Start the mock server platform (no external camera)
 WORKDIR /srv/

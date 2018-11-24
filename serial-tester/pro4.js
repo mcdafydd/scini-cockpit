@@ -31,14 +31,13 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-const logger        = require('pino')();
+const syslog        = require('syslog-client');
+const logger        = syslog.createClient('logger');
 const Parser        = require('binary-parser-encoder').Parser;
 const StateMachine  = require('javascript-state-machine');
 const CRC           = require('crc');
 const EventEmitter  = require('events');
 const SmartBuffer   = require('smart-buffer').SmartBuffer;
-
-logger.level = 'fatal';
 
 // ******************************************************************
 //  Device types are defined by VideoRay
@@ -141,7 +140,7 @@ class Pro4 extends EventEmitter
     this.on('parseSerialData', function(length) {
       this.parse(length, false)});
     this.on('error', function(e) {
-      logger.debug('PRO4: Error = ', e.message);
+      logger.log(`PRO4: Error = ${e.message}`);
     });
 
     // VideoRay PRO4 thruster request payload
@@ -386,14 +385,14 @@ class Pro4 extends EventEmitter
   receivedSerialData(data)
   {
     // smart-buffer should keep track of write cursor
-    logger.debug('PRO4: Received serial data');
+    logger.log('PRO4: Received serial data');
     this.parseBuf.writeBuffer(data);
     this.emit('parseSerialData', this.parseBuf.length);
   }
 
   fsmEnterHandler(event, from, to)
   {
-    logger.debug('PRO4: Parser moved from ' + from + ' to ' + to);
+    logger.log(`PRO4: Parser moved from ${from} to ${to}`);
   };
 
   createStateMachine()
@@ -823,7 +822,7 @@ class Pro4 extends EventEmitter
           }
           else
           {
-            logger.debug('PRO4: Invalid PRO4 ', self.request == 1 ? 'request':'response',' at byte = ', byte, 'state = ', self.fsm.current);
+            logger.log(`PRO4: Invalid PRO4 ${self.request == 1 ? 'request':'response'} at byte = ${byte} state = ${self.fsm.current}`);
             let cursor = self.parseBuf.readOffset;
             self.parseBuf.readOffset = 0;
             this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -850,7 +849,7 @@ class Pro4 extends EventEmitter
           }
           else
           {
-            logger.debug('PRO4: Invalid PRO4 ', self.request == 1 ? 'request':'response',' at byte = ', byte, 'state = ', self.fsm.current);
+            logger.log(`PRO4: Invalid PRO4 ${self.request == 1 ? 'request':'response'} at byte = ${byte} state = ${self.fsm.current}`);
             let cursor = self.parseBuf.readOffset;
             self.parseBuf.readOffset = 0;
             this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -872,7 +871,7 @@ class Pro4 extends EventEmitter
           }
           else
           {
-            logger.debug('PRO4: Invalid PRO4 ', self.request == 1 ? 'request':'response',' device ID = ', byte);
+            logger.log(`PRO4: Invalid PRO4 ${self.request == 1 ? 'request':'response'} device ID = ${byte}`);
             let cursor = self.parseBuf.readOffset;
             self.parseBuf.readOffset = 0;
             this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -904,7 +903,7 @@ class Pro4 extends EventEmitter
           }
           else
           {
-            logger.warn('PRO4: Received 255 as payload length but we don\'t support extended length packets; Dropping)');
+            logger.log('PRO4: Received 255 as payload length but we don\'t support extended length packets; Dropping)');
             let cursor = self.parseBuf.readOffset;
             self.parseBuf.readOffset = 0;
             this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -924,7 +923,7 @@ class Pro4 extends EventEmitter
             let byte = self.parseBuf.readUInt8();
             if (byte != chksum)
             {
-              logger.warn('PRO4: Bad header CRC; possible id = ' + self.parsedObj.id);
+              logger.log(`PRO4: Bad header CRC; possible id = ${self.parsedObj.id}`);
               let cursor = self.parseBuf.readOffset;
               self.parseBuf.readOffset = 0;
               this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -975,7 +974,7 @@ class Pro4 extends EventEmitter
               let calcdChksum = CRC.crc32(self.headBuf); // calculate checksum of received data
               if (calcdChksum != self.parsedObj.crcHead.readUInt32LE(0))
               {
-                logger.warn('PRO4: Bad header CRC32; possible id = ' + self.parsedObj.id);
+                logger.log(`PRO4: Bad header CRC32; possible id = ${self.parsedObj.id}`);
                 let cursor = self.parseBuf.readOffset;
                 self.parseBuf.readOffset = 0;
                 this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -1000,7 +999,7 @@ class Pro4 extends EventEmitter
 
             if (self.counter <= 0 || self.counter > self.parsedObj.crcHead.length) // something went awry
             {
-              logger.warn('PRO4: Something went wrong with header CRC32; possible id = ' + self.parsedObj.id);
+              logger.log(`PRO4: Something went wrong with header CRC32; possible id = ${self.parsedObj.id}`);
               let cursor = self.parseBuf.readOffset;
               self.parseBuf.readOffset = 0;
               this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -1037,7 +1036,7 @@ class Pro4 extends EventEmitter
 
           if (self.counter <= 0 || self.counter > self.parsedObj.payloadLen) // something went awry
           {
-            logger.warn('PRO4: Something went wrong with payload parsing; possible id = ' + self.parsedObj.id);
+            logger.log(`PRO4: Something went wrong with payload parsing; possible id = ${self.parsedObj.id}`);
             let cursor = self.parseBuf.readOffset;
             self.parseBuf.readOffset = 0;
             this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -1059,7 +1058,7 @@ class Pro4 extends EventEmitter
             let byte = self.parseBuf.readUInt8();
             if (byte != chksum)
             {
-              logger.warn('PRO4: Bad total CRC; ', chksum, 'vs ', byte, '; possible id = ' + self.parsedObj.id);
+              logger.log(`PRO4: Bad total CRC; ${chksum} vs ${byte}; possible id = ${self.parsedObj.id}`);
               let cursor = self.parseBuf.readOffset;
               self.parseBuf.readOffset = 0;
               this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -1069,7 +1068,7 @@ class Pro4 extends EventEmitter
             else
             {
               // got a good full packet!  Pass it to payload parser
-              logger.debug('PRO4: Good total CRC ', self.parsedObj);
+              logger.log(`PRO4: Good total CRC ${self.parsedObj}`);
               self.parsedObj.crcTotal = byte;
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
               self.parsedObj.device = await self.parsePayload();
@@ -1108,7 +1107,7 @@ class Pro4 extends EventEmitter
               let calcdChksum = CRC.crc32(self.parsedObj.payload); // calculate checksum of received data
               if (calcdChksum != self.parsedObj.crcTotal.readUInt32LE(0))
               {
-                logger.warn('PRO4: Bad total CRC32; possible id = ' + self.parsedObj.id);
+                logger.log(`PRO4: Bad total CRC32; possible id = ${self.parsedObj.id}`);
                 let cursor = self.parseBuf.readOffset;
                 self.parseBuf.readOffset = 0;
                 this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -1117,7 +1116,7 @@ class Pro4 extends EventEmitter
               }
 
               // got a good full packet!  Pass it to payload parser
-              logger.debug('PRO4: Good total CRC32; obj = ', self.parsedObj);
+              logger.log(`PRO4: Good total CRC32; obj = ${self.parsedObj}`);
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
               self.parsedObj.device = await self.parsePayload();
               if (returnObject === true) {
@@ -1131,7 +1130,7 @@ class Pro4 extends EventEmitter
 
             if (self.counter <= 0 || self.counter > self.parsedObj.crcTotal.length) // something went awry
             {
-              logger.warn('PRO4: Something went wrong with total CRC32; possible id = ' + self.parsedObj.id);
+              logger.log(`PRO4: Something went wrong with total CRC32; possible id = ${self.parsedObj.id}`);
               let cursor = self.parseBuf.readOffset;
               self.parseBuf.readOffset = 0;
               this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
@@ -1184,7 +1183,7 @@ class Pro4 extends EventEmitter
         chksum ^= buf[i];
       }
       buf.writeUInt8(chksum, this.constants.PROTOCOL_PRO4_HEADER_SIZE);
-      logger.debug('PRO4: My crc8 header = ' + chksum.toString(16));;
+      logger.log(`PRO4: My crc8 header = ${chksum.toString(16)}`);;
     }
 
     if (payload != 0)
@@ -1205,7 +1204,7 @@ class Pro4 extends EventEmitter
           }
         }
         buf.writeUInt8(chksum, skip);
-        logger.debug('PRO4: My crc8 total = ' + chksum.toString(16));
+        logger.log(`PRO4: My crc8 total = ${chksum.toString(16)}`);
       }
     }
     else
@@ -1213,7 +1212,7 @@ class Pro4 extends EventEmitter
       buf = buf.slice(0,7); // read-only zero byte PRO4 request, no need for final checksum
     }
 
-    logger.warn('PRO4: Debug PRO4 ', self.request == 1 ? 'request':'response',' encode = ' + buf.toString('hex'));
+    logger.log(`PRO4: Debug PRO4 ${self.request == 1 ? 'request':'response'} encode = ${buf.toString('hex')}`);
     return buf;
   };
 

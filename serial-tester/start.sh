@@ -1,4 +1,6 @@
 #!/bin/bash
 
-socat TCP-LISTEN:50000,reuseaddr,fork EXEC:/srv/serial-tester.js 
-
+if [ -z "$PORT" ]; then
+  PORT=50000
+fi
+socat TCP-LISTEN:$PORT,reuseaddr,fork EXEC:/srv/serial-tester.js 
