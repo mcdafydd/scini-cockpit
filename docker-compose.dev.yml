@@ -10,7 +10,6 @@ services:
       - "images-dev:/opt/openrov/images"
       - "logs-dev:/opt/openrov/logs"
       - "data-dev:/opt/openrov/data"
-      - "~/.gitconfig:/root/.gitconfig"
     networks:
       scini:
         ipv4_address: 192.168.2.2
@@ -18,16 +17,16 @@ services:
       - fwdcam-mock
       - downcam-mock
       - upcam-mock
-      - clumpcam-mock
+      - sidecam-mock
+      - borecam-mock
 
   fwdcam-mock:
     build: imgsrv-mock/
     restart: unless-stopped
-    volumes:
-      - "~/.gitconfig:/root/.gitconfig"
     environment:
       - MQTT_INTERFACE=eth0
       - PARTNER=192.168.2.232
+      - PORT=50000
     expose:
       - "1883"
       - "3000"
@@ -39,12 +38,12 @@ services:
       options:
         max-size: "50k"
         max-file: "10"
+    depends_on:
+      - serial-rov
 
   downcam-mock:
     build: imgsrv-mock/
     restart: unless-stopped
-    volumes:
-      - "~/.gitconfig:/root/.gitconfig"
     environment:
       - MQTT_INTERFACE=eth0
     expose:
@@ -62,8 +61,23 @@ services:
   upcam-mock:
     build: imgsrv-mock/
     restart: unless-stopped
-    volumes:
-      - "~/.gitconfig:/root/.gitconfig"
+    environment:
+      - MQTT_INTERFACE=eth0
+    expose:
+      - "1883"
+      - "3000"
+      - "8081"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.217
+    logging:
+      options:
+        max-size: "50k"
+        max-file: "10"
+
+  borecam-mock:
+    build: imgsrv-mock/
+    restart: unless-stopped
     environment:
       - MQTT_INTERFACE=eth0
     expose:
@@ -78,13 +92,13 @@ services:
         max-size: "50k"
         max-file: "10"
 
-  clumpcam-mock:
+  sidecam-mock:
     build: imgsrv-mock/
     restart: unless-stopped
-    volumes:
-      - "~/.gitconfig:/root/.gitconfig"
     environment:
       - MQTT_INTERFACE=eth0
+      - PARTNER=192.168.2.233
+      - PORT=50001
     expose:
       - "1883"
       - "3000"
@@ -96,14 +110,15 @@ services:
       options:
         max-size: "50k"
         max-file: "10"
+    depends_on:
+      - serial-clump
 
-  serial-fwd:
+  serial-rov:
     build: serial-tester/
     restart: unless-stopped
     environment:
-      - NODEIDS="14 15 21 42 51 52 81"
-    volumes:
-      - "~/.gitconfig:/root/.gitconfig"
+      - NODEIDS="12 13 14 15 16 21 23 24 52 57 58 62 63 65 82 83 85 87 129 129"
+      - PORT="50000"
     expose:
       - "50000"
     ports:
@@ -111,6 +126,22 @@ services:
     networks:
       scini:
         ipv4_address: 192.168.2.232
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
+
+  serial-clump:
+    build: serial-tester/
+    restart: unless-stopped
+    environment:
+      - NODEIDS="51 66 67 81"
+      - PORT="50001"
+    expose:
+      - "50001"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.233
     logging:
       options:
         max-size: "500k"
@@ -134,6 +165,15 @@ services:
     networks:
       scini:
         ipv4_address: 192.168.2.242
+
+  audio:
+    build: audio/
+    restart: unless-stopped
+    ports:
+      - "20000:20000"
+    networks:
+      scini:
+        ipv4_address: 192.168.2.243
 
 networks:
   scini:
