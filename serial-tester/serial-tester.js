@@ -24,6 +24,9 @@ class serialTester extends EventEmitter
   {
     super();
     this.client = {};
+    this.losspct = 0.0; // respond to every request
+    this.basedelay = 5;
+    this.delay = 50;
 
     // event listeners
     this.on('error', (e) => {
@@ -242,6 +245,34 @@ class serialTester extends EventEmitter
     // used for simulated device data
     this.rand = 0.213;
     this.randomInterval = setInterval( () => { this.rand = Math.random(); }, 100);
+
+    // minimum response delay
+    if (process.env.hasOwnProperty('BASEDELAY')) {
+      this.basedelay = parseInt(process.env.BASEDELAY)
+      if (this.basedelay > 500)
+        this.basedelay = 500
+      else if (this.basedelay < 5)
+        this.basedelay = 5
+    }
+
+    // maximum response delay (minus base delay) in milliseconds
+    if (process.env.hasOwnProperty('DELAY')) {
+      this.delay = parseInt(process.env.DELAY)
+      if (this.delay > 500)
+        this.delay = 500
+      else if (this.delay < 5)
+        this.delay = 5
+    }
+
+    // loss percent
+    if (process.env.hasOwnProperty('LOSSPCT')) {
+      this.losspct = parseFloat(process.env.LOSSPCT)
+      if (this.losspct > 1.0)
+        this.losspct = 1.0
+      else if (this.losspct < 0.0)
+        this.losspct = 0.0
+    }
+
     this.tempIdx = 0;
     this.tiltIdx = 0;
     this.pressure = 10;
@@ -512,8 +543,12 @@ class serialTester extends EventEmitter
             console.dir(respObj.device);
           }
           else {
+            // simulate packet loss
+            logger.log('LOGG = ', scini.losspct);
+            if (scini.losspct > Math.random()) 
+              return logger.log(`Dropped packet: sync1 = ${respObj.sync1}, sync2= ${respObj.sync2}, id = ${respObj.id}, flags = ${respObj.flags}, csr = ${respObj.csrAddress}, len = ${respObj.payloadLen}, crcHead = ${respObj.crcHead}, crcTotal = ${respObj.crcTotal}, type = ${respObj.type}`);
+
             // simulate variable embedded response delays
-            // plus base delay of 5ms
             // small chance of splitting packetBuf into 2 parts before sending
             if (Math.random() < 0.04) {
               let l = Math.floor(packetBuf.length/2);
@@ -532,10 +567,10 @@ class serialTester extends EventEmitter
                           return logger.log(`Error on write: ${err.message}`);
                         }
                       })
-                    }, Math.random() + 5);
+                    }, Math.random() + scini.basedelay);
                   }
                 })
-              }, Math.random()*70 + 5);
+              }, Math.random()*scini.delay + scini.basedelay);
             }
             else {
               // send in one packet
@@ -545,7 +580,7 @@ class serialTester extends EventEmitter
                     return logger.log(`Error on write: ${err.message}`);
                   }
                 })
-              }, Math.random()*70 + 5);
+              }, Math.random()*scini.delay + scini.basedelay);
             }
           }
         }

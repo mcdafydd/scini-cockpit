@@ -1,7 +1,6 @@
 # Overview
 
-This repository contains that allow for developing the Dockerfiles necessary to build a test SCINI ROV
-for development.  It is the parent repository for all of the SCINI surface-to-serial components.  Code that runs on devices at the end of an RS-485 or other non-IP connection does not currently live on github and does not get built by this repository.  This includes everything a user sees when they open the OpenROV cockpit in a browser, control devices using a joystick or keyboard/mouse action,
+This repository contains a Docker Compose stack suitable for production and development environments for a SCINI underwater ROV.  The development environment consist of simulated MJPEG video streams, MQTT clients, and device telemetry.  It is the parent repository for all of the SCINI surface-to-serial components.  Code that runs on devices attached as an RS-485 node or other non-IP connection does not currently live on github and does not get built by this repository, so is instead simulated by the `serial-tester` container.
 
 # Quick getting started
 
@@ -12,6 +11,8 @@ for development.  It is the parent repository for all of the SCINI surface-to-se
 4. To access the dev openrov instance, open Chrome and visit `http://localhost`. To access the co-pilot interfaces found in `assets/www` go to http://localhost:8204, or port `8200`, `8201`, or `8203`.
 
 # Prerequisites
+
+We target very recent Chrome browser builds for desktop and mobile and do not require cross-browser compatibility at this point.
 
 - Chrome 69+ is required to view the MJPEG streams due to use of the new OffscreenCanvas() with 2d rendering context
 - A USB game joystick is optional as all of the cockpit controls can be accessed by keyboard.
@@ -69,6 +70,27 @@ For more info on Docker networking, see https://github.com/docker/libnetwork/blo
 
 ** NOTE: the named volume is only loaded into the openrov container to work in this environment. If you want to make changes to containers other than openrov-cockpit, be careful not to lose changes made inside the writeable, non-persistent layer of a container without a named volume. **
 
+## Co-Pilot Interface
+
+The files in `assets/www` and `assets/www-ro` are copied into the openrov container in `/opt/openrov/` and are served to clients in two ways:
+
+* The mjpg_streamer process' output_http.so plugin. This standalone binary is compiled into the openrov container and is managed by OpenROV.
+* A static alias in OpenROV's Nginx reverse proxy
+
+### Keep Web Interface in a Single Directory
+
+The mjpg_streamer web server is very basic and all files must in a single directory.  It will not see files in a sub-directory, so don't try to better organize these files without also changing the HTTP server.  The fork of mjpg_streamer used by the openrov container in this repository supports `.mjs` files, so you can use ES6 modules.
+
+This will be required until we decouple mjpg_streamer from the co-pilot interface.
+
+## Simulating Devices with serial-tester
+
+The `serial-tester` container can simulate random latency and packet loss, which can be helpful in testing changes to the main OpenROV platform event loop.  Add any or none of the environment variables described below to `docker-compose.dev.yml` in any of the serial-tester container services to modify response behavior.
+
+* BASEDELAY="50" (5-500 in milliseconds - minimum delay to add to responses)
+* DELAY="50" (5-500 in milliseconds - maximum delay variance added to BASEDELAY)
+* LOSSPCT="0.0" (0.0-1.0 - likelihood that response will be dropped)
+
 ## Learning And Troubleshooting from the Network
 
 The network traffic flowing between containers can be a great way to diagnose problems you might be working.
@@ -83,6 +105,18 @@ After capturing some traffic, hit CTRL-C, then view the packet capture using Wir
 ## Using a Real Elphel Camera
 
 If you have an Elphel 353 camera on your local network, you may use it by changing the IP address in the `command:` line of the openrov service in `docker-compose.dev.yml`.
+
+### Adding a Real RS-485 Bus
+
+** Still under development **
+
+If your Elphel 353 camera is running `mqttclient` and has a USB interface with a USB-RS485 interface, you can use serial-tester on the far end of that 485 bus to better simulate and test real hardware.
+
+On the Docker host running the `start-dev.sh` environment, add a USB-RS485 interace and connect it to the Elphel 485 bus.  Find the `/dev/ttyUSBN` interface number on the host.
+
+Edit the `docker-compose.dev.yml` file and add `USBDEV="/dev/ttyUSBN"` to the environment block under `serial-rov`.
+
+Run `start-dev.sh`.  This should cause the serial-tester container's socat process to connect stdin/stdout to USBDEV instead of the PARTNER mqttclient via TCP.
 
 ## Workflow for OpenROV Cockpit
 
