@@ -1,0 +1,66 @@
+{
+  "locations": {
+    "forward": {
+      "ip": "215",
+      "master": "true",
+      "crumb": "52",
+      "light": "62",
+      "focus": "37k",
+      "mic": "true",
+      "color": "red"
+    },
+    "up": {
+      "ip": "217",
+      "master": "false",
+      "crumb": "57",
+      "light": "63",
+      "focus": "",
+      "mic": "false",
+      "color": "green"
+    },
+    "down": {
+      "ip": "218",
+      "master": "false",
+      "crumb": "58",
+      "light": "65",
+      "focus": "46.2k",
+      "mic": "false",
+      "color": "orange"
+    },
+    "side": {
+      "ip": "211",
+      "master": "true",
+      "crumb": "51",
+      "light": "66",
+      "focus": "48k",
+      "mic": "true",
+      "color": "yellow"
+    },
+    "bore": {
+      "ip": "213",
+      "master": "false",
+      "crumb": "67",
+      "light": "61",
+      "focus": "",
+      "mic": "false",
+      "color": "blue"
+    }
+  },
+  "pro4": {
+    "thrusters": {
+      "main": "16",
+      "aft horz": "13",
+      "aft vert": "12",
+      "for horz": "15",
+      "for vert": "14"
+    },
+    "devices": {
+      "solo keller": "81",
+      "dual laser": "82",
+      "ps3": "83",
+      "CT sensor": "85",
+      "fwd laser": "86",
+      "ps2": "87"
+    }
+  }
+}

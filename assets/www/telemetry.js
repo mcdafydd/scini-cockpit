@@ -90,9 +90,9 @@ function init() {
   initChart('ctsensor.conductivity', ['board44.conductivity.85']);
   initChart('grippers.temp', ['gripper.temp.24', 'waterSampler.temp.24', 'trim.temp.21']);
   initChart('grippers.current', ['gripper.current.24', 'waterSampler.current.24', 'trim.current.21']);
-  initChart('powerSupply1.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
-  initChart('powerSupply1.voltage', ['board44.adc2.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83'], ['5V', '48V', '24V', '12V']);
-  initChart('powerSupply1.temp', ['board44.adc1.83', 'board44.adc7.83'], ['Temp 12', 'Temp 24']);
+  initChart('powerSupply3.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
+  initChart('powerSupply3.voltage', ['board44.adc2.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83'], ['5V', '48V', '24V', '12V']);
+  initChart('powerSupply3.temp', ['board44.adc1.83', 'board44.adc7.83'], ['Temp 12', 'Temp 24']);
   initChart('powerSupply2.current', ['board44.acs764n1.87', 'board44.acs764n2.87', 'board44.acs764n3.87', 'board44.acs764n4.87'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
   initChart('powerSupply2.voltage', ['board44.adc2.87', 'board44.adc4.87', 'board44.adc5.87', 'board44.adc6.87'], ['5V', '48V', '24V', '12V']);
   initChart('powerSupply2.temp', ['board44.adc1.87', 'board44.adc7.87'], ['Temp 12', 'Temp 24']);
