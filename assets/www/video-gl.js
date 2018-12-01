@@ -7,7 +7,7 @@ function init() {
   initMqtt();
 
   const offscreen = document.querySelector('canvas').transferControlToOffscreen();
-  const worker = new Worker('/worker-gl.js');
+  const worker = new Worker('worker-gl.js');
   worker.addEventListener('error', function (e) {
     console.error('Worker error: ', e);
   }, false);

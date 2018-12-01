@@ -69,7 +69,10 @@ function initKeyboardControls() {
 }
 
 function initMqtt() {
-  const client = mqtt.connect('ws://' + window.location.hostname + ':3000');
+  const client = mqtt.connect('ws://' + window.location.hostname + ':3000',
+    {
+      keepalive: 15
+    });
   client.on('connect', function (connack) {
     console.log('Connected to MQTT broker');
     client.subscribe('toCamera/cameraRegistration', function (e) {
