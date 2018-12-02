@@ -229,7 +229,7 @@ canvas {
 .sliderVal {
   font-size: 14px;
   font-weight: bold;
-  color: red;
+  color: white;
   background: black;
 }
 
@@ -253,7 +253,7 @@ canvas {
   height: 90px;
   margin: 5px;
   z-index: 1;
-  background: linear-gradient(rgb(0, 255, 255), rgb(173, 190, 186));
+  background: linear-gradient(rgb(95, 219, 219), rgb(129, 202, 185));
   color: black;
 }
 
@@ -275,6 +275,12 @@ canvas {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.ctrl-btn {
+  background: linear-gradient(rgb(117, 112, 112), rgb(224, 209, 209));
+  color: #000000;
+  text-shadow: 0 1px 0 white;
 }
 
 .ctrl-btn-sm {
@@ -372,21 +378,22 @@ canvas {
 
 /* device location styling */
 .side {
-  background: linear-gradient(rgb(248, 248, 18),lightgoldenrodyellow);
+  background: linear-gradient(rgb(224, 224, 50),lightgoldenrodyellow);
 }
 
 .bore {
-  background: linear-gradient(blue, lightblue);
+  background: linear-gradient(rgb(64, 170, 219), rgb(139, 189, 206));
 }
 
 .forward {
-  background: linear-gradient(red, lightcoral);
+  background: linear-gradient(rgb(240, 63, 63), lightcoral);
 }
 
 .down {
-  background: linear-gradient(orange, lightsalmon);
+  background: linear-gradient(rgb(246, 129, 33), rgb(223, 171, 141));
 }
 
 .up {
-  background: linear-gradient(green, lightgreen);
+  background: linear-gradient(rgb(43, 206, 43), rgb(116, 190, 116));
 }
+
