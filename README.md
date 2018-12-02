@@ -1,6 +1,6 @@
 # Overview
 
-This repository contains a Docker Compose stack suitable for production and development environments for a SCINI underwater ROV.  The development environment consist of simulated MJPEG video streams, MQTT clients, and device telemetry.  It is the parent repository for all of the SCINI surface-to-serial components.  Code that runs on devices attached as an RS-485 node or other non-IP connection does not currently live on github and does not get built by this repository, so is instead simulated by the `serial-tester` container.
+This repository contains a Docker Compose stack suitable for production and development environments for a SCINI underwater ROV.  The development environment allows for reasonable end-to-end testing of all software components between the user interfaces and underwater MQTT-to-serial gateways.  Code that runs on devices attached as an RS-485 node or other non-IP connection does not currently live on github and does not get built by this repository, so is instead simulated by the `serial-tester` container.
 
 # Quick getting started
 
@@ -50,6 +50,8 @@ Volume lables and docker config files.
 
 ** NOTE: Be cautious if creating a docker network if it conflicts with the existing LAN IP space. It probably won't work at all. **
 
+### Basics 
+
 The default `docker-compose.dev.yml` file can be used to match the network IP space used in production.  We use a docker named network to specify the appropriate subnet/gateway interfaces.  By default, on Linux, this will use the Docker libnetwork bridge driver.  All containers will be on the same layer 2 network space, identically to how things run in production.  This also ensures that certain features (like mqttclient broadcast UDP discovery) continue to work as expected.
 
 For more info on Docker networking, see https://github.com/docker/libnetwork/blob/master/docs/bridge.md.
@@ -70,12 +72,14 @@ For more info on Docker networking, see https://github.com/docker/libnetwork/blo
 
 ** NOTE: the named volume is only loaded into the openrov container to work in this environment. If you want to make changes to containers other than openrov-cockpit, be careful not to lose changes made inside the writeable, non-persistent layer of a container without a named volume. **
 
-## Co-Pilot Interface
+### Co-Pilot Interface
+
+The co-pilot web interface functions as a lightweight multi-page application that interacts with the SCINI websocket video streams, MQTT controls/telemetry, and Elphel cameras.  Users will typically open many tabs at once on the same system.  We use a shared worker to maintain a single MQTT connection per system.
 
 The files in `assets/www` and `assets/www-ro` are copied into the openrov container in `/opt/openrov/` and are served to clients in two ways:
 
 * The mjpg_streamer process' output_http.so plugin. This standalone binary is compiled into the openrov container and is managed by OpenROV.
-* A static alias in OpenROV's Nginx reverse proxy
+* A static alias in OpenROV's Nginx reverse proxy - in future versions, this will likely be the only way this application is served.
 
 ### Keep Web Interface in a Single Directory
 
@@ -83,7 +87,22 @@ The mjpg_streamer web server is very basic and all files must in a single direct
 
 This will be required until we decouple mjpg_streamer from the co-pilot interface.
 
-## Simulating Devices with serial-tester
+### End-to-End Testing and Device Simulation
+
+This system allows for end-to-end tests as a means of developing new functionality in the absence of a physical ROV.  The workflow goes something like this:
+
+**Goal - Improve gripper device control**
+1. Add a simulated device to `serial-tester/serial-tester.js` that reasonably responds to various control commands from the surface control loop.
+2. Add new control loop functionality, telemetry charts, co-pilot cotrols, etc. to the appropriate surface code.
+3. Run `start-dev.sh` and browse to the copilot interface controls and telemetry pages.
+
+- A page full of telemetry charts will quickly indicate overall system health and functionality.
+- Testing new controls will generate lots of logs in the openrov, serial-tester, and imgsrv-mock containers
+- Tcpdump and wireshark can be used to view:
+- Browser-to-server MQTT-ws data on 3000/tcp
+- Server-to-camera MQTT serial gateway data on 1883/tcp 
+- Raw serial bus data on ports 50000-50001/tcp
+
 
 The `serial-tester` container can simulate random latency and packet loss, which can be helpful in testing changes to the main OpenROV platform event loop.  Add any or none of the environment variables described below to `docker-compose.dev.yml` in any of the serial-tester container services to modify response behavior.
 
@@ -91,7 +110,7 @@ The `serial-tester` container can simulate random latency and packet loss, which
 * DELAY="50" (5-500 in milliseconds - maximum delay variance added to BASEDELAY)
 * LOSSPCT="0.0" (0.0-1.0 - likelihood that response will be dropped)
 
-## Learning And Troubleshooting from the Network
+### Learning And Troubleshooting from the Network
 
 The network traffic flowing between containers can be a great way to diagnose problems you might be working.
 
@@ -102,7 +121,7 @@ After starting the dev environent, from the host, run:
 After capturing some traffic, hit CTRL-C, then view the packet capture using Wireshark.  Traffic on port 3000 will show you websocket MQTT client traffic, port 1883 will show you the imgsrv-mock container MQTT traffic from `mqttclient`, port 50000 will show you the serial payloads (PRO4 protocol) flowing between the imgsrv-mock containers and serial-tester container(s).
 
 
-## Using a Real Elphel Camera
+### Using a Real Elphel Camera
 
 If you have an Elphel 353 camera on your local network, you may use it by changing the IP address in the `command:` line of the openrov service in `docker-compose.dev.yml`.
 
@@ -120,7 +139,7 @@ Run `start-dev.sh`.  This should cause the serial-tester container's socat proce
 
 ## Workflow for OpenROV Cockpit
 
-The primary service you will probably edit is the fork of openrov-cockpit, which serves as the interface between surface users and everything on the ROV.  One way to quickly test changes during development is to:
+The piloting interface and main ROV event loop comes from openrov-cockpit.  One way to quickly test changes during development is to:
 
 0. Clone a local copy of the repository from `https://github.com/mcdafydd/openrov-cockpit`.
 1. Checkout the `platform/scini-dev` branch (which should be up to date with the 'master' `platform/scini` branch.
