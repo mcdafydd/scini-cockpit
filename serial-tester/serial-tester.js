@@ -2,8 +2,14 @@
 
 const pro4          = require('./pro4');
 const syslog        = require('syslog-client');
-const logger        = syslog.createClient('logger');
 const EventEmitter  = require('events');
+let logger;
+if (process.env.STANDALONE === 'true') {
+  logger = {};
+  logger.log = console.log;
+}
+else
+  logger      = syslog.createClient('logger');
 
 let filterList = [];
 if (process.env.hasOwnProperty('NODEIDS'))
@@ -134,28 +140,35 @@ class serialTester extends EventEmitter
     // This loop should only emit data on the bus if the
     // pilot requests action
     // payload first 2 bytes = 0x3549
-    // valid values: open = 3 close = 2 stationary = 0
+    // valid command values: open = 3 close = 2 stationary = 0
+    // cmdStatus: 0=idle, 1,2=opening, 3,4=closing, 5=braking, 6=overcurrent, 7=faulted
     this.gripperControl = {
       time:             0,
       timeDelta_ms:     0,
       updateInterval:   500,  // loop interval in ms
-      grippers:         [
-        {
+      devices:             {
+        21:             {
           name:         "Gripper 1",
-          nodeId:       24,  // PRO4 packet ID
-          state:        0      // 0 (stop), 2 (close), 3 (open)
+          location:     "rov",
+          command:      0,
+          i_lim:        0x7fff,
+          cmdStatus:    0
         },
-        {
+        23:             {
           name:         "Gripper 2 - water sampler",
-          nodeId:       23,   // PRO4 packet ID
-          state:        0       // 0 (stop), 2 (close), 3 (open)
+          location:     "rov",
+          command:      0,
+          i_lim:        0x7fff,
+          cmdStatus:    0
         },
-        {
+        24:             {
           name:         "Gripper 3 - trim",
-          nodeId:       21,  // PRO4 packet ID
-          state:        0      // 0 (stop), 2 (close), 3 (open)
-        }
-      ],
+          location:     "rov",
+          command:      0,
+          i_lim:        0x7fff,
+          cmdStatus:    0
+        },
+      },
       pro4:             {
         pro4Sync:       pro4.constants.SYNC_REQUEST8LE,
         pro4Addresses:  [24, 23, 21], // all updated at same time
@@ -281,19 +294,69 @@ class serialTester extends EventEmitter
 
   updateGrippers(parsedObj)
   {
+    let current = 0;
+    let device = scini.gripperControl.devices[parsedObj.id];
     let header = {};
     header.sync = pro4.constants.SYNC_RESPONSE8BE;
     header.id = parsedObj.id;
     header.flags = parsedObj.flags;
     header.csrAddress = parsedObj.csrAddress;
 
+    device.command = parsedObj.device.cmd;
+    if (parsedObj.device.cmd === 0) {
+      if (device.cmdStatus >= 1 && device.cmdStatus <= 4) {
+        device.cmdStatus = 5;
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+        setTimeout(() => {
+          device.cmdStatus = 0;
+        }, 2500);
+      }
+      else if (device.cmdStatus === 5) {
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+        setTimeout(() => {
+          device.cmdStatus = 0;
+        }, 250);
+      }
+      else if (device.cmdStatus === 6) {
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+      }
+      else if (device.cmdStatus === 7) {
+        device.cmdStatus = 0;
+        current = 0;
+      }
+    }
+    else if (parsedObj.device.cmd === 2 || parsedObj.device.cmd === 3) {
+      if (device.cmdStatus === 0) {
+        device.cmdStatus = parsedObj.device.cmd;
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+      }
+      else if (device.cmdStatus >= 1 && device.cmdStatus <= 4) {
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+        setTimeout(() => {
+          device.cmdStatus = 6;
+        }, 4000);
+      }
+      else if (device.cmdStatus === 5) {
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+        device.cmdStatus = parsedObj.device.cmd;
+      }
+      else if (device.cmdStatus === 6) {
+        current = (scini.rand * 5.0 + 1.0).toFixed(2);
+        setTimeout(() => {
+          device.cmdStatus = 7;
+        }, 10000);
+      }
+      else if (device.cmdStatus === 7) {
+        current = 0;
+      }
+    }
     let ret = {
-      cmd: 0,
-      cmdStatus: 0,
-      lim_i: 0,
-      current: (scini.rand * 5.0 + 1.0).toFixed(2),
+      cmd: device.command,
+      cmdStatus: device.cmdStatus,
+      i_lim: parsedObj.device.i_lim,
+      current: current,
       temp: (scini.rand * 3.0 + 35.0).toFixed(2),
-      devAddress: 0,
+      devAddress: parsedObj.id,
       firmwareVersion: 0
     }
     return {h: header, payload: scini.parser.ParserGrippers.encode(ret)};
@@ -544,10 +607,9 @@ class serialTester extends EventEmitter
           }
           else {
             // simulate packet loss
-            logger.log('LOGG = ', scini.losspct);
-            if (scini.losspct > Math.random()) 
+            if (scini.losspct > Math.random()) {
               return logger.log(`Dropped packet: sync1 = ${respObj.sync1}, sync2= ${respObj.sync2}, id = ${respObj.id}, flags = ${respObj.flags}, csr = ${respObj.csrAddress}, len = ${respObj.payloadLen}, crcHead = ${respObj.crcHead}, crcTotal = ${respObj.crcTotal}, type = ${respObj.type}`);
-
+            }
             // simulate variable embedded response delays
             // small chance of splitting packetBuf into 2 parts before sending
             if (Math.random() < 0.04) {

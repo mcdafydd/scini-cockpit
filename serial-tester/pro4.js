@@ -31,13 +31,20 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
-const syslog        = require('syslog-client');
-const logger        = syslog.createClient('logger');
 const Parser        = require('binary-parser-encoder').Parser;
 const StateMachine  = require('javascript-state-machine');
 const CRC           = require('crc');
 const EventEmitter  = require('events');
 const SmartBuffer   = require('smart-buffer').SmartBuffer;
+const syslog        = require('syslog-client');
+
+let logger;
+if (process.env.STANDALONE === 'true') {
+  logger = {};
+  logger.log = console.log;
+}
+else
+  logger      = syslog.createClient('logger');
 
 // ******************************************************************
 //  Device types are defined by VideoRay
@@ -180,12 +187,14 @@ class Pro4 extends EventEmitter
     // VideoRay PRO4 gripper module request payload
     this.ParserGrippersReq = new Parser()
       .uint8('cmd')
+      .uint8('flag')
+      .uint16be('i_lim')
 
     // VideoRay PRO4 gripper module response payload
     this.ParserGrippers = new Parser()
       .uint8('cmd')
       .uint8('cmdStatus')
-      .uint16be('lim_i')
+      .uint16be('i_lim')
       .uint16be('current')
       .uint16be('temp')
       .uint8('devAddress')
@@ -1067,8 +1076,9 @@ class Pro4 extends EventEmitter
             }
             else
             {
+              let obj_s = JSON.stringify(self.parsedObj);
               // got a good full packet!  Pass it to payload parser
-              logger.log(`PRO4: Good total CRC ${self.parsedObj}`);
+              logger.log(`PRO4: Good total CRC ${obj_s}`);
               self.parsedObj.crcTotal = byte;
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
               self.parsedObj.device = await self.parsePayload();
@@ -1115,8 +1125,9 @@ class Pro4 extends EventEmitter
                 break;
               }
 
+              let obj_s = JSON.stringify(self.parsedObj);
               // got a good full packet!  Pass it to payload parser
-              logger.log(`PRO4: Good total CRC32; obj = ${self.parsedObj}`);
+              logger.log(`PRO4: Good total CRC32; obj = ${obj_s}`);
               self.parsedObj.status = self.constants.STATUS_SUCCESS;
               self.parsedObj.device = await self.parsePayload();
               if (returnObject === true) {
