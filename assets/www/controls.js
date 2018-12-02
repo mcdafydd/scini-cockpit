@@ -28,7 +28,7 @@ function initListeners() {
     }
     else if (device === 'exposure') {
       let display = document.getElementById(device+'-'+node+'-val');
-      display.innerHTML = `Time: 100ms`;
+      display.innerHTML = `Time: 30ms`;
     }
     else if (device === 'servo') {
       let display = document.getElementById(`${device}-${node}-${func}-val`);
@@ -109,6 +109,9 @@ function initListeners() {
         }
         else if (val === 'close') {
           sendGripper(node, '3');
+        }
+        else if (val === 'stop') {
+          sendGripper(node, '0');
         }
       }
       else {
