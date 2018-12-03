@@ -20,3 +20,10 @@ document.querySelectorAll('.clock')[0].innerHTML = harold(hours) + ":" + harold(
   }
 }
 setInterval(clock, 1000);
+
+// set page title
+let l = window.location.pathname.split('/');
+let title = l[l.length-1].split('.')[0]
+title = title.charAt(0).toUpperCase() + title.slice(1);
+document.title = `${title} ${window.location.port}`;
+
