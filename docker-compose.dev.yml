@@ -193,6 +193,15 @@ services:
         max-size: "500k"
         max-file: "10"
 
+  gallery:
+    build: gallery/
+    image: nginx-nonroot
+    ports:
+      - "10000:10000"
+    volumes:
+      - "./assets/gallery.html:/opt/openrov/gallery.html"
+      - "images-dev:/opt/openrov/images:ro"
+
 networks:
   scini:
     external: true

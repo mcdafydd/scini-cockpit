@@ -14,10 +14,6 @@ services:
       - "logs:/opt/openrov/logs:ro"
       - "data:/opt/openrov/data:ro"
 
-  gallery:
-    volumes:
-      - "images:/opt/openrov/images:ro"
-
 volumes:
   images:
   logs:
