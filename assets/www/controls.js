@@ -103,7 +103,7 @@ function initListeners() {
           sendServo('move', node, (center-speed).toString());
         }
       }
-      else if (device === 'gripper' || device === 'sampler' || device === 'trim') {
+      else if (device === 'gripper' || device === 'waterSampler' || device === 'trim') {
         if (val === 'open') {
           sendGripper(node, '2');
         }
@@ -229,16 +229,25 @@ function initMqtt() {
               display.classList.add('dot-current');
             }
           }
-          else {
-            let display = document.getElementById(`${func}-${node}`);
-            if (display !== null) {
-              display.value = parseInt(obj[prop]);
-            }
-            display = document.getElementById(`${func}-${node}-val`);
-            if (display !== null) {
-              display.innerHTML = `${func}: ${obj[prop]}`;
-            }
+        }
+        else if (prop.match('[A-z]+\.cmdStatus\.[0-9]+') !== null) {
+          [device, func, node] = prop.split('.');
+          let map = {
+            0: 'Idle',
+            1: 'Opening',
+            2: 'Opening',
+            3: 'Closing',
+            4: 'Closing',
+            5: 'Braking',
+            6: 'Overcurrent',
+            7: 'Fault'
           }
+          let status = map[obj[prop]];
+          if (status === undefined)
+            status = 'Unknown';
+          let display = document.getElementById(`${device}-${node}-status`);
+          if (display !== null)
+            display.innerHTML = `Last: ${status}`;
         }
       }
     }
