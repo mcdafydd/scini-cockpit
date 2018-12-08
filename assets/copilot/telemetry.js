@@ -93,8 +93,8 @@ function init() {
   initChart('motors.yaw', ['motors.yaw']);
   initChart('ctsensor.temp', ['board44.temp.85']);
   initChart('ctsensor.conductivity', ['board44.conductivity.85']);
-  initChart('grippers.temp', ['gripper.temp.24', 'waterSampler.temp.24', 'trim.temp.21']);
-  initChart('grippers.current', ['gripper.current.24', 'waterSampler.current.24', 'trim.current.21']);
+  initChart('grippers.temp', ['gripper.temp.21', 'waterSampler.temp.23', 'trim.temp.24']);
+  initChart('grippers.current', ['gripper.current.21', 'waterSampler.current.23', 'trim.current.24']);
   initChart('powerSupply3.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
   initChart('powerSupply3.voltage', ['board44.adc2.83', 'board44.adc5.83', 'board44.adc6.83', 'board44.adc4.83'], ['5V', '48V', '24V', '12V']);
   initChart('powerSupply3.temp', ['board44.adc1.83', 'board44.adc7.83'], ['Temp 12', 'Temp 24']);
@@ -105,22 +105,11 @@ function init() {
   initGrid('telemetryLayout');
 }
 
-/*client.on('message', (topic, payload) => {
-    if (topic === 'telemetry/update') {
-      let obj = JSON.parse(payload);
-      let ts = new Date().getTime();
-      for (let prop in obj) {
-        let elem = document.getElementById(`${prop}-values`);
-        if (elem) {
-          elem.innerHTML = parseFloat(obj[prop]).toFixed(2);
-        }
-        if (dataMap.hasOwnProperty(prop)) {
-          dataMap[prop].append(ts, obj[prop]);
-        }
-      }
-    }
-  });
-}*/
+function appendToChart(ts, prop, value) {
+  if (dataMap.hasOwnProperty(prop)) {
+    dataMap[prop].append(ts, value);
+  }
+}
 
 function initChart(chartName, properties, labels) {
 

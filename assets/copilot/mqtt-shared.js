@@ -58,6 +58,8 @@ function handleMessage(topic, payload) {
   }
   else if (topic.match('telemetry/update') !== null) {
     let obj = JSON.parse(payload);
+    let ts = new Date().getTime();
+
     for (let prop in obj) {
       // update text and slider or button
       if (prop.match('light\.[0-9]+\.currentPower') !== null) {
@@ -118,6 +120,16 @@ function handleMessage(topic, payload) {
         let display = document.getElementById(`${device}-${node}-status`);
         if (display !== null)
           display.innerHTML = `Last: ${status}`;
+      }
+      // update telemetry charts
+      // if ${prop}-values, update numeric display
+      let chartValues = document.getElementById(`${prop}-values`);
+      if (chartValues !== null) {
+        chartValues.innerHTML = parseFloat(obj[prop]).toFixed(2);
+      }
+      let chart = document.getElementById(prop);
+      if (chart !== null) {
+        appendToChart(ts, prop, obj[prop]);
       }
     }
   }
