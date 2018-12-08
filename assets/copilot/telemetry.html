@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Telemetry</title>
+  <link href="default.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="smoothie.js"></script>
+  <script type="text/javascript" src="hammer.min.js"></script>
+  <script type="text/javascript" src="muuri.min.js"></script>
+  <script type="text/javascript" src="grid-shared.js"></script>
+  <script type="text/javascript" src="mqtt-shared.js"></script>
+  <script type="text/javascript" src="nav.js"></script>
+  <script type="text/javascript" src="telemetry.js"></script>
+</head>
+<body>
+  <nav></nav>
+  <div class="grid">
+    <div class="item" data-id="1">
+      <div class="item-content">
+        <h5 id="cpu-title">OpenROV Server CPU</h5>
+        <h5 id="cpu-values"></h5>
+        <canvas id="cpu"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="2">
+      <div class="item-content">
+        <h5>IMU Internal Pressure</h5>
+        <canvas id="sensors.imuPressure"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="3">
+      <div class="item-content">
+        <h5>IMU Internal Temp</h5>
+        <canvas id="sensors.imuTemp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="4">
+      <div class="item-content">
+        <h5>ROV (82) and Clump (81) Water Pressure (bar)</h5>
+        <canvas id="depth_p"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="5">
+      <div class="item-content">
+        <h5>ROV (82) and Clump (81) Water Depth (m)</h5>
+        <canvas id="depth_d"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="6">
+      <div class="item-content">
+        <h5>ROV (82) and Clump (81) Water Temperature (C)</h5>
+        <canvas id="depth_t"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="7">
+      <div class="item-content">
+        <h5>ROV Tilt</h5>
+        <canvas id="imu_p"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="8">
+      <div class="item-content">
+        <h5>ROV Roll</h5>
+        <canvas id="imu_r"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="9">
+      <div class="item-content">
+        <h5>Light Bus Current</h5>
+        <canvas id="light.bus_i"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="10">
+      <div class="item-content">
+        <h5>Light Bus Voltage</h5>
+        <canvas id="light.bus_v"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="11">
+      <div class="item-content">
+        <h5>Light Temperature</h5>
+        <canvas id="light.temp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="12">
+      <div class="item-content">
+        <h5>Motor Bus Current</h5>
+        <canvas id="motors.bus_i"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="13">
+      <div class="item-content">
+        <h5>Motor Bus Voltage</h5>
+        <canvas id="motors.bus_v"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="14">
+      <div class="item-content">
+        <h5>Motor Temperature</h5>
+        <canvas id="motors.temp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="15">
+      <div class="item-content">
+        <h5>Motor RPMs</h5>
+        <canvas id="motors.rpm"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="16">
+      <div class="item-content">
+        <h5>Motor Lift</h5>
+        <canvas id="motors.lift"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="17">
+      <div class="item-content">
+        <h5>Motor Pitch</h5>
+        <canvas id="motors.pitch"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="18">
+      <div class="item-content">
+        <h5>Motor Strafe</h5>
+        <canvas id="motors.strafe"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="19">
+      <div class="item-content">
+        <h5>Motor Throttle</h5>
+        <canvas id="motors.throttle"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="20">
+      <div class="item-content">
+        <h5>Motor Yaw</h5>
+        <canvas id="motors.yaw"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="21">
+      <div class="item-content">
+        <h5>CT Sensor Temp (C)</h5>
+        <canvas id="ctsensor.temp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="22">
+      <div class="item-content">
+        <h5>CT Sensor Conductivity (mS/cm)</h5>
+        <canvas id="ctsensor.conductivity"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="23">
+      <div class="item-content">
+        <h5>Gripper Current</h5>
+        <canvas id="grippers.current"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="24">
+      <div class="item-content">
+        <h5>Gripper Temp</h5>
+        <canvas id="grippers.temp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="25">
+      <div class="item-content">
+        <h5>Power Supply 3 Currents</h5>
+        <canvas id="powerSupply3.current"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="26">
+      <div class="item-content">
+        <h5>Power Supply 3 Voltages</h5>
+        <canvas id="powerSupply3.voltage"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="27">
+      <div class="item-content">
+        <h5>Power Supply 2 Currents</h5>
+        <canvas id="powerSupply2.current"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="28">
+      <div class="item-content">
+        <h5>Power Supply 2 Voltages</h5>
+        <canvas id="powerSupply2.voltage"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="29">
+      <div class="item-content">
+        <h5>Power Supply 3 Temperatures</h5>
+        <canvas id="powerSupply3.temp"></canvas>
+      </div>
+    </div>
+    <div class="item" data-id="30">
+      <div class="item-content">
+        <h5>Power Supply 2 Temperatures</h5>
+        <canvas id="powerSupply2.temp"></canvas>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

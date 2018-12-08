@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Troubleshooting</title>
+  <link href="default.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="mqtt-shared.js"></script>
+  <script type="text/javascript" src="nav.js"></script>
+  <script type="text/javascript" src="troubleshooting.js"></script>
+</head>
+<body>
+  <nav></nav>
+  <h1>Command Grid</h1>
+  <table class="tg">
+    <tr>
+      <th class="tg-0lax"><em>Func</em></th>
+      <th class="tg-0lax"><a href="http://192.168.2.211" target="_blank">Side</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.213" target="_blank">Bore</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.215" target="_blank">Forward</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.217" target="_blank">Up</a></th>
+      <th class="tg-0lax"><a href="http://192.168.2.218" target="_blank">Down</a></th>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a id="ping" href="#no-video">Ping</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.213:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.215:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.217:8081/img">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.218:8081/img">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a href="#reboot">Reboot</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=init%206">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.213/phpshell.php?command=init%206">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.215/phpshell.php?command=init%206">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.217/phpshell.php?command=init%206">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.218/phpshell.php?command=init%206">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a href="#dmesg">Dmesg</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.213/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.215/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.217/phpshell.php?command=dmesg">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.218/phpshell.php?command=dmesg">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax"><a href="#usb-audio">Audio</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.211/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.213/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.215/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.217/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+      <td class="tg-0lax"><a class="rb rb-purple" target="_blank" href="http://192.168.2.218/phpshell.php?command=cat%20/proc/asound/cards">Show</a></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">Video</td>
+      <td colspan="5" class="tg-0lax"><p class="rb rb-purple">Restart Video</p></td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">Raw</td>
+      <td class="tg-0lax">
+        <a style="float: left;" class="rb rb-purple" target="_blank" href="http://192.168.2.211/setparameters_demo.php?COLOR=1">F</a>
+        <a style="float: right;" class="rb rb-purple" target="_blank" href="http://192.168.2.211/setparameters_demo.php?COLOR=5">T</a>
+      </td>
+      <td class="tg-0lax">
+        <a style="float: left;" class="rb rb-purple" target="_blank" href="http://192.168.2.213/setparameters_demo.php?COLOR=1">F</a>
+        <a style="float: right;" class="rb rb-purple" target="_blank" href="http://192.168.2.213/setparameters_demo.php?COLOR=5">T</a>
+      </td>
+      <td class="tg-0lax">
+        <a style="float: left;" class="rb rb-purple" target="_blank" href="http://192.168.2.215/setparameters_demo.php?COLOR=1">F</a>
+        <a style="float: right;" class="rb rb-purple" target="_blank" href="http://192.168.2.215/setparameters_demo.php?COLOR=5">T</a>
+      </td>
+      <td class="tg-0lax">
+        <a style="float: left;" class="rb rb-purple" target="_blank" href="http://192.168.2.217/setparameters_demo.php?COLOR=1">F</a>
+        <a style="float: right;" class="rb rb-purple" target="_blank" href="http://192.168.2.217/setparameters_demo.php?COLOR=5">T</a>
+      </td>
+      <td class="tg-0lax">
+        <a style="float: left;" class="rb rb-purple" target="_blank" href="http://192.168.2.218/setparameters_demo.php?COLOR=1">F</a>
+        <a style="float: right;" class="rb rb-purple" target="_blank" href="http://192.168.2.218/setparameters_demo.php?COLOR=5">T</a>
+      </td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">Flip</td>
+      <td class="tg-0lax">
+        <div class="tg-container">
+          <a style="float: left; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.211/setparameters_demo.php?FLIPH=0">H0</a>
+          <a style="float: right; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.211/setparameters_demo.php?FLIPV=0">V0</a>
+          <a style="float: left; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.211/setparameters_demo.php?FLIPH=1">H1</a>
+          <a style="float: right; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.211/setparameters_demo.php?FLIPV=1">V1</a>
+        </div>
+      </td>
+      <td class="tg-0lax">
+        <div class="tg-container">
+          <a style="float: left; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.213/setparameters_demo.php?FLIPH=0">H0</a>
+          <a style="float: right; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.213/setparameters_demo.php?FLIPV=0">V0</a>
+          <a style="float: left; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.213/setparameters_demo.php?FLIPH=1">H1</a>
+          <a style="float: right; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.213/setparameters_demo.php?FLIPV=1">V1</a>
+        </div>
+      </td>
+      <td class="tg-0lax">
+        <div class="tg-container">
+          <a style="float: left; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.215/setparameters_demo.php?FLIPH=0">H0</a>
+          <a style="float: right; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.215/setparameters_demo.php?FLIPV=0">V0</a>
+          <a style="float: left; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.215/setparameters_demo.php?FLIPH=1">H1</a>
+          <a style="float: right; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.215/setparameters_demo.php?FLIPV=1">V1</a>
+        </div>
+      </td>
+      <td class="tg-0lax">
+        <div class="tg-container">
+          <a style="float: left; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.217/setparameters_demo.php?FLIPH=0">H0</a>
+          <a style="float: right; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.217/setparameters_demo.php?FLIPV=0">V0</a>
+          <a style="float: left; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.217/setparameters_demo.php?FLIPH=1">H1</a>
+          <a style="float: right; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.217/setparameters_demo.php?FLIPV=1">V1</a>
+        </div>
+      </td>
+      <td class="tg-0lax">
+        <div class="tg-container">
+          <a style="float: left; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.218/setparameters_demo.php?FLIPH=0">H0</a>
+          <a style="float: right; vertical-align: top" class="rb rb-purple" target="_blank" href="http://192.168.2.218/setparameters_demo.php?FLIPV=0">V0</a>
+          <a style="float: left; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.218/setparameters_demo.php?FLIPH=1">H1</a>
+          <a style="float: right; vertical-align: bottom" class="rb rb-purple" target="_blank" href="http://192.168.2.218/setparameters_demo.php?FLIPV=1">V1</a>
+        </div>
+      </td>
+    </tr>
+    <tr></tr>
+  </table>
+  <h1>Address Tables</h1>
+  <div style="display: inline-table;" id="data-locations"></div>
+  <div style="display: inline-table;" id="data-pro4"></div>
+  <h1>How to Stop/Start Recording</h1>
+  ** This process will be updated as soon as possible **
+  <ol>
+    <li>Go to the <a href="http://192.168.2.2">OpenROV Cockpit interface</a> - make sure the indicator in the top bar is <b style="color:green;">green</b> not <b style="color:red;">red</b>  - if it's red, find out who still has Cockpit open and follow this process on that computer</li>
+    <li>Click the square dot icon in the upper right corner</li>
+    <li>In the pop-up menu, click Settings</li>
+    <li>Click Video</li>
+    <li>Find "RecordOnServer" and set the value to True - if it's already True, video should be recording on the server</li>
+  </ol>
+  <h1 id="no-video">No video</h1>
+  Make sure each step passes before proceeding.
+  <ol>
+    <li>The video tabs require Chrome v69+.  You have <b id="browser"></b></li>
+    <li>Make sure cameras are reachable from the surface.  You should see a single image open in a new tab by clicking the <a href="#ping">ping buttons above for each camera</a>.  If one fails, check that camera.  If they all fail, there may be a network connectivity problem with the ROV.</li>
+
+    <li>Restart the mjpg_streamer processes by clicking the button.<button id="video-restart">Restart video streamers</button></li>
+    <li>Try reducing resolution to 1/4 or 1/2 on problematic cameras from the controls tab.</li>
+    <li>Try resetting the camera directly from it's native control page.</li>
+  </ol>
+
+  <h1 id="dmesg">View Camera Boot Messages</h1>
+  This information can be useful in trying to determine the status of USB device connectivity and other potential hardware issues captured by the camera's operating system.
+
+  <h1 id="bus-master">Add or Remove an RS-485 Master</h1>
+  <ol style="padding-bottom: 0;">
+    <li style="margin-left:2em"><a target="_blank" href="/files.html">Click to open the Files browser in a new tab</a></li>
+    <li style="margin-left:2em">Click assets</li>
+    <li style="margin-left:2em">Right-click mqttConfig.json -> Edit</li>
+    <li style="margin-left:2em">Click assets</li>
+    <li style="margin-left:2em">Find the IP address of the camera you want to designate as a second master</li>
+    <li style="margin-left:2em">Change false to true</li>
+    <li style="margin-left:2em">Right-click -> Save</li>
+    <li style="margin-left:2em">Right-click -> Close</li>
+    <li style="margin-left:2em">Stop and start server using icons on server desktop</li>
+  </ol>
+  <h1 id="dev-control">Device Control Failure</h1>
+  If you are unable to control a particular device or several devices:
+  <ol>
+    <li>Make sure that all expected RS485 bus "masters" are set to true or false appropriately in <a style="color:greenyellow;" href="files.html">assets/mqttConfig.json</a>.  If a device is set to false, it will receive no messages to pass onto the serial bus.  If multiple devices attached to the same RS485 bus are set to true, messages may be corrupted upon receipt.  Edit the file to make changes, save it, then stop and start the OpenROV server to make the changes take effect.</li>
+  </ol>
+
+  <h1 id="usb-audio">Check Camera for USB Audio Detection</h1>
+  This information can be useful in trying to determine the status of USB audio device connectivity.  Successful detection should show something like:
+  <pre>[Device         ]: USB-Audio - USB PnP Sound Device
+      C-Media Electronics Inc.       USB PnP Sound Device </pre>
+
+  <h1 id="virus-scan">Temporarily Disable On-Demand Antivirus Scanning</h1>
+  If you need to temporarily disable Sophos Antivirus scanning due to heavy demand on disk write performance, like during a dive, run the following command on the OpenROV server computer console:
+
+  <pre>/opt/sophos-av/bin/savdctl disable</pre>
+
+  Don't forget to re-enable it when you're connecting to any shared network using the following command:
+
+  <pre>/opt/sophos-av/bin/savdctl enable</pre>
+
+  For more information, see the <a href="https://www.sophos.com/en-us/medialibrary/PDFs/documentation/savl_9_cgeng.pdf">user manual - Sections 3.3 and 3.4.</a>
+
+  <h1 id="chrome-throttle">Disable Chrome Expensive Background Timer Throttling</h1>
+  <ol>
+    <li>Copy the text in the window below</li>
+    <textarea style="width: 40%;">chrome://flags/#expensive-background-timer-throttling</textarea>
+    <li><a target="_blank" class="rb-purple" href="about:blank">Click to open a new blank tab</a></li>
+    <li>Paste the text you copied into the URL bar on the new tab</li>
+    <li>Set this flag to "Disable"</li>
+    <li>Restart your browser</li>
+  </ol>
+
+  <p>For more information, see <a target="_blank" href="https://www.chromestatus.com/feature/6172836527865856">this link.</a></p>
+</body>
+</html>
