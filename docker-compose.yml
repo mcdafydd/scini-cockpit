@@ -10,6 +10,8 @@ services:
     volumes:
       - "./assets/www:/opt/openrov/www"
       - "./assets/www-ro:/opt/openrov/www-ro"
+      - "./assets/copilot:/opt/openrov/copilot"
+      - "./assets/nginx.openrov:/etc/nginx/sites-enabled/default"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
       - "./assets/rovconfig.json:/tmp/rovconfig.json"
       - "./assets/adjustments.prod.json:/opt/openrov/cockpit/src/lib/adjustments.json"
