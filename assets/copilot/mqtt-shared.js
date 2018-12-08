@@ -59,6 +59,7 @@ function handleMessage(topic, payload) {
   else if (topic.match('telemetry/update') !== null) {
     let obj = JSON.parse(payload);
     let ts = new Date().getTime();
+    let updateValues = {};
 
     for (let prop in obj) {
       // update text and slider or button
@@ -123,13 +124,35 @@ function handleMessage(topic, payload) {
       }
       // update telemetry charts
       // if ${prop}-values, update numeric display
-      let chartValues = document.getElementById(`${prop}-values`);
+      let id = `${prop}-values`;
+      let chartValues = document.getElementById(id);
       if (chartValues !== null) {
-        chartValues.innerHTML = parseFloat(obj[prop]).toFixed(2);
+        // multi-value
+        let nodeId = prop.match(/\.([0-9]+)$/)
+        if (nodeId !== null) {
+          if (!updateValues[id] instanceof Array)
+            updateValues[id] = []
+          let k = nodeId[1];
+          let v = parseFloat(obj[prop]).toFixed(2);
+          updateValues[id].push({k: v});
+        }
+        // single value
+        else
+          chartValues.innerHTML = parseFloat(obj[prop]).toFixed(2);
       }
-      let chart = document.getElementById(prop);
-      if (chart !== null) {
+      if (window.location.pathname.match(/telemetry/) !== null)
         appendToChart(ts, prop, obj[prop]);
+    }
+    // process updateValues
+    for (let id in updateValues) {
+      let el = document.getElementById(id);
+      if (el !== null && updateValues[id] instanceof Array) {
+        let ih = '';
+        for (let i=0; i<updateValues[id].length; i++) {
+          let o = updateValues[id].shift();
+          let k = Object.keys(o)[0];
+          ih += k + ':' + o[k];
+        }
       }
     }
   }
