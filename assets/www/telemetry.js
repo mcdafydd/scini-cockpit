@@ -65,6 +65,27 @@ var psOptions = [{
   lineWidth: 3
 }];
 
+var camOptions = [{
+  strokeStyle: 'rgba(255, 0, 0, 1)',
+  fillStyle: 'rgba(255, 0, 0, 0.1)',
+  lineWidth: 3
+},
+{
+  strokeStyle: 'rgba(0, 255, 0, 1)',
+  fillStyle: 'rgba(0, 255, 0, 0.1)',
+  lineWidth: 3
+},
+{
+  strokeStyle: 'rgba(255, 255, 0, 1)',
+  fillStyle: 'rgba(255, 255, 0, 0.1)',
+  lineWidth: 3
+},
+{
+  strokeStyle: 'rgba(246, 129, 33, 1)',
+  fillStyle: 'rgba(246, 129, 33, 0.1)',
+  lineWidth: 3
+}];
+
 function init() {
   initChart('cpu', ['cpu']);
   initChart('depth_p', ['depth_p', 'board44.pressure.81']);
@@ -96,6 +117,8 @@ function init() {
   initChart('powerSupply2.current', ['board44.acs764n1.87', 'board44.acs764n2.87', 'board44.acs764n3.87', 'board44.acs764n4.87'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
   initChart('powerSupply2.voltage', ['board44.adc2.87', 'board44.adc4.87', 'board44.adc5.87', 'board44.adc6.87'], ['5V', '48V', '24V', '12V']);
   initChart('powerSupply2.temp', ['board44.adc1.87', 'board44.adc7.87'], ['Temp 12', 'Temp 24']);
+  initChart('mqtt.errors', ['mqtt.error.elphel-000e64081e1f', 'mqtt.error.elphel-000e64081ccd', 'mqtt.error.elphel-000e64081ce3', 'mqtt.error.elphel-000e64081e1e'], ['forward', 'up', 'side', 'down']);
+  initChart('mqtt.timeouts', ['mqtt.timeout.elphel-000e64081e1f', 'mqtt.timeout.elphel-000e64081ccd', 'mqtt.timeout.elphel-000e64081ce3', 'mqtt.timeout.elphel-000e64081e1e'], ['forward', 'up', 'side', 'down']);
 
   initMqtt();
   initGrid('telemetryLayout');
@@ -165,6 +188,10 @@ function initChart(chartName, properties, labels) {
     let options = seriesOptions[i];
     if (chartName.match(/powerSupply.*/) !== null) {
       options = psOptions[i];
+      options.tooltipLabel = labels[i];
+    }
+    else if (chartName.match(/mqtt.*/) !== null) {
+      options = camOptions[i];
       options.tooltipLabel = labels[i];
     }
     else if (properties[i].match(/\.[0-9]+$/) !== null) {

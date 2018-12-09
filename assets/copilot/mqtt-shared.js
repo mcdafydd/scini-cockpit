@@ -123,7 +123,7 @@ function handleMessage(topic, payload) {
           display.innerHTML = `Last: ${status}`;
       }
       // update telemetry charts
-      // if ${prop}-values, update numeric display
+      // if ${prop}-values in DOM, update numeric display
       let id = `${prop}-values`;
       let chartValues = document.getElementById(id);
       if (chartValues !== null) {
