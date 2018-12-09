@@ -9,7 +9,7 @@ function init() {
   SilentAudio();
 
   const offscreen = document.querySelector('canvas').transferControlToOffscreen();
-  const worker = new Worker('/worker.js');
+  const worker = new Worker('worker.js');
   worker.addEventListener('error', function (e) {
     console.error('Worker error: ', e);
   }, false);

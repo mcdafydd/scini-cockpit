@@ -10,7 +10,7 @@ self.addEventListener('message', function(e) {
   }
   else if (e.data.hasOwnProperty('hostname')
            && e.data.hasOwnProperty('wsPort')) {
-    const wsUri = `ws://${e.data.hostname}:${e.data.wsPort}`;
+    let wsUri = `ws://${e.data.hostname}:${e.data.wsPort}`;
     if (ws instanceof ReconnectingWebSocket) {
         ws.close();
     }

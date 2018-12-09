@@ -1,7 +1,9 @@
 window.onload = init;
 let worker;
+let workerPath = 'worker.js';
 
 function init() {
+  var self = this;
   renderNav();
   initListeners();
   initKeyboardControls();
@@ -14,7 +16,9 @@ function init() {
     'notsupported', !('OffscreenCanvas' in window));
 
   const offscreen = document.querySelector('canvas').transferControlToOffscreen();
-  worker = new Worker('worker.js');
+  if (document.location.pathname.match('video-gl') !== null)
+    workerPath = 'worker.js';
+  worker = new Worker(workerPath);
   worker.addEventListener('error', function (e) {
     console.error('Worker error: ', e);
   }, false);
@@ -26,9 +30,6 @@ function init() {
 }
 
 function SilentAudio(audioCtx) {
-  var self = this;
-  //if (!(self instanceof SilentAudio)) return new SilentAudio(audioCtx)
-
   audioCtx = audioCtx || new AudioContext()
   var source = audioCtx.createConstantSource()
   var gainNode = audioCtx.createGain()

@@ -71,8 +71,7 @@ self.addEventListener('message', function(e) {
     uLoc = ctx.getUniformLocation(progObj, "pos");
   }
   else if (e.data.hasOwnProperty('hostname')) {
-    const wsUri = 'ws://' + e.data.hostname + ':' + e.data.wsPort;
-    wsUri = `ws://${e.data.hostname}:${e.data.wsPort}`;
+    let wsUri = `ws://${e.data.hostname}:${e.data.wsPort}`;
     if (ws instanceof ReconnectingWebSocket) {
         ws.close();
     }
