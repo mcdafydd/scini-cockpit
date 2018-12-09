@@ -49,7 +49,8 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 
 echo "*** LAST STEP ***" 
-echo "*** Creating scini docker network to run the dev stack containers ***"
+echo "*** Manually run the following command to create the scini docker ***"
+echo "*** network to run the dev stack containers ***"
 echo "*** Only do this if your local ethernet interface isn't on the 192.168.2.0/24 subnet! ***"
-read -n 1 -s -r -p "Press any key if you're sure you want to continue or CTRL-C to finish"
-sudo docker network create --gateway 192.168.2.1 --subnet 192.168.2.0/24 scini
+echo "sudo docker network create --gateway 192.168.2.1 --subnet 192.168.2.0/24 scini"
+read -n 1 -s -r -p "Press any key to exit"
