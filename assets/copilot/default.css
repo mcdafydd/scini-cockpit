@@ -391,6 +391,7 @@ canvas {
   position: relative;
 }
 
+/* https://love2dev.com/blog/css-background-stripes/ */
 .barbershop-pole {
   margin: 0 auto;
   background-color: #fff;
