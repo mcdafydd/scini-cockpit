@@ -121,8 +121,8 @@ function init() {
   initChart('motors.yaw', ['motors.yaw']);
   initChart('ctsensor.temp', ['board44.temp.85']);
   initChart('ctsensor.conductivity', ['board44.conductivity.85']);
-  initChart('grippers.temp', ['gripper.temp.21', 'waterSampler.temp.23', 'trim.temp.24']);
-  initChart('grippers.current', ['gripper.current.21', 'waterSampler.current.23', 'trim.current.24']);
+  initChart('grippers.temp', ['gripper.temp.23', 'waterSampler.temp.21', 'trim.temp.24']);
+  initChart('grippers.current', ['gripper.current.23', 'waterSampler.current.21', 'trim.current.24']);
   initChart('powerSupply1.current', ['board44.acs764n1.83', 'board44.acs764n2.83', 'board44.acs764n3.83', 'board44.acs764n4.83'], ['48v on 24', '12v on 12', '48v on 12', '24v on 24']);
   initChart('powerSupply1.voltage', ['board44.adc2.83', 'board44.adc4.83', 'board44.adc5.83', 'board44.adc6.83'], ['5V', '48V', '24V', '12V']);
   initChart('powerSupply1.temp', ['board44.adc1.83', 'board44.adc7.83'], ['Temp 12', 'Temp 24']);
