@@ -71,6 +71,11 @@ self.addEventListener('message', function(e) {
     uLoc = ctx.getUniformLocation(progObj, "pos");
   }
   else if (e.data.hasOwnProperty('hostname')) {
+    // give user indication of change in camera
+    ctx.beginPath();
+    ctx.rect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "black";
+    ctx.fill();
     let wsUri = `ws://${e.data.hostname}:${e.data.wsPort}`;
     if (ws instanceof ReconnectingWebSocket) {
         ws.close();
