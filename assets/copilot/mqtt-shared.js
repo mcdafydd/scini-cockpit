@@ -60,22 +60,27 @@ function handleMessage(topic, payload) {
     let obj = JSON.parse(payload);
     let ts = new Date().getTime();
     let updateValues = {};
+    var evtStatus = { mousedown: false, input: false };
 
     for (let prop in obj) {
       // update text and slider or button
       if (prop.match('light\.[0-9]+\.currentPower') !== null) {
-        [device, node, func] = prop.split('.');
-        let display = document.getElementById(`${device}-${node}-val`);
-        if (display !== null) {
-          display.innerHTML = `Power: ${obj[prop]}`;
-        }
-        display = document.getElementById(`${device}-${node}`);
-        if (display !== null) {
-          display.value = obj[prop];
+        const [device, node, func] = prop.split('.');
+        if (typeof getStatus !== "undefined")
+          evtStatus = getStatus(`${device}-${node}`);
+        if (!(evtStatus.mousedown || evtStatus.input)) {
+          let display = document.getElementById(`${device}-${node}-val`);
+          if (display !== null) {
+            display.innerHTML = `Power: ${obj[prop]}`;
+          }
+          display = document.getElementById(`${device}-${node}`);
+          if (display !== null) {
+            display.value = obj[prop];
+          }
         }
       }
       else if (prop.match('servo\.[0-9]+\.') !== null) {
-        [device, node, func] = prop.split('.');
+        const [device, node, func] = prop.split('.');
         let display = document.getElementById(`${device}-${node}-${func}-val`);
         if (display !== null) {
           if (func === 'speed')
@@ -91,7 +96,7 @@ function handleMessage(topic, payload) {
         }
       }
       else if (prop.match('camera\.[0-9]+\.') !== null) {
-        [device, node, func] = prop.split('.');
+        const [device, node, func] = prop.split('.');
         if (func !== 'exposure') {
           let display = document.getElementById(`${func}-${node}-${obj[prop]}`);
           if (display !== null) {
@@ -104,7 +109,7 @@ function handleMessage(topic, payload) {
         }
       }
       else if (prop.match('[A-z]+\.cmdStatus\.[0-9]+') !== null) {
-        [device, func, node] = prop.split('.');
+        const [device, func, node] = prop.split('.');
         let map = {
           0: 'Idle',
           1: 'Opening',
@@ -140,7 +145,7 @@ function handleMessage(topic, payload) {
         else
           chartValues.innerHTML = parseFloat(obj[prop]).toFixed(2);
       }
-      if (window.location.pathname.match(/telemetry/) !== null)
+      if (typeof appendToChart !== "undefined")
         appendToChart(ts, prop, obj[prop]);
     }
     // process updateValues

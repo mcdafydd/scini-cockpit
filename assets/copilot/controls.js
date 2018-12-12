@@ -1,5 +1,8 @@
 window.onload = init;
 
+var inputUpdating = {};
+var mouseUpdating = {};
+
 function init() {
   renderNav();
   initListeners();
@@ -17,8 +20,12 @@ function initListeners() {
 
   inputsList = Array.prototype.slice.call(inputs);
   inputsList.forEach(function(input, idx) {
+    if (input.id !== '') {
+      inputUpdating[input.id] = false;
+      mouseUpdating[input.id] = false;
+    }
     // set initial innerHTML
-    [device, node, func] = input.id.split('-');  // func may be undefined
+    const [device, node, func] = input.id.split('-');  // func may be undefined
     if (device === 'light') {
       let display = document.getElementById(device+'-'+node+'-val');
       display.innerHTML = `Power: 0.0`;
@@ -34,8 +41,17 @@ function initListeners() {
       else if (func === 'center')
         display.innerHTML = `ctr: 32768`;
     }
-    input.addEventListener('input', function() {
-      [device, node, func] = input.id.split('-'); // func may be undefined
+    input.addEventListener('mousedown', () => {
+      mouseUpdating[input.id] = true;
+    }, false);
+
+    input.addEventListener('mouseup', () => {
+      mouseUpdating[input.id] = false;
+    }, false);
+
+    input.addEventListener('input', function(event) {
+      inputUpdating[input.id] = true;
+      const [device, node, func] = input.id.split('-'); // func may be undefined
       if (device === 'light') {
         let display = document.getElementById(device+'-'+node+'-val');
         display.innerHTML = `Power: ${this.value}`;
@@ -57,8 +73,9 @@ function initListeners() {
           display.innerHTML = `ctr: ${this.value}`;
       }
     }, false);
-    input.addEventListener('change', function() {
-      [device, node, func] = input.id.split('-'); // func may be undefined
+    input.addEventListener('change', function(event) {
+      inputUpdating[input.id] = false;
+      const [device, node, func] = input.id.split('-'); // func may be undefined
       if (device === 'light') {
         let display = document.getElementById(device+'-'+node+'-val');
         display.innerHTML = `Power: ${this.value}`;
@@ -152,4 +169,10 @@ function initKeyboardControls() {
   Mousetrap.bind('space', function(e) {
     sendCamera('snapFull', window.location.port, '1');
   });
+}
+
+function getStatus(id) {
+  if (inputUpdating.hasOwnProperty(id) && mouseUpdating.hasOwnProperty(id)) {
+    return { 'input': inputUpdating[id], 'mousedown': mouseUpdating[id] };
+  }
 }
