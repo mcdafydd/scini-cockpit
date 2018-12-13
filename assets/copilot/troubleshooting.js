@@ -19,11 +19,14 @@ function init() {
 }
 
 function initListeners() {
-  const button = document.getElementById('video-restart');
-  button.addEventListener('click', function () {
-    console.log('clicked ', this.id);
-    client.publish('video/restart', '1');
-  }, false);
+  const buttons = document.getElementsByClassName('video-restart');
+  for (let i=0; i<buttons.length; i++) {
+    buttons[i].addEventListener('click', () => {
+      console.log('sending video restart');
+      let topic = 'video/restart';
+      mqttWorker.port.postMessage({topic: topic, payload: '1'});
+    }, false);
+  }
 }
 
 function getData() {
