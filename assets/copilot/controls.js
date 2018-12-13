@@ -142,20 +142,43 @@ function initListeners() {
 
 function sendCamera (func, port, value) {
   let topic = 'toCamera/' + port + '/' + func;
-  mqttWorker.port.postMessage({topic: topic, payload: value});
-  console.debug('sendCamera', topic, value);
+  try {
+    mqttWorker.port.postMessage({topic: topic, payload: value});
+    console.debug('sendCamera', topic, value);
+  }
+  catch (e) {
+    console.warn(`sendCamera error: ${e}`)
+  }
 };
 function sendServo (func, nodeId, value) {
   let topic = 'servo/' + nodeId + '/' + func;
-  mqttWorker.port.postMessage({topic: topic, payload: value});
+  try {
+    mqttWorker.port.postMessage({topic: topic, payload: value});
+    console.debug('sendServo', topic, value);
+  }
+  catch (e) {
+    console.warn(`sendServo error: ${e}`)
+  }
 };
 function sendGripper (nodeId, value) {
   let topic = 'grippers/' + nodeId;
-  mqttWorker.port.postMessage({topic: topic, payload: value});
+  try {
+    mqttWorker.port.postMessage({topic: topic, payload: value});
+    console.debug('sendGripper', topic, value);
+  }
+  catch (e) {
+    console.warn(`sendGripper error: ${e}`)
+  }
 };
 function sendLight (nodeId, value) {
   let topic = 'light/' + nodeId;
-  mqttWorker.port.postMessage({topic: topic, payload: value});
+  try {
+    mqttWorker.port.postMessage({topic: topic, payload: value});
+    console.debug('sendLight', topic, value);
+  }
+  catch (e) {
+    console.warn(`sendLight error: ${e}`)
+  }
 };
 
 function initKeyboardControls() {

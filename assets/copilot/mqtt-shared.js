@@ -58,6 +58,7 @@ function handleMessage(topic, payload) {
   }
   else if (topic.match('telemetry/update') !== null) {
     let obj = JSON.parse(payload);
+    //console.log(obj);
     let ts = new Date().getTime();
     let updateValues = {};
     var evtStatus = { mousedown: false, input: false };
@@ -105,6 +106,29 @@ function handleMessage(topic, payload) {
               items[i].classList.remove('dot-current');
             }
             display.classList.add('dot-current');
+          }
+        }
+        else {
+          let slider = document.getElementById(`${func}-${node}`);
+          let display = document.getElementById(`${func}-${node}-val`);
+          let val = parseInt(obj[prop]);
+          if (slider !== null) {
+            try {
+              if (val > slider.max)
+                slider.value = slider.max;
+              else
+                slider.value = val;
+            }
+            catch (e) {
+              console.warn('error setting slider exposure on ', prop);
+            }
+          }
+          if (display !== null) {
+            if (val > 125)
+              display.style = "color: red;";
+            else
+              display.style = "";
+            display.innerHTML = `Time: ${val}ms`;
           }
         }
       }
