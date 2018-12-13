@@ -21,7 +21,7 @@ if [ -z "$1" ]; then
   docker tag scini/openrov:dev scini/openrov:build-$DATE
 else
   docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache $1
-  if [ "$1"="openrov" ]; then
+  if [ "$1" = "openrov" ]; then
     echo "Tagging scini/openrov:dev container as scini/openrov:build-$DATE"
     docker tag scini/openrov:dev scini/openrov:build-$DATE
   fi
