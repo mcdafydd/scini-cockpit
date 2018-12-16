@@ -821,6 +821,7 @@ class Pro4 extends EventEmitter
             self.parsedObj.sync1 = byte;
             self.headBuf[0] = self.parsedObj.sync1;
             self.request = 0;
+            self.fsm.GetSync2();
           }
           else if (byte == self.constants.SYNC_REQUEST8_b1 ||
                   byte == self.constants.SYNC_REQUEST32_b1)
@@ -828,17 +829,17 @@ class Pro4 extends EventEmitter
             self.parsedObj.sync1 = byte;
             self.headBuf[0] = self.parsedObj.sync1;
             self.request = 1;
+            self.fsm.GetSync2();
           }
-          else
+          else if (self.parseBuf.remaining()-1 === 0) // end of buffer
           {
-            logger.log(`PRO4: Invalid PRO4 ${self.request == 1 ? 'request':'response'} at byte = ${byte} state = ${self.fsm.current}`);
+            logger.debug('PRO4: No valid sync byte in PRO4 response at byte = ', buf[idx], 'state = ', self.fsm.current);
+            self.parsedObj.status = self.constants.STATUS_ERROR;
             let cursor = self.parseBuf.readOffset;
             self.parseBuf.readOffset = 0;
             this.ctx.emit('parsedPacket', {data: self.parseBuf.readBuffer(cursor), status: self.constants.STATUS_ERROR});
             self.reset();
-            break;
           }
-          self.fsm.GetSync2();
           break;
         }
         case '_s_sync2':
