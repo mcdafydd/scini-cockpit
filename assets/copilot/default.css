@@ -249,7 +249,7 @@ canvas {
 .tel-item {
   display: block;
   position: absolute;
-  width: 100%;
+  width: 40%;
 	height: 160px;
 	margin: 5px;
   z-index: 1;
