@@ -65,8 +65,8 @@ function handleMessage(topic, payload) {
 
     for (let prop in obj) {
       // limit big float precision
-      if (prop.match('cpu') !== null) {
-        let temp = parseFloat(obj[prop]).toFixed(2);
+      if (!isNaN(parseFloat(obj[prop]))) {
+        let temp = parseFloat(obj[prop]).toFixed(3);
         obj[prop] = temp;
       }
       // update text and slider or button
