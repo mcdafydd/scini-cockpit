@@ -64,8 +64,13 @@ function handleMessage(topic, payload) {
     var evtStatus = { mousedown: false, input: false };
 
     for (let prop in obj) {
+      // limit big float precision
+      if (prop.match('cpu') !== null) {
+        let temp = parseFloat(obj[prop]).toFixed(2);
+        obj[prop] = temp;
+      }
       // update text and slider or button
-      if (prop.match('light\.[0-9]+\.currentPower') !== null) {
+      else if (prop.match('light\.[0-9]+\.currentPower') !== null) {
         const [device, node, func] = prop.split('.');
         if (typeof getStatus !== "undefined")
           evtStatus = getStatus(`${device}-${node}`);
@@ -169,8 +174,13 @@ function handleMessage(topic, payload) {
         else
           chartValues.innerHTML = parseFloat(obj[prop]).toFixed(2);
       }
-      if (typeof appendToChart !== "undefined")
+      if (typeof appendToChart !== "undefined") {
         appendToChart(ts, prop, obj[prop]);
+      }
+      if (typeof updateBriefValues !== "undefined") {
+        updateBriefValues(prop, obj[prop]);
+      }
+
     }
     // process updateValues
     for (let id in updateValues) {
