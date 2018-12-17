@@ -8,17 +8,23 @@ self.addEventListener('message', function(e) {
     canvas = e.data.canvas;
     ctx = canvas.getContext('2d');
   }
-  else if (e.data.hasOwnProperty('hostname')
-           && e.data.hasOwnProperty('wsPort')) {
+  else if (e.data.hasOwnProperty('command')) {
+    if (e.data.command === 'close' && ws instanceof ReconnectingWebSocket) {
+      // disable handlers and close any open websocket connections
+      ws.onmessage = function () {};
+      ws.close();
+    }
+  }
+  else if (e.data.hasOwnProperty('hostname') &&
+             e.data.hasOwnProperty('wsPort')) {
+
     // give user indication of change in camera
     ctx.beginPath();
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
     ctx.fill();
     let wsUri = `ws://${e.data.hostname}:${e.data.wsPort}`;
-    if (ws instanceof ReconnectingWebSocket) {
-        ws.close();
-    }
+
     // Ref: https://github.com/pladaria/reconnecting-websocket
     ws = new ReconnectingWebSocket(wsUri);
     ws.onopen = function () {
@@ -36,8 +42,12 @@ self.addEventListener('message', function(e) {
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         }
       })
+      .catch(err => {
+        console.log(`Worker createImageBitmap() error: ${err}`);
+      });
     };
     ws.onerror = function (e) {
+      console.error(`mjpg-streamer websocket error: ${e}`);
     };
   }
 }, false);

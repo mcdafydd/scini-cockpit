@@ -5,6 +5,7 @@ let workerPath = 'worker.js';
 function init() {
   var self = this;
   renderNav();
+  initWorker();
   initListeners();
   initKeyboardControls();
   initMqtt();
@@ -14,19 +15,6 @@ function init() {
   // Feature detect.
   document.querySelector('.support').classList.toggle(
     'notsupported', !('OffscreenCanvas' in window));
-
-  const offscreen = document.querySelector('canvas').transferControlToOffscreen();
-  if (document.location.pathname.match('video-gl') !== null)
-    workerPath = 'worker.js';
-  worker = new Worker(workerPath);
-  worker.addEventListener('error', function (e) {
-    console.error('Worker error: ', e);
-  }, false);
-  worker.postMessage({ canvas: offscreen }, [offscreen]);
-  worker.postMessage({
-    hostname: window.location.hostname,
-    wsPort: window.location.port === "" ? 8104 : window.location.port-100
-  });
 }
 
 function SilentAudio(audioCtx) {
@@ -39,18 +27,66 @@ function SilentAudio(audioCtx) {
   source.start()
 }
 
-function initListeners() {
-  self.lastCamera = window.localStorage.getItem('lastCamera');
-  if (self.lastCamera === null )
-    self.lastCamera = '215';
+function initWorker() {
+  const offscreen = document.querySelector('canvas').transferControlToOffscreen();
+  if (document.location.pathname.match('video-gl') !== null)
+    workerPath = 'worker-gl.js';
+  worker = new Worker(workerPath);
+  worker.onerror = function (e) {
+    console.error(`Worker error: ${e}`);
+  }
+  worker.onmessage = function(e) {
+    // hack to support black screen when switching cameras in webGl page
+    if (e.data.hasOwnProperty('command')) {
+      console.log(`Received worker command = ${e.data.command}`);
+      if (e.data.command === 'hide') {
+        document.querySelector('canvas').classList.add('support');
+      }
+      else if (e.data.command === 'show') {
+        document.querySelector('canvas').classList.remove('support');
+      }
+    }
+  }
 
+  worker.postMessage({ canvas: offscreen }, [offscreen]);
+
+  self.lastCamera = window.localStorage.getItem('lastCamera');
+  if (self.lastCamera === null ) {
+    self.lastCamera = '215';
+  }
+
+  let port;
+  if (self.cameraMap.hasOwnProperty(self.lastCamera)) {
+    port = self.cameraMap[self.lastCamera].port-100;
+  }
+  else {
+    port = window.location.port-100;
+  }
+  worker.postMessage({
+    hostname: window.location.hostname,
+    wsPort: port
+  });
+
+  // handle window close
+  window.onbeforeunload = function() {
+    worker.postMessage({
+      command: 'close'
+    });
+  };
+}
+
+function initListeners() {
   const elem = document.getElementById('video-select');
   if (elem !== null) {
     elem.value = `video-${self.lastCamera}`;
     elem.addEventListener('change', function() {
-      console.log('Selected camera ', elem.value);
-      let id = elem.value.split('-')[1];
+      console.log('Selected camera ', this.value);
+      let id = this.value.split('-')[1];
       window.localStorage.setItem('lastCamera', id);
+      // close old websocket connection
+      worker.postMessage({
+        command: 'close'
+      });
       // inform websocket worker to get new camera stream
       worker.postMessage({
         hostname: window.location.hostname,
