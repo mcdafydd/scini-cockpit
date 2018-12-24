@@ -119,8 +119,8 @@ FILES=`find /opt/openrov/data -type f -name '*.log'`
 for FILE in $FILES; do
   # Reformat each file to be compatible with ES bulk api
   sed 's/^/\{ "index": \{"_index": "telemetry", "_type" : "_doc"\} \}\n/' $FILE > /tmp/$$.json
-  echo >> /tmp/$$.json
-  curl -XPOST 'http://localhost:9200/_bulk' -H 'Content-Type: application/x-ndjson' --data-binary @"/tmp/$$.json"
-  rm /tmp/$$.json
+  curl -XPOST 'http://localhost:9200/_bulk' -H 'Content-Type: application/x-ndjson' --data-binary @"/tmp/$$.json" -w "\n"
 done
+
+rm /tmp/$$.json
 
