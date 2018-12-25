@@ -10,27 +10,31 @@
 ./ingest-telemetry.sh ../../scini-data/data
 
 # Create default kibana index patterns
-curl http://localhost:5601/es_admin/.kibana/index-pattern/video/_create\
+curl http://localhost:5601/api/saved_objects/index-pattern/video-*\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
-    -H "kbn-xsrf: video"\
-    --data-binary '{"title":"video-*","timeFieldName":"time"}'  -w "\n"
+    -H "kbn-xsrf: true"\
+    --data-binary '{ "attributes": { "title": "video-*", "timeFieldName": "@time" } }'\
+    -w "\n"
 
-curl http://localhost:5601/es_admin/.kibana/index-pattern/snapshot/_create\
+curl http://localhost:5601/api/saved_objects/index-pattern/snapshot-*\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
-    -H "kbn-xsrf: snapshot"\
-    --data-binary '{"title":"snapshot-*","timeFieldName":"time"}'  -w "\n"
+    -H "kbn-xsrf: true"\
+    --data-binary '{ "attributes": { "title": "snapshot-*", "timeFieldName": "@time" } }'\
+    -w "\n"
 
-curl http://localhost:5601/es_admin/.kibana/index-pattern/telemetry/_create\
+curl http://localhost:5601/api/saved_objects/index-pattern/telemetry\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
-    -H "kbn-xsrf: telemetry"\
-    --data-binary '{"title":"telemetry","timeFieldName":"time"}'  -w "\n"
+    -H "kbn-xsrf: true"\
+    --data-binary '{ "attributes": { "title": "telemetry", "timeFieldName": "@time" } }'\
+    -w "\n"
 
 # Set kibana defaultIndex
 curl http://localhost:5601/api/kibana/settings/defaultIndex\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
-    -H "kbn-xsrf: telemetry"\
-    --data-binary '{"value":"telemetry"}'' -w "\n"
+    -H "kbn-xsrf: true"\
+    --data-binary '{"value":"telemetry"}'\
+    -w "\n"

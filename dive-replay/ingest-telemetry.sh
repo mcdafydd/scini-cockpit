@@ -116,12 +116,16 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
   }
 '
 
+mkdir -p /tmp/es-$$
 FILES=`find $1 -type f -name '*.log'`
 for FILE in $FILES; do
   # Reformat each file to be compatible with ES bulk api
-  sed 's/^/\{ "index": \{"_index": "telemetry", "_type" : "_doc"\} \}\n/' $FILE > /tmp/$$.json
-  curl -XPOST 'http://localhost:9200/_bulk' -H 'Content-Type: application/x-ndjson' --data-binary @"/tmp/$$.json" -w "\n"
+  # Limit lines per file to avoid out of memory errors while indexing
+  sed 's/^/\{ "index": \{"_index": "telemetry", "_type" : "_doc"\} \}\n/' $FILE |\
+    split --lines=5000 - /tmp/es-$$/bulk
+  for BULK in `ls /tmp/es-$$/`; do
+    curl -XPOST 'http://localhost:9200/_bulk' -H 'Content-Type: application/x-ndjson' --data-binary @"/tmp/es-$$/$BULK" -w "\n"
+  done
+  rm -f /tmp/es-$$/bulk*
 done
-
-rm /tmp/$$.json
-
+rm -rf /tmp/es-$$
