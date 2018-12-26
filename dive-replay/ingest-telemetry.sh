@@ -31,16 +31,10 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
       "motors.strafe": { "type": "float" },
       "motors.throttle": { "type": "float" },
       "motors.yaw": { "type": "float" },
-      "gripper.temp.23": { "type": "float" },
-      "gripper.current.23": { "type": "float" },
       "gripper.close": { "type": "integer" },
       "gripper.open": { "type": "integer" },
-      "waterSampler.temp.21": { "type": "float" },
-      "waterSampler.current.21": { "type": "float" },
       "sampler.close": { "type": "integer" },
       "sampler.open": { "type": "integer" },
-      "trim.temp.24": { "type": "float" },
-      "trim.current.24": { "type": "float" },
       "trim.close": { "type": "integer" },
       "trim.open": { "type": "integer" }
     }
@@ -52,8 +46,31 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
     "dynamic_templates": [
       {
         "camera_properties": {
-          "match_pattern": "regex",
-          "match": "^camera\.\d+\..+$"
+          "match": "camera.*.*",
+          "mapping": {
+            "type": "integer"
+          }
+        }
+      },
+      {
+        "gripper_template": {
+          "match": "gripper.*.*",
+          "mapping": {
+            "type": "integer"
+          }
+        }
+      },
+      {
+        "trim_template": {
+          "match": "trim.*.*",
+          "mapping": {
+            "type": "integer"
+          }
+        }
+      },
+      {
+        "waterSampler_template": {
+          "match": "waterSampler.*.*",
           "mapping": {
             "type": "integer"
           }
@@ -61,8 +78,7 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
       },
       {
         "board44_template": {
-          "match_pattern": "regex",
-          "match": "^board44\..+\.\d+$"
+          "match": "board44.*.*",
           "mapping": {
             "type": "float"
           }
@@ -70,8 +86,7 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
       },
       {
         "motors_template": {
-          "match_pattern": "regex",
-          "match": "^motors\..+\.\d+$"
+          "match": "motors.*.*",
           "mapping": {
             "type": "float"
           }
@@ -79,8 +94,7 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
       },
       {
         "sensors_template": {
-          "match_pattern": "regex",
-          "match": "^sensors\..+\.\d+$"
+          "match": "sensors.*.*",
           "mapping": {
             "type": "float"
           }
@@ -88,8 +102,7 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
       },
       {
         "pilot_template": {
-          "match_pattern": "regex",
-          "match": "^pilot\..+\.\d+$"
+          "match": "pilot.*.*",
           "mapping": {
             "type": "float"
           }
@@ -97,8 +110,7 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
       },
       {
         "light_template": {
-          "match_pattern": "regex",
-          "match": "^light\..+\.\d+$"
+          "match": "light.*.*",
           "mapping": {
             "type": "float"
           }

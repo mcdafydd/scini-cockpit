@@ -13,7 +13,7 @@ curl -XPUT "http://localhost:9200/snapshot-217"
 curl -XPUT "http://localhost:9200/snapshot-218"
 
 # Create mappings
-curl -XPUT 'http://localhost:9200/video*,snapshot*/_mapping/_doc' -H 'Content-Type: application/json' -d'
+curl -XPUT 'http://localhost:9200/video-*,snapshot-*/_mapping/_doc' -H 'Content-Type: application/json' -d'
   {
     "properties": {
       "time": { "type": "date",
@@ -62,7 +62,5 @@ create_record() {
 
 export -f generate_body
 export -f create_record
-
 # Ingest all image paths and file create timestamps
 find $1 -name "*.jpg" | xargs -n 1 -P 10 -I {} bash -c 'create_record "{}"'
-
