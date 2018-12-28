@@ -1,0 +1,7 @@
+{
+  "numeric_detection": true,
+  "properties": {
+    "time": { "type":   "date",
+              "format": "strict_date_optional_time||epoch_millis" }
+  }
+}

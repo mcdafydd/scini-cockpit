@@ -1,0 +1,8 @@
+{
+  "numeric_detection": true,
+  "properties": {
+    "time": { "type": "date",
+              "format": "yyyy_MM_dd_HH_mm_ss_SSS" },
+    "filePath": { "type": "text" }
+  }
+}
