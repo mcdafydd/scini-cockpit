@@ -21,32 +21,52 @@ curl -XPUT 'http://localhost:9200/telemetry/_mapping/_doc' -H 'Content-Type: app
 ./ingest-images.sh /opt/openrov/images
 ./ingest-telemetry.sh /opt/openrov/data
 
-# Create default kibana index patterns
-curl -XPOST http://localhost:5601/api/saved_objects/index-pattern/video-*\
+# Create kibana video index patterns
+curl -XPOST http://localhost:5601/api/saved_objects/index-pattern/video*\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
     -H "kbn-xsrf: true"\
     --data-binary @setup-video.kibana.json\
     -w "\n"
+curl -XPUT http://localhost:5601/api/saved_objects/index-pattern/video*\
+    -H "Content-Type: application/json"\
+    -H "Accept: application/json, text/plain, */*"\
+    -H "kbn-xsrf: true"\
+    --data-binary @setup-video-2.kibana.json\
+    -w "\n"
 
-curl -XPOST http://localhost:5601/api/saved_objects/index-pattern/snapshot-*\
+# Create kibana snapshot index patterns
+curl -XPOST http://localhost:5601/api/saved_objects/index-pattern/snapshot*\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
     -H "kbn-xsrf: true"\
     --data-binary @setup-snapshot.kibana.json\
     -w "\n"
+curl -XPUT http://localhost:5601/api/saved_objects/index-pattern/snapshot*\
+    -H "Content-Type: application/json"\
+    -H "Accept: application/json, text/plain, */*"\
+    -H "kbn-xsrf: true"\
+    --data-binary @setup-snapshot-2.kibana.json\
+    -w "\n"
 
-curl -XPOST http://localhost:5601/api/saved_objects/index-pattern/telemetry\
+# Create kibana telemetry index patterns
+curl -XPOST http://localhost:5601/api/saved_objects/index-pattern/tel*\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
     -H "kbn-xsrf: true"\
     --data-binary @setup-telemetry.kibana.json\
     -w "\n"
-
-# Set kibana defaultIndex
-curl -XPOST http://localhost:5601/api/kibana/settings/defaultIndex\
+curl -XPUT http://localhost:5601/api/saved_objects/index-pattern/tel*\
     -H "Content-Type: application/json"\
     -H "Accept: application/json, text/plain, */*"\
     -H "kbn-xsrf: true"\
-    --data-binary '{"value":"telemetry"}'\
+    --data-binary @setup-telemetry-2.kibana.json\
+    -w "\n"
+
+# Set kibana defaultIndex
+curl -XPOST http://localhost:5601/api/kibana/settings\
+    -H "Content-Type: application/json"\
+    -H "Accept: application/json, text/plain, */*"\
+    -H "kbn-xsrf: true"\
+    --data-binary '{"changes":{"defaultIndex":"telemetry"}}'\
     -w "\n"
