@@ -48,10 +48,10 @@ class MqttBroker {
     });
 
     this.broker.on('clientConnected', (client) => {
-      logger.log(`MQTT-BROKER: Client ${client.id} connected`);
+      logger.log(`MQTT-BROKER: Client ${client.id} connected from IP address ${client.connection.stream.remoteAddress}`);
       let message = {
         topic: 'fromBroker/clientConnected/ipaddr',
-        payload: client.connection.stream.remoteAddress,
+        payload: `${client.id}:${client.connection.stream.remoteAddress}`,
         qos: 0,
         retain: false
       };

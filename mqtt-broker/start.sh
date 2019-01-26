@@ -1,3 +1,3 @@
 #!/bin/sh
 
-node index.sh
+node index.js
