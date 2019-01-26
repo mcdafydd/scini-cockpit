@@ -1,4 +1,9 @@
-import { logger, ERROR, WARN, CRIT, DEBUG } from './shared';
+const shared       = require('./shared');
+const fs           = require('fs');
+const logger       = shared.logger;
+const ERROR        = shared.ERROR;
+const WARN         = shared.WARN;
+const DEBUG        = shared.DEBUG;
 const { exec, spawn } = require('child_process');
 
 function addZero(i) {
@@ -14,14 +19,15 @@ const day = addZero(d.getDate());
 const h = addZero(d.getHours());
 const m = addZero(d.getMinutes());
 
-export class MjpgStreamer {
+class MjpgStreamer {
   constructor(cameraUri, wsPort) {
     this.proc = {};
     this.recording = false;
     this.uri = new URL(cameraUri); // mjpg_streamer URI for input_http.so plugin
+    this.serial = this.uri.hostname.split('.')[3];
     this.wsPort = wsPort; // mjpg_streamer port for output_ws.so plugin
     this.cmd = 'mjpg_streamer'
-    this.argv = ['-i', `input_http.so -p ${this.uri.port} -H ${this.uri.hostname} -u ${this.uri.path}`,
+    this.args = ['-i', `input_http.so -p ${this.uri.port} -H ${this.uri.hostname} -u ${this.uri.pathname}`,
                  '-o', `output_ws.so -p ${this.wsPort}`]
 
     this.ts = day + months[d.getMonth()] + h + m;
@@ -36,17 +42,19 @@ export class MjpgStreamer {
         fs.mkdirSync(this.newChild, '0775');
     }
 
-    this.recordarg = Array.from(this.argv)
-    this.recordarg.push('-o')
-    this.recordarg.push(`output_file.so -f ${newChild}`)
+    this.recordargs = Array.from(this.args)
+    this.recordargs.push('-o')
+    this.recordargs.push(`output_file.so -f ${this.newChild}`)
   }
 
   start() {
     if (this.recording) {
-      this.proc = spawn(this.cmd, this.recordarg);
+      logger.log(`STREAMER: Starting ${this.cmd} ${this.recordargs}`);
+      this.proc = spawn(this.cmd, this.recordargs);
     }
     else {
-      this.proc = spawn(this.cmd, this.argv);
+      logger.log(`STREAMER: Starting ${this.cmd} ${this.args}`);
+      this.proc = spawn(this.cmd, this.args);
     }
 
     this.proc.stdout.on('data', (data) => {
@@ -60,7 +68,7 @@ export class MjpgStreamer {
     this.proc.on('close', (code) => {
       logger.log(`child process exited with code ${code}`, code == 0 ? DEBUG: ERROR);
     });
-    logger.log('STREAMER: Started mjpg_streamer processes');
+    logger.log('STREAMER: Started mjpg_streamer process');
   }
 
   stop(cb) {
@@ -75,24 +83,27 @@ export class MjpgStreamer {
         logger.log(`STREAMER: Error ${stderr} trying to restart mjpg_streamer processes`, ERROR);
         return;
       }
-      logger.log('STREAMER: Stopped mjpg_streamer processes', WARN);
+      logger.log('STREAMER: Stopped mjpg_streamer process', WARN);
       cb();
     };
   }
 
   record(bool) {
     if (bool === true && this.recording === false) {
+      logger.log('STREAMER: Enabling mjpg_streamer recording and restarting');
       this.recording = true;
-      this.stop(this.start());
+      this.stop(this.start);
     }
     else if (bool === false && this.recording === true) {
+      logger.log('STREAMER: Disabling mjpg_streamer recording and restarting');
       this.recording = false;
-      this.stop(this.start());
+      this.stop(this.start);
     }
   }
 
   restart() {
-    this.stop(this.start());
+    this.stop(this.start);
   }
 }
 
+module.exports.MjpgStreamer = MjpgStreamer;

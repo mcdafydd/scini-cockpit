@@ -2,7 +2,18 @@ FROM node:lts-alpine
 LABEL maintainer="david@linkconsultinginc.com"
 
 ## Install uWebSockets library, required for mjpg-streamer output_ws.so plugin
-RUN apk --no-cache add --update git ca-certificates \
+RUN apk --no-cache add --update cmake \
+    make \
+    git \
+    gcc \
+    build-base \
+    abuild \
+    binutils \
+    ca-certificates \
+    openssl-dev \
+    libuv-dev \
+    linux-headers \
+    libjpeg-turbo-dev \
     && cd /tmp \
     && git clone https://github.com/mcdafydd/uWebSockets.git \
     && cd uWebSockets \
@@ -24,12 +35,12 @@ RUN cd /tmp \
     && cmake .. \
     && make \
     && make install \
-    && rm -rf /tmp/* \
-    && mkdir -p /srv/streamer
+    && rm -rf /tmp/* 
 
-COPY start.sh *.js package.json /srv/streamer/
-RUN chmod 755 /srv/streamer/start.sh \
-    && cd /srv/streamer \
+RUN mkdir -p /srv/scini/streamer /srv/scini/images
+COPY start.sh *.js package.json /srv/scini/streamer/
+RUN chmod 755 /srv/scini/streamer/start.sh \
+    && cd /srv/scini/streamer \
     && npm install
-WORKDIR /srv/streamer
+WORKDIR /srv/scini/streamer
 ENTRYPOINT ["./start.sh"]

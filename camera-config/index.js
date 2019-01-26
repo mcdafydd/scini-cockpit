@@ -1,7 +1,8 @@
-import { ElphelDriver } from './ElphelDriver';
-import { MqttClient, logger, ERROR, WARN, CRIT, DEBUG } from './shared';
-
-const mqtt          = require('mqtt');
+const ElphelDriver = require('./ElphelDriver').ElphelDriver;
+const shared       = require('./shared');
+const fs           = require('fs');
+const MqttClient   = shared.MqttClient;
+const logger       = shared.logger;
 
 let configFile;
 if(!fs.existsSync('/srv/scini/config/cameraMap.json') ||
@@ -24,7 +25,7 @@ class CameraConfig {
 
     this.mqttConnected = false;
     this.mqttUri = 'ws://127.0.0.1:3000';
-    this.mqttClient = new MqttClient('camera-config', 'fromCameraConfig/status');
+    this.mqttClient = new MqttClient('camera-config', `fromCameraConfig/${this.location}/will`);
 
     this.mqttClient.on('connect',  () => {
       this.mqttConnected = true;
@@ -39,7 +40,7 @@ class CameraConfig {
       // and re-emit them as events
       // openrov-cockpit pilot user emits events directly to handlers above
       if (topic === 'fromBroker/clientConnected/ipaddr') {
-        let parts = message.split(':');
+        let parts = message.toString('ascii').split(':');
         //let clientId = parts[0];
         let cameraIp = parts[1];
 
@@ -92,13 +93,15 @@ class CameraConfig {
                 this.cameraMap[cameraIp] = {};
             }
             if (err) {
-              logger.log(`CAMERA-CONFIG: Setting defaults failed with error: ${err}`, { severity: ERROR });
+              logger.log(`CAMERA-CONFIG: Setting defaults failed with error: ${err}`, { severity: shared.ERROR });
             }
           });
         }
       }
       else if (topic === 'toCameraConfig/getCameraMap') {
-
+        if (this.mqttConnected === true) {
+          this.mqttClient.publish(`fromCameraConfig/${this.location}/status`, JSON.stringify(data));
+        }
       }
       else if (topic.match(`toCameraConfig/${this.location}/.*`) !== null) {
         let command = topic.split('/');
@@ -156,6 +159,10 @@ class CameraConfig {
             break;
         }
       } else if (topic.match('toCamera/cameraRegistration') !== null) {
+        let camMap = `${this.httpPort}:${extCam.hostname}:${this.serial}:${this.ts}:${this.settings.record}`;
+        if (this.mqttConnected === true) {
+            this.client.publish('toCamera/cameraRegistration', camMap);
+        }
         // add both port and ipAddress as keys to aid lookups for pilot cam
         let val = message.toString().split(':');
         this.cameraMap[val[0]] = {};

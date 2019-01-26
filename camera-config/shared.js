@@ -1,15 +1,15 @@
-import { EventEmitter } from 'events';
-
+const EventEmitter     = require('events');
 const syslog           = require('syslog-client');
-export const logger    = syslog.createClient('logger');
-export const ERROR     = { severity: syslog.Severity.Error };
-export const WARN      = { severity: syslog.Severity.Warning };
-export const CRIT      = { severity: syslog.Severity.Critical };
-export const DEBUG     = { severity: syslog.Severity.Debug };
-
 const mqtt             = require('mqtt');
-export class MqttClient extends EventEmitter {
+const logger    = syslog.createClient('logger');
+const ERROR     = { severity: syslog.Severity.Error };
+const WARN      = { severity: syslog.Severity.Warning };
+const CRIT      = { severity: syslog.Severity.Critical };
+const DEBUG     = { severity: syslog.Severity.Debug };
+
+class MqttClient extends EventEmitter {
   constructor(clientId, willTopic) {
+    super();
     // Mqtt info
     this.mqttConnected = false;
     this.mqttUri = 'ws://127.0.0.1:3000';
@@ -77,4 +77,13 @@ export class MqttClient extends EventEmitter {
     }
     this.client.publish(topic, msg_s);
   }
+}
+
+module.exports = {
+  MqttClient: MqttClient,
+  logger: logger,
+  ERROR: ERROR,
+  WARN: WARN,
+  CRIT: CRIT,
+  DEBUG: DEBUG
 }

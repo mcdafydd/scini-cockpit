@@ -8,12 +8,18 @@ This service provides an interface between a single camera and SCINI users. It:
 * Subscribes to MQTT topics `toStreamer/+` and `toStreamer/<location>/+`
 * Controls camera image parameters
 
-MQTT API:
+## MQTT Subscribe API
 
+* `toStreamer/getStatus` - request current settings
 * `toStreamer/<location>/record` - non-zero = start recording; 0 = stop recording
-* `toStreamer/<location>/restart` - triggers container terminate (docker restart policy)
+* `toStreamer/<location>/restart` - restart mjpg_streamer process
 
-Configuration:
+## MQTT Publish API
+
+* `fromStreamer/<location>/will` - last will message
+* `fromStreamer/<location>/status` - return recording status and streamer IP/port config
+
+## Configuration
 
 The following environment variables are used to configure this service:
 

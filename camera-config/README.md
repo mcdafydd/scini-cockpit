@@ -8,7 +8,7 @@ This service provides an interface between a single camera and SCINI users. It:
 * Subscribes to MQTT topics `toCameraConfig/+` and `toCameraConfig/<location>/+`
 * Controls camera image parameters
 
-MQTT API:
+MQTT Subscribe API:
 
 * `toCameraConfig/getCameraMap` - returns current connected state and image settings
 * `toCameraConfig/<location>/autoexposure` - 1 = enable; 0 = disable auto-exposure
@@ -23,6 +23,10 @@ MQTT API:
 * `toCameraConfig/<location>/snap` - takes full resolution snapshot and saves
 * `toCameraConfig/<location>/temp` - return on-board temperature if available
 * `toCameraConfig/<location>/whitebalance` - 1 = enable; 0 = disable auto white balance
+
+MQTT Publish API:
+
+* `fromCameraConfig/<location>/will` - last will topic
 
 Configuration:
 

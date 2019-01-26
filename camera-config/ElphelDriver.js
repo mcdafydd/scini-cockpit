@@ -1,11 +1,12 @@
-const request = require('request');
-const syslog        = require('syslog-client');
-const logger        = syslog.createClient('logger');
-const ERROR         = syslog.Severity.Error;
-const WARN          = syslog.Severity.Warning;
-const CRIT         = syslog.Severity.Critical;
+const request      = require('request');
+const shared       = require('./shared');
+const fs           = require('fs');
+const logger       = shared.logger;
+const ERROR        = shared.ERROR;
+const WARN         = shared.WARN;
+const DEBUG        = shared.DEBUG;
 
-export class ElphelDriver {
+class ElphelDriver {
   constructor(cameraIp) {
     // Elphel 353 settings URI
     this.baseUri = 'http://${cameraIp}/parsedit.php?immediate';
@@ -313,3 +314,5 @@ export class ElphelDriver {
     }
   }*/
 }
+
+module.exports.ElphelDriver = ElphelDriver;
