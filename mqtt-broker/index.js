@@ -14,14 +14,16 @@ class MqttBroker {
       id: 'mqtt-broker',
       host: '0.0.0.0',
       port: 1883,
-      publishNewClient: true,
-      publishClientDisconnect: true,
-      publishSubscriptions: true,
+      publishNewClient: true,  // $SYS/{broker-id}/new/clients
+      publishClientDisconnect: true, // $SYS/{broker-id}/disconnect/client
+      publishSubscriptions: true, // $SYS/{broker-id}/new/(un)subscribes
       stats: true,
       http: {
         port: 3000
       }
     };
+
+
 
     // Start the mosca MQTT and websocket servers
     this.broker = new Broker.Server(this.moscaSettings);
