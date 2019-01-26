@@ -1,11 +1,11 @@
 const EventEmitter     = require('events');
 const syslog           = require('syslog-client');
 const mqtt             = require('mqtt');
-const logger    = syslog.createClient('logger');
-const ERROR     = { severity: syslog.Severity.Error };
-const WARN      = { severity: syslog.Severity.Warning };
-const CRIT      = { severity: syslog.Severity.Critical };
-const DEBUG     = { severity: syslog.Severity.Debug };
+const logger           = syslog.createClient('logger');
+const ERROR            = { severity: syslog.Severity.Error };
+const WARN             = { severity: syslog.Severity.Warning };
+const CRIT             = { severity: syslog.Severity.Critical };
+const DEBUG            = { severity: syslog.Severity.Debug };
 
 class MqttClient extends EventEmitter {
   constructor(clientId, willTopic) {
@@ -75,7 +75,12 @@ class MqttClient extends EventEmitter {
     else {
       msg_s = message
     }
-    this.client.publish(topic, msg_s);
+    if (this.mqttConnected === true) {
+      this.client.publish(topic, msg_s);
+    }
+    else {
+      logger.log(`MQTT client received publish request for topic ${topic} but isn\'t connected!`, WARN);
+    }
   }
 }
 

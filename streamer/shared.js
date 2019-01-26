@@ -75,7 +75,12 @@ class MqttClient extends EventEmitter {
     else {
       msg_s = message
     }
-    this.client.publish(topic, msg_s);
+    if (this.mqttConnected === true) {
+      this.client.publish(topic, msg_s);
+    }
+    else {
+      logger.log(`MQTT client received publish request for topic ${topic} but isn\'t connected!`, WARN);
+    }
   }
 }
 

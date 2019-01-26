@@ -19,6 +19,7 @@ class Streamer {
     });
 
     this.mqttClient.on('message', (topic, message) => {
+      logger.log(`STREAMER: received message on topic ${topic}`, shared.DEBUG);
       if (topic === 'toStreamer/getStatus') {
         //return recording status, and streamer IP/port config
         let data = {
@@ -27,14 +28,12 @@ class Streamer {
           ip: this.streamer.uri.hostname,
           ts: this.streamer.ts
         };
-        if (this.mqttConnected === true) {
-          this.mqttClient.publish(`fromStreamer/${this.location}/status`, JSON.stringify(data));
-        }
+        this.mqttClient.publish(`fromStreamer/${this.location}/status`, JSON.stringify(data));
       }
       else if (topic.match(`toStreamer/${this.location}/.*`) !== null) {
         let command = topic.split('/');
         let func = command[2];
-        let value = parseInt(message, 10);
+        let value = parseInt(message.toString(), 10);
         switch (func) {
           case 'record':
             this.streamer.record(value);
