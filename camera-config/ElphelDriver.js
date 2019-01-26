@@ -11,11 +11,7 @@ class ElphelDriver {
     // Elphel 353 settings URI
     this.baseUri = 'http://${cameraIp}/parsedit.php?immediate';
     this.cameraip = cameraIp;
-
-    // camera defaults to send on mqtt clientConnect
-    //this.quality = 85; // 85% JPEG compression
-    //this.exposure = 100000; // in microseconds
-    //this.resolution = 4; // 1/n resolution
+    this.camsettings = {} // stores last-known camera settings
   }
 
   autoexposure(autoexp) {
@@ -26,6 +22,7 @@ class ElphelDriver {
         uri: `http://${this.cameraip}/setparameters_demo.php?AUTOEXP_ON=${autoexp}`
       }, function (err, response, body) {
         if (response && response.statusCode == 200) {
+          this.camsettings.autoexposure = autoexp;
           logger.log(`STREAMER: Set autoexposure ${aeText} on camera ${this.cameraip}`);
           setTimeout(() => {
             this.cockpitBus.emit('plugin.elphel-config.getCamSettings', this.cameraip);
@@ -53,6 +50,7 @@ class ElphelDriver {
         uri: `http://${this.cameraip}/setparameters_demo.php?COLOR=${color}`
       }, function (err, response, body) {
         if (response && response.statusCode == 200) {
+          this.camsettings.color = color;
           logger.log(`STREAMER: Set color ${colorText} on camera ${this.cameraip}`);
           setTimeout(() => {
             this.cockpitBus.emit('plugin.elphel-config.getCamSettings', this.cameraip);
@@ -85,6 +83,7 @@ class ElphelDriver {
         uri: `http://${this.cameraip}/setparameters_demo.php?EXPOS=${newExposure}`
       }, function (err, response, body) {
         if (response && response.statusCode == 200) {
+          this.camsettings.exposure = exposure;
           logger.log(`STREAMER: Setting exposure ${newExposure}us on camera ${this.cameraip}`);
           setTimeout(() => {
             this.cockpitBus.emit('plugin.elphel-config.getCamSettings', this.cameraip);
@@ -102,21 +101,33 @@ class ElphelDriver {
   }
 
   defaults() {
-
+    this.camsettings = {
+      autoexposure: false,
+      color: 1,
+      exposure: 30,
+      fliph: false,
+      flipv: false,
+      fps: 10,
+      quality: 70,
+      resolution: 4,
+      temp: 50,
+      whitebalance: true,
+    };
   }
 
-  fliph() {
-
+  fliph(fliph) {
+    this.camsettings.fliph = fliph;
   }
 
-  flipv() {
-
+  flipv(flipv) {
+    this.camsettings.flipv = flipv;
   }
 
-  fps() {
-
+  fps(fps) {
+    this.camsettings.fps = fps;
   }
 
+  // request current image settings from camera
   getCamSettings() {
     let settingsPath = 'parsedit.php?immediate&COLOR&EXPOS&QUALITY&DCM_HOR&FLIPV&FLIPH&AUTOEXP_ON&WB_EN';
     let subProp = 'unknown';
@@ -168,7 +179,24 @@ class ElphelDriver {
     });
   }
 
-  qualilty(quality) {
+  // return object with last-known camera settings but don't poll device
+  getLastSettings() {
+    // return this.camsettings;
+    return {
+      autoexposure: false,
+      color: 1,
+      exposure: 30,
+      fliph: false,
+      flipv: false,
+      fps: 10,
+      quality: 70,
+      resolution: 4,
+      temp: 50,
+      whitebalance: true,
+    }
+  }
+
+  quality(quality) {
     if (quality >= 60 && quality <= 100) {
       // Send command to camera
       if (this.cameraip === 'pilot')
@@ -178,6 +206,7 @@ class ElphelDriver {
         uri: `http://${this.cameraip}/setparameters_demo.php?QUALITY=${quality}`
       }, function (err, response, body) {
         if (response && response.statusCode == 200) {
+          this.camsettings.quality = quality;
           logger.log(`STREAMER: Setting JPEG quality ${quality}% on camera ${this.cameraip}`);
           setTimeout(() => {
             this.cockpitBus.emit('plugin.elphel-config.getCamSettings', this.cameraip);
@@ -194,10 +223,6 @@ class ElphelDriver {
     }
   }
 
-  record(record) {
-
-  }
-
   resolution(resolution) {
     let valid = [1, 2, 4];
     if (valid.indexOf(resolution) > -1) {
@@ -209,6 +234,7 @@ class ElphelDriver {
         uri: `http://${this.cameraip}/setparameters_demo.php?BIN_HOR=${resolution}&BIN_VERT=${resolution}&DCM_HOR=${resolution}&DCM_VERT=${resolution}`
       }, function (err, response, body) {
         if (response && response.statusCode == 200) {
+          this.camsettings.resolution = resolution;
           logger.log(`STREAMER: Set resolution 1/${resolution} on camera ${this.cameraip}`);
           setTimeout(() => {
             this.cockpitBus.emit('plugin.elphel-config.getCamSettings', this.cameraip);
@@ -223,10 +249,6 @@ class ElphelDriver {
     } else {
       logger.log(`STREAMER: Invalid resolution value 1/${resolution} for camera ${this.cameraip} - ignoring`, { severity: ERROR });
     }
-  }
-
-  restart() {
-
   }
 
   snap() {
@@ -278,6 +300,7 @@ class ElphelDriver {
       if (response && response.statusCode == 200) {
         parseString(body, function (err, result) {
           if (result) {
+            this.camsettings.temp = result.i2c.data;
             logger.log(`STREAMER: Onboard temperature ${result.i2c.data} on camera ${this.cameraip}`);
             // Emit temperature (in degrees C) and camera ID to telemetry plugin
             statusobj[prop] = parseInt(result.i2c.data);
@@ -295,8 +318,8 @@ class ElphelDriver {
     });
   }
 
-  whitebalance() {
-
+  whitebalance(whitebalance) {
+    this.camsettings.whitebalance = whitebalance;
   }
 
 /*

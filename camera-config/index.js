@@ -21,6 +21,7 @@ class CameraConfig {
 
     this.location = location;
     this.cameraMap = {};
+    this.cameraIp = cameraIp;
     this.camera = new ElphelDriver(cameraIp);
 
     this.mqttConnected = false;
@@ -40,7 +41,7 @@ class CameraConfig {
       // and re-emit them as events
       // openrov-cockpit pilot user emits events directly to handlers above
       if (topic === 'fromBroker/clientConnected/ipaddr') {
-        let parts = message.toString('ascii').split(':');
+        let parts = message.toString().split(':');
         //let clientId = parts[0];
         let cameraIp = parts[1];
 
@@ -98,7 +99,8 @@ class CameraConfig {
           });
         }
       }
-      else if (topic === 'toCameraConfig/getCameraMap') {
+      else if (topic === 'toCameraConfig/getSettings') {
+        let data = camera.getLastSettings();
         if (this.mqttConnected === true) {
           this.mqttClient.publish(`fromCameraConfig/${this.location}/status`, JSON.stringify(data));
         }
@@ -106,19 +108,13 @@ class CameraConfig {
       else if (topic.match(`toCameraConfig/${this.location}/.*`) !== null) {
         let command = topic.split('/');
         let func = command[2];
-        let value = parseInt(message, 10);
+        let value = parseInt(message.toString(), 10);
         switch (func) {
           case 'exposure':
             camera.exposure(value);
             break;
           case 'resolution':
             camera.resolution(value);
-            break;
-          case 'record':
-            streamer.record(value);
-            break;
-          case 'restart':
-            streamer.restart();
             break;
           case 'quality':
             camera.quality(value);
@@ -153,16 +149,12 @@ class CameraConfig {
             break;
           case 'getSettings':
             // get current settings for camera and publish to MQTT
-            camera.getSettings(value);
+            camera.getCamSettings();
             break;
           default:
             break;
         }
       } else if (topic.match('toCamera/cameraRegistration') !== null) {
-        let camMap = `${this.httpPort}:${extCam.hostname}:${this.serial}:${this.ts}:${this.settings.record}`;
-        if (this.mqttConnected === true) {
-            this.client.publish('toCamera/cameraRegistration', camMap);
-        }
         // add both port and ipAddress as keys to aid lookups for pilot cam
         let val = message.toString().split(':');
         this.cameraMap[val[0]] = {};

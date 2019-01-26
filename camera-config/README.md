@@ -10,7 +10,7 @@ This service provides an interface between a single camera and SCINI users. It:
 
 MQTT Subscribe API:
 
-* `toCameraConfig/getCameraMap` - returns current connected state and image settings
+* `toCameraConfig/getSettings` - request last known camera settings but don't poll device
 * `toCameraConfig/<location>/autoexposure` - 1 = enable; 0 = disable auto-exposure
 * `toCameraConfig/<location>/color` - 1 = normal color; 5 = Elphel JP4 mode
 * `toCameraConfig/<location>/defaults` - sets defaults specified in config file
@@ -18,6 +18,7 @@ MQTT Subscribe API:
 * `toCameraConfig/<location>/fliph` - 1 = flip horizontal; 0 = default
 * `toCameraConfig/<location>/flipv` - 1 = flip vertical; 0 = default
 * `toCameraConfig/<location>/fps` - set frames per second (disables auto-exposure)
+* `toCameraConfig/<location>/getSettings` - request camera settings from device
 * `toCameraConfig/<location>/quality` - sets JPEG quality percentage
 * `toCameraConfig/<location>/resolution` - sets 1/N sensor resolution
 * `toCameraConfig/<location>/snap` - takes full resolution snapshot and saves
@@ -27,6 +28,7 @@ MQTT Subscribe API:
 MQTT Publish API:
 
 * `fromCameraConfig/<location>/will` - last will topic
+* `fromCameraConfig/<location>/settings` - last-known image settings
 
 Configuration:
 
