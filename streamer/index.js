@@ -8,7 +8,7 @@ class Streamer {
     logger.log('Streamer service loaded!');
 
     this.location = location;
-    this.mqttClient = new MqttClient('camera-bridge', `fromStreamer/${this.location}/will`);
+    this.mqttClient = new MqttClient(`streamer-${this.location}`, `fromStreamer/${this.location}/will`);
     this.streamer = new MjpgStreamer(cameraUri, wsPort);
     this.streamer.start();
 

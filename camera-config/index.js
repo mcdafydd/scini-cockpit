@@ -25,7 +25,7 @@ class CameraConfig {
 
     this.mqttConnected = false;
     this.mqttUri = 'ws://127.0.0.1:3000';
-    this.mqttClient = new MqttClient('camera-config', `fromCameraConfig/${this.location}/will`);
+    this.mqttClient = new MqttClient(`camera-config-${this.location}`, `fromCameraConfig/${this.location}/will`);
 
     this.mqttClient.on('connect',  () => {
       this.mqttConnected = true;
