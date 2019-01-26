@@ -11,13 +11,15 @@ class MqttBroker {
     // Mosca objects
     this.broker = {};
     this.moscaSettings = {
+      id: 'mqtt-broker',
       host: '0.0.0.0',
       port: 1883,
       publishNewClient: true,
       publishClientDisconnect: true,
+      publishSubscriptions: true,
+      stats: true,
       http: {
-        port: 3000,
-        stats: true // publish the stats every 10s
+        port: 3000
       }
     };
 
@@ -48,10 +50,20 @@ class MqttBroker {
     });
 
     this.broker.on('clientConnected', (client) => {
-      logger.log(`MQTT-BROKER: Client ${client.id} connected from IP address ${client.connection.stream.remoteAddress}`);
+      let remoteAddress;
+      if (client.connection.stream.remoteAddress === undefined) {
+        // websocket client
+        remoteAddress = client.connection.stream.socket._socket.remoteAddress;
+      }
+      else {
+        // port 1883/tcp client
+        remoteAddress = client.connection.stream.remoteAddress;
+      }
+
+      logger.log(`MQTT-BROKER: Client ${client.id} connected from IP address ${remoteAddress}`);
       let message = {
         topic: 'fromBroker/clientConnected/ipaddr',
-        payload: `${client.id}:${client.connection.stream.remoteAddress}`,
+        payload: `${client.id}:${remoteAddress}`,
         qos: 0,
         retain: false
       };
