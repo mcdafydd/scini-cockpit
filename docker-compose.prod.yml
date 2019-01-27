@@ -1,18 +1,66 @@
 version: "3"
 services:
 
+  webapp:
+    network_mode: "host"
+    expose:
+      - "80"
+    volumes:
+      - "./assets/hosts:/etc/hosts"
+
   openrov:
     network_mode: "host"
+    expose:
+      - "7011"
+      - "8080"
+      - "8100"
+      - "8101"
+      - "8102"
+      - "8103"
+      - "8200"
+      - "8201"
+      - "8202"
+      - "8203"
+      - "8300"
+      - "9000"
+      - "9229"
     volumes:
       - "images:/opt/openrov/images"
       - "logs:/opt/openrov/logs"
       - "data:/opt/openrov/data"
+      - "./assets/hosts:/etc/hosts"
+
+  mqtt-broker:
+    network_mode: "host"
+    expose:
+      - "1883"
+      - "3000"
+    volumes:
+      - "./assets/hosts:/etc/hosts"
+
+  streamer-forward:
+    network_mode: "host"
+    expose:
+      - "8104"
+    volumes:
+      - "images:/srv/scini/images"
+      - "./assets/hosts:/etc/hosts"
+      - "./streamer/index.js:/srv/scini/streamer/index.js"
 
   file-browser:
+    network_mode: "host"
+    expose:
+      - "8000"
     volumes:
       - "images:/opt/openrov/images:ro"
       - "logs:/opt/openrov/logs:ro"
       - "data:/opt/openrov/data:ro"
+      - "./assets/hosts:/etc/hosts"
+
+  logger:
+    network_mode: "host"
+    volumes:
+      - "./assets/hosts:/etc/hosts"
 
 volumes:
   images:

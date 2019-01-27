@@ -1,8 +1,79 @@
 version: "3"
 services:
 
+  webapp:
+    build: webapp/
+    restart: always
+    ports:
+      - "80:80"
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
+
+  mqtt-broker:
+    build: mqtt-broker/
+    restart: always
+    ports:
+      - "1883:1883"
+      - "3000:3000"
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
+
+  streamer-forward:
+    build: streamer/
+    restart: always
+    environment:
+      - LOCATION=forward
+      - CAMERAURI=http://192.168.1.222:8081/bmimg
+      - WSPORT=8100
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
+
+  streamer-down:
+    build: streamer/
+    restart: always
+    environment:
+      - LOCATION=down
+      - CAMERAURI=http://192.168.2.218:8081/bmimg
+      - WSPORT=8101
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
+
+  camera-config-forward:
+    build: camera-config/
+    restart: always
+    environment:
+      - LOCATION=forward
+      - CAMERAIP=192.168.1.222
+      - RESOLUTION=2
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
+
+  camera-config-down:
+    build: camera-config/
+    restart: always
+    environment:
+      - LOCATION=down
+      - CAMERAIP=192.168.2.218
+      - RESOLUTION=2
+      - FLIPH=1
+      - FLIPV=1
+    logging:
+      options:
+        max-size: "1000k"
+        max-file: "10"
   openrov:
-    image: scini/openrov:build-20181202
+    #image: scini/openrov:build-20181202
+    build: openrov/
     restart: always
     command: 192.168.2.215
     cap_add:
@@ -11,30 +82,9 @@ services:
       - "./assets/www:/opt/openrov/www"
       - "./assets/www-ro:/opt/openrov/www-ro"
       - "./assets/copilot:/opt/openrov/copilot"
-      - "./assets/nginx.openrov:/etc/nginx/sites-enabled/default"
       - "./assets/mqttConfig.json:/opt/openrov/config/mqttConfig.json"
-      - "./assets/rovconfig.json:/tmp/rovconfig.json"
       - "./assets/adjustments.prod.json:/opt/openrov/cockpit/src/lib/adjustments.json"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "1883:1883"
-      - "3000:3000"
-      - "7011:7011"
-      - "8080:8080"
-      - "8100:8100"
-      - "8101:8101"
-      - "8102:8102"
-      - "8103:8103"
-      - "8104:8104"
-      - "8200:8200"
-      - "8201:8201"
-      - "8202:8202"
-      - "8203:8203"
-      - "8204:8204"
-      - "8300:8300"
-      - "9000:9000"
-      - "9229:9229"
+      - "./assets/rovconfig.json:/tmp/rovconfig.json"
     logging:
       options:
         max-size: "1000k"
@@ -45,13 +95,23 @@ services:
     restart: always
     environment:
       - PORT=8000
-      - CLOUDCMD_ROOT=/opt/openrov/
-    ports:
-      - "8000:8000"
+      - CLOUDCMD_ROOT=/srv/scini
     volumes:
-      - "./assets:/opt/openrov/assets:rw"
+      - "./assets:/srv/scini/assets:rw"
     logging:
       options:
         max-size: "500k"
         max-file: "10"
 
+  logger:
+    build: logger/
+    restart: always
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "10"
+    expose:
+      - "514"
+
+  audio:
+    build: audio/
