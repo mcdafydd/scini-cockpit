@@ -7,6 +7,23 @@ const WARN             = { severity: syslog.Severity.Warning };
 const CRIT             = { severity: syslog.Severity.Critical };
 const DEBUG            = { severity: syslog.Severity.Debug };
 
+function addZero(i) {
+  if (i < 10) {
+      i = "0" + i;
+  }
+  return i;
+}
+
+function get_ts() {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const d = new Date();
+  const day = addZero(d.getDate());
+  const h = addZero(d.getHours());
+  const m = addZero(d.getMinutes());
+
+  return day + months[d.getMonth()] + h + m;
+}
+
 class MqttClient extends EventEmitter {
   constructor(clientId, willTopic) {
     super();
@@ -90,5 +107,6 @@ module.exports = {
   ERROR: ERROR,
   WARN: WARN,
   CRIT: CRIT,
-  DEBUG: DEBUG
+  DEBUG: DEBUG,
+  get_ts: get_ts
 }
