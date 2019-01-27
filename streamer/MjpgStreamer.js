@@ -6,19 +6,6 @@ const WARN         = shared.WARN;
 const DEBUG        = shared.DEBUG;
 const { exec, spawn } = require('child_process');
 
-function addZero(i) {
-  if (i < 10) {
-      i = "0" + i;
-  }
-  return i;
-}
-
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const d = new Date();
-const day = addZero(d.getDate());
-const h = addZero(d.getHours());
-const m = addZero(d.getMinutes());
-
 class MjpgStreamer {
   constructor(cameraUri, wsPort) {
     this.proc = {};
@@ -30,7 +17,7 @@ class MjpgStreamer {
     this.args = ['-i', `input_http.so -p ${this.uri.port} -H ${this.uri.hostname} -u ${this.uri.pathname}`,
                  '-o', `output_ws.so -p ${this.wsPort}`]
 
-    this.ts = day + months[d.getMonth()] + h + m;
+    this.ts = shared.get_ts();
     this.newParent = '/srv/scini/images/' + this.ts;
     if (!fs.existsSync(this.newParent))
     {
