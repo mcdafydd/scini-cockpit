@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.8.2
 
 MAINTAINER Arve Knudsen <arve.knudsen@gmail.com>
 
