@@ -41,11 +41,30 @@ services:
   streamer-forward:
     network_mode: "host"
     expose:
-      - "8104"
+      - "8100"
     volumes:
       - "images:/srv/scini/images"
       - "./assets/hosts:/etc/hosts"
       - "./streamer/index.js:/srv/scini/streamer/index.js"
+
+  streamer-down:
+    network_mode: "host"
+    expose:
+      - "8101"
+    volumes:
+      - "images:/srv/scini/images"
+      - "./assets/hosts:/etc/hosts"
+      - "./streamer/index.js:/srv/scini/streamer/index.js"
+
+  camera-config-forward:
+    network_mode: "host"
+    volumes:
+      - "./assets/hosts:/etc/hosts"
+
+  camera-config-down:
+    network_mode: "host"
+    volumes:
+      - "./assets/hosts:/etc/hosts"
 
   file-browser:
     network_mode: "host"
