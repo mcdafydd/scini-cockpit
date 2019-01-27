@@ -4,25 +4,13 @@ const fs           = require('fs');
 const MqttClient   = shared.MqttClient;
 const logger       = shared.logger;
 
-let configFile;
-if(!fs.existsSync('/srv/scini/config/cameraMap.json') ||
-      fs.statSync('/srv/scini/config/cameraMap.json').size === 0) {
-  logger.error('BRIDGE: /srv/scini/config/cameraMap.json - file not found or zero size');
-  logger.error('BRIDGE: Exiting...');
-  process.exit(1);
-}
-else {
-  configFile = fs.readFileSync('/srv/scini/config/cameraMap.json');
-}
-
 class CameraConfig {
   constructor(location, cameraIp) {
     logger.log('Camera-config service loaded!');
 
     this.location = location;
-    this.cameraMap = {};
     this.cameraIp = cameraIp;
-    this.camera = new ElphelDriver(cameraIp);
+    this.camera = new ElphelDriver(cameraIp, location);
 
     this.mqttConnected = false;
     this.mqttUri = 'ws://127.0.0.1:3000';
@@ -48,59 +36,21 @@ class CameraConfig {
         // if camera connects to MQTT broker, send normal defaults one time
         if (this.cameraIp === cameraIp) {
           logger.log(`CAMERA-CONFIG: camera joined at IP address ${cameraIp}`);
-          // default is only normal color (not JP4), white balance enable
-          // the remaining parameters should be set only if we have them
-          let defaultsUri;
-          // handle camera mounted upside-down
-          if (cameraIp === '192.168.2.218') {
-            defaultsUri += '&FLIPH=1&FLIPV=1';
-          }
-          //this.camera.defaults();
+
           // set last known values if they exist
-          if (this.cameraMap.hasOwnProperty(cameraIp)) {
-            if (this.cameraMap[cameraIp].hasOwnProperty('autoexposure')) {
-              let autoexp = this.cameraMap[cameraIp].autoexposure;
-              defaultsUri += `&AUTOEXP_ON=${autoexp}`;
-            }
-            if (this.cameraMap[cameraIp].hasOwnProperty('resolution')) {
-              let res = this.cameraMap[cameraIp].resolution;
-              defaultsUri += `&BIN_HOR=${res}&BIN_VERT=${res}&DCM_HOR=${res}&DCM_VERT=${res}`;
-            }
-            if (this.cameraMap[cameraIp].hasOwnProperty('quality')) {
-              let qual = this.cameraMap[cameraIp].quality;
-              defaultsUri += `&QUALITY=${qual}`;
-            }
-            if (this.cameraMap[cameraIp].hasOwnProperty('exposure')) {
-              let exp = this.cameraMap[cameraIp].exposure;
-              defaultsUri += `&EXPOS=${exp}`;
-            }
-            logger.log(`CAMERA-CONFIG: Pushing last known camera settings uri ${defaultsUri}`);
+          if (this.camera.bootSettingsChanged === true) {
+            logger.log(`CAMERA-CONFIG: Pushing last known camera settings to ${this.cameraIp}`);
+            this.camera.setCamera('last');
           } else {
             // this will be the case on server restart since the settings above don't persist
             // just get what should be the sensible on-boot defaults for the camera
-            // and emit them via MQTT for clients
-            this.camera.getCamSettings();
+            this.camera.setCamera('defaults');
           }
-          // in either case, on connect, just make sure the defaultsUri is sent
-          request({
-            timeout: 2000,
-            uri: defaultsUri
-          }, function (err, response, body) {
-            if (response && response.statusCode == 200) {
-              logger.log(`CAMERA-CONFIG: Last known settings set on camera ${cameraIp}`);
-              this.cockpitBus.emit('plugin.elphel-config.getCamSettings', cameraIp);
-              // add IP to cameraMap with default properties on success
-              if (!this.cameraMap.hasOwnProperty(cameraIp))
-                this.cameraMap[cameraIp] = {};
-            }
-            if (err) {
-              logger.log(`CAMERA-CONFIG: Setting defaults failed with error: ${err}`, { severity: shared.ERROR });
-            }
-          });
         }
       }
       else if (topic === 'toCameraConfig/getSettings') {
-        let data = camera.getLastSettings();
+        // emit settings to subscribers
+        let data = this.camera.getLastSettings();
         if (this.mqttConnected === true) {
           this.mqttClient.publish(`fromCameraConfig/${this.location}/status`, JSON.stringify(data));
         }
@@ -111,66 +61,49 @@ class CameraConfig {
         let value = parseInt(message.toString(), 10);
         switch (func) {
           case 'exposure':
-            camera.exposure(value);
+            this.camera.exposure(value);
             break;
           case 'resolution':
-            camera.resolution(value);
+            this.camera.resolution(value);
             break;
           case 'quality':
-            camera.quality(value);
+            this.camera.quality(value);
             break;
           case 'color':
             // raw/normal events not available in viewer client controls yet
-            camera.color(value);
+            this.camera.color(value);
             break;
           case 'snap':
-            camera.snap(value);
+            this.camera.snap(value);
             break;
           case 'temp':
-            camera.temp();
+            this.camera.temp();
             break;
           case 'autoexposure':
-            camera.autoexposure(value);
+            this.camera.autoexposure(value);
             break;
           case 'defaults':
-            camera.defaults(value);
+            this.camera.setCamera('defaults');
             break;
           case 'fliph':
-            camera.fliph(value);
+            this.camera.fliph(value);
             break;
           case 'flipv':
-            camera.flipv(value);
+            this.camera.flipv(value);
             break;
           case 'fps':
-            camera.fps(value);
+            this.camera.fps(value);
             break;
           case 'whitebalance':
-            camera.whitebalance(value);
+            this.camera.whitebalance(value);
             break;
           case 'getSettings':
             // get current settings for camera and publish to MQTT
-            camera.getCamSettings();
+            this.camera.getCamSettings();
             break;
           default:
             break;
         }
-      } else if (topic.match('toCamera/cameraRegistration') !== null) {
-        // add both port and ipAddress as keys to aid lookups for pilot cam
-        let val = message.toString().split(':');
-        this.cameraMap[val[0]] = {};
-        this.cameraMap[val[0]].ipAddress = val[1];
-        this.cameraMap[val[0]].id = val[2]; // either 'pilot' or last IP address octet
-        this.cameraMap[val[0]].ts = val[3]; // timestamp used for image record directory
-        this.cameraMap[val[0]].record = val[4]; // recording enabled true/false
-
-        if (!this.cameraMap.hasOwnProperty(val[1])) {
-          this.cameraMap[val[1]] = {};
-        }
-
-        this.cameraMap[val[1]].port = val[0];
-        this.cameraMap[val[1]].id = val[2]; // either 'pilot' or last IP address octet
-        this.cameraMap[val[1]].ts = val[3]; // timestamp used for image record directory
-        this.cameraMap[val[1]].record = val[4]; // recording enabled true/false
       }
     });
   }
