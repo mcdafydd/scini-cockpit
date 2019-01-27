@@ -55,6 +55,15 @@ class MjpgStreamer {
     this.proc.on('close', (code) => {
       logger.log(`child process exited with code ${code}`, code == 0 ? DEBUG: ERROR);
     });
+    this.restartCount += 1;
+    if (this.restartCount >= 3) {
+      logger.log('STREAMER: mjpg_streamer restarted too many times, killing node - docker should restart container', CRIT);
+      process.exit(1);
+    }
+    else {
+      logger.log('STREAMER: mjpg_streamer restarting', WARN);
+      this.restart();
+    }
     logger.log('STREAMER: Started mjpg_streamer process');
   }
 
