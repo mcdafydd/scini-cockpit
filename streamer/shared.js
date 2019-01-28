@@ -57,21 +57,25 @@ class MqttClient extends EventEmitter {
     this.client.on('reconnect', () => {
       this.mqttConnected = true;
       logger.log('MQTT broker re-connected!', WARN);
+      this.emit('reconnect');
     });
 
     this.client.on('offline', () => {
       this.mqttConnected = false;
       logger.log('MQTT broker connection offline!', WARN);
+      this.emit('offline');
     });
 
     this.client.on('close', () => {
       // connection state is also set to false in class close() method
       this.mqttConnected = false;
       logger.log('MQTT broker connection closed!', WARN);
+      this.emit('close');
     });
 
     this.client.on('error', (err) => {
       logger.log(`MQTT error: ${err}`, ERROR);
+      this.emit('error', err);
     });
 
     this.client.on('message', (topic, message) => {
