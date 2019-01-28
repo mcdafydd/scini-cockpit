@@ -16,10 +16,10 @@ class ElphelDriver {
     this.ts = shared.get_ts();
     this.snap_count = 0;
     this.bootSettingsChanged = false;
+    this.paramsMap = this.getParamsMap();
     this.camsettings = {} // stores last-known camera settings
     this.defaults = this.getDefaults(); // from env vars
     this.getCamSettings(); // try to get current camera settings on instantiation
-    this.paramsMap = this.getParamsMap();
   }
 
   autoexposure(autoexp) {
@@ -27,7 +27,7 @@ class ElphelDriver {
       this.httpRequest('autoexposure', autoexp, `&AUTOEXP_EN=${autoexp}`);
     }
     else {
-      logger.log(`STREAMER: Invalid autoexposure value ${autoexp} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid autoexposure value ${autoexp} for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -36,7 +36,7 @@ class ElphelDriver {
       this.httpRequest('color', color, `&COLOR=${color}`);
     }
     else {
-      logger.log(`STREAMER: Invalid color value ${color} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid color value ${color} for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -56,7 +56,7 @@ class ElphelDriver {
     }
     else {
       // invalid setting requested
-      logger.log(`STREAMER: Invalid exposure value ${exposure}ms for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid exposure value ${exposure}ms for camera ${this.cameraip} - ignoring`, ERROR);
       return;
     }
   }
@@ -66,7 +66,7 @@ class ElphelDriver {
       this.httpRequest('fliph', fliph, `&FLIPH=${fliph}`);
     }
     else {
-      logger.log(`STREAMER: Invalid fliph value ${fliph} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid fliph value ${fliph} for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -75,7 +75,7 @@ class ElphelDriver {
       this.httpRequest('flipv', flipv, `&FLIPV=${flipv}`);
     }
     else {
-      logger.log(`STREAMER: Invalid flipv value ${flipv} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid flipv value ${flipv} for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -92,7 +92,7 @@ class ElphelDriver {
     }
     else {
       // invalid setting requested
-      logger.log(`STREAMER: Invalid fps value ${fps} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid fps value ${fps} for camera ${this.cameraip} - ignoring`, ERROR);
       return;
     }
   }
@@ -126,10 +126,10 @@ class ElphelDriver {
             if (result.parameters.hasOwnProperty('FPSFLAGS'))
               this.camsettings.fps_en = parseInt(result.parameters.FPSFLAGS);
           }
-          logger.log(`STREAMER: getCamSettings successful on ${this.cameraip} settings`);
+          logger.log(`CAMERA-CONFIG-${this.location}: getCamSettings successful on ${this.cameraip} settings`);
         }
         if (err) {
-          logger.log(`STREAMER: getCamSettings response XML parsing error: ${err}`, ERROR);
+          logger.log(`CAMERA-CONFIG-${this.location}: getCamSettings response XML parsing error: ${err}`, ERROR);
         }
       });
     }
@@ -145,7 +145,7 @@ class ElphelDriver {
       this.httpRequest('quality', quality, `&QUALITY=${quality}`);
     }
     else {
-      logger.log(`STREAMER: Invalid quality value ${quality}% for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid quality value ${quality}% for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -155,7 +155,7 @@ class ElphelDriver {
       this.httpRequest('resolution', resolution, `&BIN_HOR=${resolution}&BIN_VERT=${resolution}&DCM_HOR=${resolution}&DCM_VERT=${resolution}`);
     }
     else {
-      logger.log(`STREAMER: Invalid resolution value 1/${resolution} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid resolution value 1/${resolution} for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -170,10 +170,10 @@ class ElphelDriver {
       encoding: null
     }, function (err, response, body) {
       if (response && response.statusCode == 200) {
-        logger.log(`STREAMER: Snapped full resolution image from camera ${this.cameraip}`);
+        logger.log(`CAMERA-CONFIG-${this.location}: Snapped full resolution image from camera ${this.cameraip}`);
         fs.writeFile(`/srv/scini/images/${this.ts}/${this.location}/snap_${filename}.jpg`, body, 'binary', (err) => {
           if (err) {
-            logger.log(`STREAMER: Error trying to save full resolution snapshot from camera ${this.cameraip} error: ${err}`, CRIT);
+            logger.log(`CAMERA-CONFIG-${this.location}: Error trying to save full resolution snapshot from camera ${this.cameraip} error: ${err}`, CRIT);
           }
           else {
             this.snap_count += 1;
@@ -181,7 +181,7 @@ class ElphelDriver {
         });
       }
       if (err) {
-        logger.log(`STREAMER: Getting full resolution snapshot on ${this.cameraip} failed with error: ${err}`, CRIT);
+        logger.log(`CAMERA-CONFIG-${this.location}: Getting full resolution snapshot on ${this.cameraip} failed with error: ${err}`, CRIT);
       }
     });
   }
@@ -196,15 +196,15 @@ class ElphelDriver {
         parseString(body, function (err, result) {
           if (result) {
             this.camsettings.temp = parseInt(result.i2c.data);
-            logger.log(`STREAMER: Onboard temperature ${result.i2c.data} on camera ${this.cameraip}`);
+            logger.log(`CAMERA-CONFIG-${this.location}: Onboard temperature ${result.i2c.data} on camera ${this.cameraip}`);
             // Emit temperature (in degrees C) and camera ID to telemetry plugin
           } else if (err) {
-            logger.log(`STREAMER: Onboard temperature response XML parsing error: ${err}`, ERROR);
+            logger.log(`CAMERA-CONFIG-${this.location}: Onboard temperature response XML parsing error: ${err}`, ERROR);
           }
         });
       }
       if (err) {
-        logger.log(`STREAMER: Getting onBoard temperature on camera ${this.cameraip} failed with error: ${err}`, ERROR);
+        logger.log(`CAMERA-CONFIG-${this.location}: Getting onBoard temperature on camera ${this.cameraip} failed with error: ${err}`, ERROR);
       }
     });
   }
@@ -214,7 +214,7 @@ class ElphelDriver {
       this.httpRequest('whitebalance', whitebalance, `&WB_EN=${whitebalance}`);
     }
     else {
-      logger.log(`STREAMER: Invalid whitebalance value ${whitebalance} for camera ${this.cameraip} - ignoring`, ERROR);
+      logger.log(`CAMERA-CONFIG-${this.location}: Invalid whitebalance value ${whitebalance} for camera ${this.cameraip} - ignoring`, ERROR);
     }
   }
 
@@ -300,7 +300,7 @@ class ElphelDriver {
     };
 
     let obj_s = JSON.stringify(obj);
-    logger.log(`STREAMER: getDefaults() for camera ${this.cameraip} are: ${obj_s}`);
+    logger.log(`CAMERA-CONFIG-${this.location}: getDefaults() for camera ${this.cameraip} are: ${obj_s}`);
     return obj;
   }
 
@@ -341,25 +341,30 @@ class ElphelDriver {
       uri: requestUri
     }, function (err, response, body) {
       if (response && response.statusCode == 200) {
-        logger.log(`STREAMER: Setting ${group} on camera ${this.cameraip} successful`);
+        logger.log(`CAMERA-CONFIG-${this.location}: Setting ${group} on camera ${this.cameraip} successful`);
         Object.keys(settings).forEach(function(key) {
           this.camsettings[key] = settings[key];
           this.bootSettingsChanged = true;
         });
       }
       if (err) {
-        logger.log(`STREAMER: Setting ${group} on camera ${this.cameraip} failed with error: ${err}`, ERROR);
+        logger.log(`CAMERA-CONFIG-${this.location}: Setting ${group} on camera ${this.cameraip} failed with error: ${err}`, ERROR);
       }
     });
   }
 
   httpRequest(key, value, params) {
+    let ret;
     let requestUri = this.baseUri + params;
     request({
       timeout: 2000,
       uri: requestUri
     }, function (err, response, body) {
-      if (response && response.statusCode == 200) {
+      if (err) {
+        logger.log(`CAMERA-CONFIG-${this.location}: Setting ${key} to ${value} on camera ${this.cameraip} failed with error: ${err}`, WARN);
+        ret = { success: false };
+      }
+      else if (response && response.statusCode == 200) {
         if (key === 'fps') {
           if (value > 0) {
             this.camsettings.fps_en = 1;
@@ -370,14 +375,12 @@ class ElphelDriver {
         }
         this.camsettings[key] = value;
         this.bootSettingsChanged = true; // stop sending defaults on connect/reboot
-        logger.log(`STREAMER: Set ${key} to ${value} on camera ${this.cameraip}`);
-        return { body: body };
-      }
-      if (err) {
-        logger.log(`STREAMER: Setting ${key} to ${value} on camera ${this.cameraip} failed with error: ${err}`, WARN);
+        logger.log(`CAMERA-CONFIG-${this.location}: Set ${key} to ${value} on camera ${this.cameraip}`);
+
+        ret = { success: true, body: body };
       }
     });
-    return {};
+    return ret;
   }
 }
 

@@ -18,11 +18,15 @@ class CameraConfig {
 
     this.mqttClient.on('connect',  () => {
       this.mqttConnected = true;
-      logger.log('CAMERA-CONFIG: MQTT broker connection established!');
+      logger.log(`CAMERA-CONFIG-${this.location}: MQTT broker connection established!`);
       //this.mqttClient.subscribe('$SYS/+/new/clients');
       this.mqttClient.subscribe('toCameraConfig/+'); // receive all camera control requests
       this.mqttClient.subscribe(`toCameraConfig/${this.location}/+`);
       this.mqttClient.subscribe('fromBroker/clientConnected/ipaddr'); // receive clientID-IPaddr mapping
+
+      this.addEventListener('publishSettings', (e) => {
+        this.publishSettings();
+      });
     });
     this.mqttClient.on('message', (topic, message) => {
       // handle Elphel camera control messages from the view-only browser clients
@@ -35,11 +39,11 @@ class CameraConfig {
 
         // if camera connects to MQTT broker, send normal defaults one time
         if (this.cameraIp === cameraIp) {
-          logger.log(`CAMERA-CONFIG: camera joined at IP address ${cameraIp}`);
+          logger.log(`CAMERA-CONFIG-${this.location}: camera joined at IP address ${cameraIp}`);
 
           // set last known values if they exist
           if (this.camera.bootSettingsChanged === true) {
-            logger.log(`CAMERA-CONFIG: Pushing last known camera settings to ${this.cameraIp}`);
+            logger.log(`CAMERA-CONFIG-${this.location}: Pushing last known camera settings to ${this.cameraIp}`);
             this.camera.setCamera('last');
           } else {
             // this will be the case on server restart since the settings above don't persist
@@ -49,11 +53,7 @@ class CameraConfig {
         }
       }
       else if (topic === 'toCameraConfig/getSettings') {
-        // emit settings to subscribers
-        let data = this.camera.getLastSettings();
-        if (this.mqttConnected === true) {
-          this.mqttClient.publish(`fromCameraConfig/${this.location}/status`, JSON.stringify(data));
-        }
+        this.publishSettings();
       }
       else if (topic.match(`toCameraConfig/${this.location}/.*`) !== null) {
         let command = topic.split('/');
@@ -106,6 +106,16 @@ class CameraConfig {
         }
       }
     });
+  }
+
+  publishSettings() {
+    // emit settings to subscribers
+    let data = {};
+    data[this.location] = {};
+    data[this.location].cameraConfig = this.camera.getLastSettings();
+    if (this.mqttConnected === true) {
+      this.mqttClient.publish(`fromCameraConfig/${this.location}/status`, JSON.stringify(data));
+    }
   }
 }
 

@@ -5,7 +5,7 @@ const logger       = shared.logger;
 
 class Streamer {
   constructor(location, cameraUri, wsPort) {
-    logger.log('Streamer service loaded!');
+    logger.log(`STREAMER-${this.location}: Streamer service loaded!`);
 
     this.location = location;
     this.mqttClient = new MqttClient(`streamer-${this.location}`, `fromStreamer/${this.location}/will`);
@@ -19,7 +19,7 @@ class Streamer {
     });
 
     this.mqttClient.on('message', (topic, message) => {
-      logger.log(`STREAMER: received message on topic ${topic}`, shared.DEBUG);
+      logger.log(`STREAMER-${this.location}: received message on topic ${topic}`, shared.DEBUG);
       if (topic === 'toStreamer/getStatus') {
         //return recording status, and streamer IP/port config
         let data = {

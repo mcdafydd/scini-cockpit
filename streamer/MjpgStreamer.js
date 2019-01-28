@@ -37,35 +37,35 @@ class MjpgStreamer {
 
   start() {
     if (this.recording) {
-      logger.log(`STREAMER: Starting ${this.cmd} ${this.recordargs}`);
+      logger.log(`STREAMER-${this.location}: Starting ${this.cmd} ${this.recordargs}`);
       this.proc = spawn(this.cmd, this.recordargs);
     }
     else {
-      logger.log(`STREAMER: Starting ${this.cmd} ${this.args}`);
+      logger.log(`STREAMER-${this.location}: Starting ${this.cmd} ${this.args}`);
       this.proc = spawn(this.cmd, this.args);
     }
 
     this.proc.stdout.on('data', (data) => {
-      logger.log(`stdout: ${data}`, DEBUG);
+      logger.log(`STREAMER-${this.location}: stdout - ${data}`, DEBUG);
     });
 
     this.proc.stderr.on('data', (data) => {
-      logger.log(`stderr: ${data}`, ERROR);
+      logger.log(`STREAMER-${this.location}: stderr - ${data}`, ERROR);
     });
 
     this.proc.on('close', (code) => {
-      logger.log(`child process exited with code ${code}`, code == 0 ? DEBUG: ERROR);
+      logger.log(`STREAMER-${this.location}: mjpg_streamer child exited with code ${code}`, code == 0 ? DEBUG: ERROR);
       this.restartCount += 1;
       if (this.restartCount >= 3) {
-        logger.log('STREAMER: mjpg_streamer restarted too many times, killing node - docker should restart container', CRIT);
+        logger.log(`STREAMER-${this.location}: mjpg_streamer restarted too many times, killing node - docker should restart container`, CRIT);
         process.exit(1);
       }
       else {
-        logger.log('STREAMER: mjpg_streamer restarting', WARN);
+        logger.log(`STREAMER-${this.location}: mjpg_streamer restarting`, WARN);
         this.restart();
       }
     });
-    logger.log('STREAMER: Started mjpg_streamer process');
+    logger.log(`STREAMER-${this.location}: Started mjpg_streamer process`);
   }
 
   stop(cb) {
@@ -73,26 +73,26 @@ class MjpgStreamer {
 
     (error, stdout, stderr) => {
       if (error) {
-        logger.log(`STREAMER: Error ${error} trying to restart mjpg_streamer processes`, ERROR);
+        logger.log(`STREAMER-${this.location}: Error ${error} trying to restart mjpg_streamer processes`, ERROR);
         return;
       }
       if (stderr) {
-        logger.log(`STREAMER: Error ${stderr} trying to restart mjpg_streamer processes`, ERROR);
+        logger.log(`STREAMER-${this.location}: Error ${stderr} trying to restart mjpg_streamer processes`, ERROR);
         return;
       }
-      logger.log('STREAMER: Stopped mjpg_streamer process', WARN);
+      logger.log(`STREAMER-${this.location}: Stopped mjpg_streamer process`, WARN);
       cb();
     };
   }
 
   record(bool) {
     if (bool === true && this.recording === false) {
-      logger.log('STREAMER: Enabling mjpg_streamer recording and restarting');
+      logger.log(`STREAMER-${this.location}: Enabling mjpg_streamer recording and restarting`);
       this.recording = true;
       this.stop(this.start);
     }
     else if (bool === false && this.recording === true) {
-      logger.log('STREAMER: Disabling mjpg_streamer recording and restarting');
+      logger.log(`STREAMER-${this.location}: Disabling mjpg_streamer recording and restarting`);
       this.recording = false;
       this.stop(this.start);
     }
