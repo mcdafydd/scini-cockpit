@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+
+  elasticsearch:
+    build:
+      context: dive-replay/elasticsearch/
+      args:
+        ELK_VERSION: 6.5.4
+    volumes:
+      - ./dive-replay/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - es-data:/usr/share/elasticsearch/data
+      - images:/opt/openrov/images
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  kibana:
+    build:
+      context: dive-replay/kibana/
+      args:
+        ELK_VERSION: 6.5.4
+    volumes:
+      - ./dive-replay/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+networks:
+  scini:
+    external: true
+
+volumes:
+  es-data:
+  images:
+
